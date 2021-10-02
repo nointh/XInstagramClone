@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fontAwesome="clr-namespace:FontAwesome"
+             x:Class="InstagramClone.Views.HomeTabbedPageViews.LikePage">
+    <ContentPage.IconImageSource>
+        <FontImageSource Glyph="{x:Static fontAwesome:FontAwesomeIcons.Heart}"
+                         FontFamily="FFARegular"
+                         Color="Black"
+                        />
+    </ContentPage.IconImageSource>
+    <StackLayout>
+        <Label
+            Text="This is the like page"
+            HorizontalTextAlignment="Center"
+            VerticalTextAlignment="Center"
+            VerticalOptions="CenterAndExpand"/>
+        <Label Text="font of Font Awesome"
+               HorizontalOptions="CenterAndExpand"
+               VerticalOptions="CenterAndExpand"
+               FontFamily="FARegular"/>
+        <Label Text="font of Font Awesome"
+               HorizontalOptions="CenterAndExpand"
+               VerticalOptions="CenterAndExpand"
+               FontFamily="FASolid"/>
+        <Label Text="font of Font Awesome"
+               HorizontalOptions="CenterAndExpand"
+               VerticalOptions="CenterAndExpand"
+               FontFamily="FABrands"/>
+    </StackLayout>
+</ContentPage>

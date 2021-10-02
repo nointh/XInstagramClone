@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InstagramClone.Views.LoginPageViews.LoginPage"
+             xmlns:fontAwesome="clr-namespace:FontAwesome"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid
+            Padding="0,10,0,20"
+            BackgroundColor="White">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Text="Language: English"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Start"
+                   Margin="0,5,0,0"
+                   Grid.Row="0"/>
+            <Label 
+                HeightRequest="50"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="End"
+                VerticalOptions="FillAndExpand"
+                HorizontalOptions="FillAndExpand"
+                Grid.Row="2"
+                   >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Don't have an account? "/>
+                        <Span Text="Sign up"
+                              TextColor="#2D88FF"
+                              FontSize="Medium">
+                            <Span.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"
+                                                      NumberOfTapsRequired="1"/>
+                            </Span.GestureRecognizers>
+
+                        </Span>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            
+            <Grid Grid.Row="1" 
+                  Padding="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Image Source="Instagram_logo.svg.png"
+                       x:Name="LogoImage"
+                       HeightRequest="65"
+                       VerticalOptions="CenterAndExpand"
+                       HorizontalOptions="CenterAndExpand"
+                       Aspect="AspectFit"
+                       Grid.Row="0"/>
+                <Entry x:Name="TxtUsername"
+                       Keyboard="Text"
+                       BackgroundColor="White"
+                       Placeholder="Phone number, email or username"
+                       PlaceholderColor="DimGray"
+                       Grid.Row="1"
+                       />
+                <Entry x:Name="TxtPassword"
+                       Keyboard="Text"
+                       BackgroundColor="White"
+                       IsPassword="True"
+                       Placeholder="Password"
+                       PlaceholderColor="DimGray"
+                       Grid.Row="2"
+                       />
+                <Button x:Name="BtnLogIn"
+                        BackgroundColor="#2D88FF"
+                        Text="Sign up"
+                        TextColor="White"
+                        Clicked="BtnLogIn_Clicked"
+                        Grid.Row="3"/>
+                <Label Text="Forget your login detail? Get help logging in"
+                       FontSize="Small"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="End"
+                       Grid.Row="4"/>
+                <Grid Grid.Row="5" Padding="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label BackgroundColor="Black" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center"
+                           Grid.Column="0"/>
+                    <Label Text="OR" VerticalOptions="Center" HorizontalOptions="Center"
+                           Grid.Column="1"/>
+                    <Label BackgroundColor="Black" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center"
+                           Grid.Column="2"/>
+                </Grid>
+                <StackLayout Grid.Row="6"
+                             Orientation="Horizontal"
+                             HorizontalOptions="Center">
+                    <Label Text="Login with facebook" 
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           FontSize="Medium"
+                           TextColor="#2D88FF"
+                           />
+                    <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Facebook}"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           FontFamily="FFABrands"
+                           FontSize="Medium"
+                           TextColor="#2D88FF"/>
+                </StackLayout>
+
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
