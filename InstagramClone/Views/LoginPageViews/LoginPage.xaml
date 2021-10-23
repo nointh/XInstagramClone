@@ -19,29 +19,27 @@
                    VerticalTextAlignment="Start"
                    Margin="0,5,0,0"
                    Grid.Row="0"/>
-            <Label 
+            <StackLayout 
                 HeightRequest="50"
-                HorizontalTextAlignment="Center"
-                VerticalTextAlignment="End"
                 VerticalOptions="FillAndExpand"
-                HorizontalOptions="FillAndExpand"
+                HorizontalOptions="CenterAndExpand"
+                Orientation="Horizontal"
                 Grid.Row="2"
                    >
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="Don't have an account? "/>
-                        <Span Text="Sign up"
-                              TextColor="#2D88FF"
-                              FontSize="Medium">
-                            <Span.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"
-                                                      NumberOfTapsRequired="1"/>
-                            </Span.GestureRecognizers>
+                <Label Text="Don't have an account?"
+                       VerticalTextAlignment="Center"/>
+                <Label Text="Sign up"
+                        TextColor="#2D88FF"
+                        FontSize="Medium"
+                       VerticalTextAlignment="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"
+                                                    NumberOfTapsRequired="1"/>
+                    </Label.GestureRecognizers>
 
-                        </Span>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
+                </Label>
+
+            </StackLayout>
 
             
             <Grid Grid.Row="1" 
@@ -80,7 +78,7 @@
                        />
                 <Button x:Name="BtnLogIn"
                         BackgroundColor="#2D88FF"
-                        Text="Sign up"
+                        Text="Log in"
                         TextColor="White"
                         Clicked="BtnLogIn_Clicked"
                         Grid.Row="3"/>
@@ -116,7 +114,8 @@
                            VerticalTextAlignment="Center"
                            FontFamily="FFABrands"
                            FontSize="Medium"
-                           TextColor="#2D88FF"/>
+                           TextColor="#2D88FF">
+                    </Label>
                 </StackLayout>
 
             </Grid>

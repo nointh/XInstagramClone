@@ -45,9 +45,10 @@ namespace InstagramClone.Views.LoginPageViews
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            NavigationPage signUpPage = new NavigationPage(new SignupPage());
-            NavigationPage.SetHasNavigationBar(signUpPage, false);
-            Navigation.PushAsync(signUpPage);
+            //NavigationPage signUpPage = new NavigationPage(new SignupPage());
+            //NavigationPage.SetHasNavigationBar(signUpPage, false);
+            //Navigation.PushAsync(signUpPage);
+            Application.Current.MainPage = new SignupPage();
         }
     }
 }

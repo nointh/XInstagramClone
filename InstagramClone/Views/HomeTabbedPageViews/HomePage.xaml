@@ -41,4 +41,101 @@
                    Grid.Column="2"/>
         </Grid>
     </NavigationPage.TitleView>
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="{StaticResource InsWhite}">
+            <ListView x:Name="ListViewStory">
+                <ListView.Header>
+                    <CollectionView x:Name="CollViewStory" ItemsLayout="HorizontalList" HorizontalScrollBarVisibility="Never" HeightRequest="150">
+                        <CollectionView.Header>
+                            <StackLayout>
+                                <Grid Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="37.5"></RowDefinition>
+                                        <RowDefinition Height="37.5"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="37.5"></ColumnDefinition>
+                                        <ColumnDefinition Width="37.5"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Frame CornerRadius="100" 
+                                            HeightRequest="75"
+                                            WidthRequest="75"
+                                            HorizontalOptions="Center"
+                                            Padding="0"
+                                            IsClippedToBounds="True"
+                                            BorderColor="{StaticResource InsBlack}"
+                                           Grid.Row="0"
+                                           Grid.Column="0"
+                                           Grid.ColumnSpan="2"
+                                           Grid.RowSpan="2"
+                                            >
+                                        <Image Source=""
+                                               WidthRequest="75"   
+                                               HeightRequest="75"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center">
+                                            <Image.Clip>
+                                                <EllipseGeometry
+                                                        Center="37.5,37.5"
+                                                        RadiusX="37.5"
+                                                        RadiusY="37.5"/>
+                                            </Image.Clip>
+                                        </Image>
+                                    </Frame>
+
+                                    <Label Text="{x:Static fontAwesome:FontAwesomeIcons.PlusCircle}"
+                                           FontFamily="FFASolid"
+                                           Grid.Row="1"
+                                           Grid.Column="1"
+                                           TextColor="{StaticResource InsBlue}"
+                                           FontSize="Large"
+                                           VerticalTextAlignment="End"
+                                           HorizontalTextAlignment="End"
+                                           VerticalOptions="End"
+                                           HorizontalOptions="End"
+                                           />
+                                </Grid>
+                                <Label Text="Yours Story" 
+                                           Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                           HorizontalTextAlignment="Center" FontSize="Small" VerticalOptions="Center" HorizontalOptions="Center" LineBreakMode="TailTruncation" WidthRequest="80"/>
+                                
+                            </StackLayout>
+                        </CollectionView.Header>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+
+                                <StackLayout Margin="5">
+
+                                    <Frame CornerRadius="100" 
+                                        HeightRequest="85"
+                                        WidthRequest="85"
+                                        HorizontalOptions="Center"
+                                        Padding="0"
+                                        IsClippedToBounds="True"
+                                        BorderColor="{StaticResource InsOrange}"
+                                        >
+                                        <Image Source="{Binding ImageUri}"
+                                           WidthRequest="75"   
+                                           HeightRequest="75"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center">
+                                            <Image.Clip>
+                                                <EllipseGeometry
+                                                    Center="37.5,37.5"
+                                                    RadiusX="37.5"
+                                                    RadiusY="37.5"/>
+                                            </Image.Clip>
+                                        </Image>
+                                    </Frame>
+                                    
+
+                                    <Label Text="{Binding Username}" HorizontalTextAlignment="Center" FontSize="Small" VerticalOptions="Center" HorizontalOptions="Center" LineBreakMode="TailTruncation" WidthRequest="80"/>
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ListView.Header>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

@@ -10,4 +10,9 @@
                          Color="Black"
                         />
     </ContentPage.IconImageSource>
+    <ContentPage.Content>
+        <StackLayout>
+            <Button Text="Logout" Clicked="Button_Clicked"></Button>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

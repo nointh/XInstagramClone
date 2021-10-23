@@ -40,7 +40,7 @@ namespace InstagramClone.Views.LoginPageViews
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            Navigation.PopAsync();
+            Application.Current.MainPage = new LoginPage();
         }
     }
 }
