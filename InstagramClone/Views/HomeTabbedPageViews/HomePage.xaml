@@ -10,16 +10,17 @@
                         />
     </ContentPage.IconImageSource>
     <NavigationPage.TitleView >
-        <Grid>
+        <Grid BackgroundColor="{StaticResource InsWhite}" Padding="0,0,0,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="50"/>
             </Grid.ColumnDefinitions>
+            
             <Label Text="{x:Static fontAwesome:FontAwesomeIcons.PlusSquare}"
                    Grid.Column="1"
                    FontFamily="FFARegular"
-                   FontSize="Large"
+                   FontSize="30"
                    TextColor="Black"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"/>
@@ -28,114 +29,274 @@
                    WidthRequest="100"
                    HeightRequest="65"
                    Aspect="AspectFit"
-                   HorizontalOptions="Start"
-                   VerticalOptions="Center"
+                   HorizontalOptions="StartAndExpand"
+                   VerticalOptions="CenterAndExpand"
                    x:Name="LogoImage"
                    />
             <Label Text="&#xf1d8;"
                    FontFamily="FFARegular"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
-                   TextColor="Black"
-                   FontSize="Large"
-                   Grid.Column="2"/>
+                   TextColor="{StaticResource InsBlack}"
+                   FontSize="30"
+                   Grid.Column="2"
+                   >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1"/>
+                </Label.GestureRecognizers>
+            </Label>
         </Grid>
     </NavigationPage.TitleView>
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="{StaticResource InsWhite}">
-            <ListView x:Name="ListViewStory">
-                <ListView.Header>
-                    <CollectionView x:Name="CollViewStory" ItemsLayout="HorizontalList" HorizontalScrollBarVisibility="Never" HeightRequest="150">
-                        <CollectionView.Header>
-                            <StackLayout>
-                                <Grid Margin="5">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="37.5"></RowDefinition>
-                                        <RowDefinition Height="37.5"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="37.5"></ColumnDefinition>
-                                        <ColumnDefinition Width="37.5"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Frame CornerRadius="100" 
-                                            HeightRequest="75"
-                                            WidthRequest="75"
+        <StackLayout>
+            <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource InsWhite}"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"
+                     >
+                <ListView x:Name="ListViewPost"
+                          HasUnevenRows="True"
+                          VerticalScrollBarVisibility="Never"
+                          SelectionMode="None"
+                          SeparatorVisibility="None"
+                          >
+                    <ListView.Header>
+                        <CollectionView x:Name="CollViewStory" ItemsLayout="HorizontalList" HorizontalScrollBarVisibility="Never" HeightRequest="150"
+                                        Margin="0,10,0,0">
+                            <CollectionView.Header>
+                                <StackLayout>
+                                    <!--Your story component-->
+                                    <Grid ColumnSpacing="0" RowSpacing="0" Margin="10,0,0,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="42.5"></RowDefinition>
+                                            <RowDefinition Height="42.5"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="42.5"></ColumnDefinition>
+                                            <ColumnDefinition Width="42.5"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Frame CornerRadius="200" 
+                                                HeightRequest="85"
+                                                WidthRequest="85"
+                                                HorizontalOptions="Center"
+                                                Padding="0"
+                                                IsClippedToBounds="True"
+                                                BorderColor="{StaticResource InsBlack}"
+                                               Grid.Row="0"
+                                               Grid.Column="0"
+                                               Grid.ColumnSpan="2"
+                                               Grid.RowSpan="2"
+                                                >
+                                            <Image Source="https://randomuser.me/api/portraits/men/69.jpg"
+                                                   WidthRequest="75"   
+                                                   HeightRequest="75"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center">
+                                                <Image.Clip>
+                                                    <EllipseGeometry
+                                                            Center="37.5,37.5"
+                                                            RadiusX="37.5"
+                                                            RadiusY="37.5"/>
+                                                </Image.Clip>
+                                            </Image>
+                                        </Frame>
+
+                                        <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Plus}"
+                                               FontFamily="FFASolid"
+                                               Grid.Row="1"
+                                               Grid.Column="1"
+                                               TextColor="{StaticResource InsWhite}"
+                                               FontSize="Large"
+                                               VerticalTextAlignment="End"
+                                               HorizontalTextAlignment="End"
+                                               VerticalOptions="End"
+                                               HorizontalOptions="End"
+                                               />
+                                        <Label Text="{x:Static fontAwesome:FontAwesomeIcons.PlusCircle}"
+                                               FontFamily="FFASolid"
+                                               Grid.Row="1"
+                                               Grid.Column="1"
+                                               TextColor="{StaticResource InsBlue}"
+                                               FontSize="Large"
+                                               VerticalTextAlignment="End"
+                                               HorizontalTextAlignment="End"
+                                               VerticalOptions="End"
+                                               HorizontalOptions="End"
+                                               />
+                                    </Grid>
+                                    <Label Text="Yours Story" 
+                                            Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                           HorizontalTextAlignment="Center" FontSize="Small" 
+                                           VerticalOptions="Center" HorizontalOptions="Center" LineBreakMode="TailTruncation" WidthRequest="80"/>
+
+                                </StackLayout>
+                            </CollectionView.Header>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <!--start - list view of stories-->
+                                    <StackLayout Margin="5">
+
+                                        <Frame CornerRadius="100" 
+                                            HeightRequest="85"
+                                            WidthRequest="85"
                                             HorizontalOptions="Center"
                                             Padding="0"
                                             IsClippedToBounds="True"
-                                            BorderColor="{StaticResource InsBlack}"
-                                           Grid.Row="0"
-                                           Grid.Column="0"
-                                           Grid.ColumnSpan="2"
-                                           Grid.RowSpan="2"
+                                            BorderColor="{StaticResource InsOrange}"
                                             >
-                                        <Image Source=""
+                                            <Image Source="{Binding ImageUri}"
                                                WidthRequest="75"   
                                                HeightRequest="75"
                                                HorizontalOptions="Center"
                                                VerticalOptions="Center">
-                                            <Image.Clip>
-                                                <EllipseGeometry
+                                                <Image.Clip>
+                                                    <EllipseGeometry
                                                         Center="37.5,37.5"
                                                         RadiusX="37.5"
                                                         RadiusY="37.5"/>
-                                            </Image.Clip>
-                                        </Image>
-                                    </Frame>
-
-                                    <Label Text="{x:Static fontAwesome:FontAwesomeIcons.PlusCircle}"
-                                           FontFamily="FFASolid"
+                                                </Image.Clip>
+                                            </Image>
+                                        </Frame>
+                                        <Label Text="{Binding Username}" HorizontalTextAlignment="Center" FontSize="Small" VerticalOptions="Center" HorizontalOptions="Center" 
+                                               LineBreakMode="TailTruncation" 
+                                               WidthRequest="80"/>
+                                    </StackLayout>
+                                    <!--end - list view of stories-->
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </ListView.Header>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell IsEnabled="False">
+                                <!--start - collection view post item-->
+                                <Grid Margin="0,10,0,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <StackLayout Grid.Row="0"
+                                                 Orientation="Horizontal"
+                                                 >
+                                        <Frame CornerRadius="100" 
+                                            HeightRequest="45"
+                                            WidthRequest="45"
+                                            HorizontalOptions="Center"
+                                            Padding="0"
+                                            Margin="5"
+                                            IsClippedToBounds="True"
+                                            BorderColor="{StaticResource InsBlack}"
+                                            >
+                                            <Image Source="{Binding OwnerImage}"
+                                               WidthRequest="40"   
+                                               HeightRequest="40"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center">
+                                                <Image.Clip>
+                                                    <EllipseGeometry
+                                                        Center="20,20"
+                                                        RadiusX="20"
+                                                        RadiusY="20"/>
+                                                </Image.Clip>
+                                            </Image>
+                                        </Frame>
+                                        <Label Text="{Binding OwnerUsername}" 
+                                               VerticalOptions="Center" 
+                                               HorizontalOptions="Start"
+                                               TextColor="{x:StaticResource InsBlack}"
+                                               FontSize="Medium"
+                                               />
+                                        <Label Text="{x:Static fontAwesome:FontAwesomeIcons.EllipsisV}"
+                                               FontFamily="FFASolid"
+                                               FontSize="Large"
+                                               TextColor="{StaticResource InsBlack}"
+                                               Margin="0,0,10,0"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="EndAndExpand"/>
+                                    </StackLayout>
+                                    <Image Aspect="AspectFill"
+                                           Source="{Binding PostImage}"
                                            Grid.Row="1"
-                                           Grid.Column="1"
-                                           TextColor="{StaticResource InsBlue}"
-                                           FontSize="Large"
-                                           VerticalTextAlignment="End"
-                                           HorizontalTextAlignment="End"
-                                           VerticalOptions="End"
-                                           HorizontalOptions="End"
                                            />
+                                    <StackLayout Grid.Row="2" Padding="10,5,10,5">
+                                        <StackLayout Orientation="Horizontal" >
+
+                                            <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Heart}"
+                                                   FontFamily="FFARegular"
+                                                   FontSize="30"                                               
+                                                   TextColor="{StaticResource InsBlack}"
+                                                   Grid.Column="0"
+                                                   HorizontalOptions="Start"
+                                                   VerticalOptions="Center"
+                                                   Margin="0,10,5,0"
+                                                   >
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"
+                                                                          NumberOfTapsRequired="1"></TapGestureRecognizer>
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                            
+                                            <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Comment}"
+                                                   FontFamily="FFARegular"
+                                                   Grid.Column="1"
+                                                   FontSize="30"
+                                                   TextColor="{StaticResource InsBlack}"
+                                                   Margin="5,10,5,0"
+                                                   HorizontalOptions="Start"
+                                                   VerticalOptions="Center"
+                                                   />
+                                            <Label Text="{x:Static fontAwesome:FontAwesomeIcons.PaperPlane}"
+                                                   FontFamily="FFARegular"
+                                                   FontSize="30"
+                                                   TextColor="{StaticResource InsBlack}"
+                                                   Margin="5,10,5,0"
+                                                   Grid.Column="2"
+                                                   HorizontalOptions="Start"
+                                                   VerticalOptions="Center"
+                                                   />
+                                            <StackLayout HorizontalOptions="FillAndExpand">
+
+                                            </StackLayout>
+                                            <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Bookmark}"
+                                                   FontFamily="FFARegular"
+                                                   FontSize="30"
+                                                   TextColor="{StaticResource InsBlack}"
+                                                   Margin="10,10,5,0"
+                                                   Grid.Column="2"
+                                                   HorizontalOptions="Start"
+                                                   VerticalOptions="End"
+                                                   Padding="3"
+                                                   />
+                                        </StackLayout>
+                                        <Label VerticalOptions="Center"
+                                               HorizontalOptions="Start"
+                                               Text="18 likes"></Label>
+                                        <Label VerticalOptions="Center"
+                                               HorizontalOptions="Start"
+                                               MaxLines="2"
+                                               LineBreakMode="TailTruncation">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding OwnerUsername}"
+                                                          FontSize="Medium"
+                                                          TextColor="{StaticResource InsBlack}"
+                                                          />
+                                                    <Span Text=" "
+                                                          />
+                                                    <Span Text="{Binding Caption}"
+                                                          FontSize="Small"
+                                                          TextColor="DimGray"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label Text="{Binding PostTime}"/>
+                                    </StackLayout>
                                 </Grid>
-                                <Label Text="Yours Story" 
-                                           Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                                           HorizontalTextAlignment="Center" FontSize="Small" VerticalOptions="Center" HorizontalOptions="Center" LineBreakMode="TailTruncation" WidthRequest="80"/>
-                                
-                            </StackLayout>
-                        </CollectionView.Header>
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-
-                                <StackLayout Margin="5">
-
-                                    <Frame CornerRadius="100" 
-                                        HeightRequest="85"
-                                        WidthRequest="85"
-                                        HorizontalOptions="Center"
-                                        Padding="0"
-                                        IsClippedToBounds="True"
-                                        BorderColor="{StaticResource InsOrange}"
-                                        >
-                                        <Image Source="{Binding ImageUri}"
-                                           WidthRequest="75"   
-                                           HeightRequest="75"
-                                           HorizontalOptions="Center"
-                                           VerticalOptions="Center">
-                                            <Image.Clip>
-                                                <EllipseGeometry
-                                                    Center="37.5,37.5"
-                                                    RadiusX="37.5"
-                                                    RadiusY="37.5"/>
-                                            </Image.Clip>
-                                        </Image>
-                                    </Frame>
-                                    
-
-                                    <Label Text="{Binding Username}" HorizontalTextAlignment="Center" FontSize="Small" VerticalOptions="Center" HorizontalOptions="Center" LineBreakMode="TailTruncation" WidthRequest="80"/>
-                                </StackLayout>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </ListView.Header>
-            </ListView>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

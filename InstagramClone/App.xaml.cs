@@ -20,6 +20,7 @@ namespace InstagramClone
             {
                 MainPage = new NavigationPage(new HomeTabbedPage());
             }
+            //MainPage = new NavigationPage(new HomeTabbedPage());
         }
 
         protected override void OnStart()
