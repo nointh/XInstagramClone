@@ -1,9 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:fontAwesome="clr-namespace:FontAwesome"
+             xmlns:fontAwesome="clr-namespace:FontAwesome" 
+             xmlns:dataTemplate="clr-namespace:InstagramClone.Views.DataTemplate"
+            xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="InstagramClone.Views.HomeTabbedPageViews.HomePage"
              >
+    <ContentPage.Resources>
+        <dataTemplate:MediaDataTemplateSelector x:Key="templateSelector"></dataTemplate:MediaDataTemplateSelector>
+    </ContentPage.Resources>
     <ContentPage.IconImageSource>
         <FontImageSource Glyph="{x:Static fontAwesome:FontAwesomeIcons.Home}"
                          FontFamily="FFASolid"
@@ -167,7 +172,7 @@
                     </ListView.Header>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell IsEnabled="False">
+                            <ViewCell>
                                 <!--start - collection view post item-->
                                 <Grid Margin="0,10,0,0">
                                     <Grid.RowDefinitions>
@@ -214,10 +219,24 @@
                                                VerticalOptions="Center"
                                                HorizontalOptions="EndAndExpand"/>
                                     </StackLayout>
-                                    <Image Aspect="AspectFill"
+                                    <!--<Image Aspect="AspectFill"
                                            Source="{Binding PostImage}"
                                            Grid.Row="1"
-                                           />
+                                           />-->
+                                    <CarouselView ItemsSource="{Binding MediaList}" 
+                                                  ItemTemplate="{StaticResource templateSelector}" 
+                                                  Grid.Row="1"
+                                                  HorizontalOptions="FillAndExpand"
+                                                  HeightRequest="400"
+                                                  IndicatorView="PostIndicator"
+                                                  IsBounceEnabled="True"
+                                                  x:Name="{Binding PostId}"
+                                                  >
+                                        <CarouselView.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_2"
+                                                                  NumberOfTapsRequired="2"></TapGestureRecognizer>
+                                        </CarouselView.GestureRecognizers>
+                                    </CarouselView>
                                     <StackLayout Grid.Row="2" Padding="10,5,10,5">
                                         <StackLayout Orientation="Horizontal" >
 
@@ -255,7 +274,13 @@
                                                    VerticalOptions="Center"
                                                    />
                                             <StackLayout HorizontalOptions="FillAndExpand">
-
+                                                <IndicatorView x:Name= "PostIndicator"  
+                                                               ItemsSource="{Binding MediaList}"
+                                                               HorizontalOptions="Center"
+                                                               VerticalOptions="CenterAndExpand"
+                                                               IndicatorColor="Gray"
+                                                               SelectedIndicatorColor="Blue"
+                                                               />
                                             </StackLayout>
                                             <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Bookmark}"
                                                    FontFamily="FFARegular"
