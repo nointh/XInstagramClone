@@ -42,9 +42,15 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             LikeLabel.FontFamily = "FFASolid";
             LikeLabel.TextColor = Color.Red;
         }
+
         private void TapGestureRecognizer_Tapped_1(object sender, EventArgs e)
         {
             DisplayAlert("Title", "You have opened the send", "OK");
+        }
+
+        private void btnAddPost_Tapped(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new AddPostPage());
         }
     }
 }

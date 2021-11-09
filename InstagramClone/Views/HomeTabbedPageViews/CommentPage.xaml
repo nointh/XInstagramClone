@@ -2,9 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fontAwesome="clr-namespace:FontAwesome"
-             x:Class="InstagramClone.Views.InteractionViews.CommentPage">
+             NavigationPage.HasBackButton="False"
+             x:Class="InstagramClone.Views.HomeTabbedPageViews.CommentPage">
 
-    <NavigationPage.TitleView >
+    <NavigationPage.TitleView>
         <Grid BackgroundColor="{StaticResource InsWhite}" Padding="0,0,0,0" Margin="0,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
@@ -62,7 +63,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            
+
             <ListView x:Name="ListViewComments"
                       Margin="0, 16, 0, 0"
                       HasUnevenRows="True"
@@ -231,7 +232,7 @@
                         TextChanged="editorCmt_TextChanged"
                         TextColor="{StaticResource InsBlack}"
                         Placeholder="Add a comment..."
-                        x:Name="editorCmt"/>    
+                        x:Name="editorCmt"/>
 
                 <Label  Grid.Row="0" Grid.Column="2"
                         Text="Post"

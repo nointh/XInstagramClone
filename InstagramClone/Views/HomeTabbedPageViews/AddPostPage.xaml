@@ -1,11 +1,134 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:fontAwesome ="clr-namespace:FontAwesome"
+             xmlns:fontAwesome="clr-namespace:FontAwesome"
+             NavigationPage.HasBackButton="False"
+             BackgroundColor="{StaticResource InsWhite}"
              x:Class="InstagramClone.Views.HomeTabbedPageViews.AddPostPage">
     <ContentPage.IconImageSource>
         <FontImageSource Glyph="{x:Static fontAwesome:FontAwesomeIcons.PlayCircle}"
                          FontFamily="FFASolid"
                         />
     </ContentPage.IconImageSource>
+
+    <NavigationPage.TitleView>
+        <Grid BackgroundColor="{StaticResource InsWhite}" Padding="0,0,0,0" Margin="0,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Times}"
+                   Grid.Column="0"
+                   FontFamily="PFALight"
+                   FontSize="24"
+                   TextColor="Black"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer/>
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Text="New post"
+                   Grid.Column="1"
+                   FontFamily="FA"
+                   FontAttributes="None"
+                   FontSize="24"
+                   TextColor="Black"
+                   WidthRequest="150"
+                   HeightRequest="60"
+                   VerticalTextAlignment="Center"
+                   HorizontalTextAlignment="Center"
+                   HorizontalOptions="StartAndExpand"
+                   VerticalOptions="CenterAndExpand"
+                   />
+            <Label Text="{x:Static fontAwesome:FontAwesomeIcons.LongArrowRight}"
+                   Grid.Column="2"
+                   FontFamily="PFARegular"
+                   FontSize="24"
+                   TextColor="Black"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer/>
+                </Label.GestureRecognizers>
+            </Label>
+        </Grid>
+    </NavigationPage.TitleView>
+
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <StackLayout Orientation="Vertical"
+                         BackgroundColor="White"
+                         Grid.Column="0" Grid.Row="0"
+            >
+                <CarouselView ItemsSource="{Binding items}"
+                              HeightRequest="400"
+                              WidthRequest="200"
+                              BackgroundColor="DimGray"
+                              IndicatorView="itemIndicator"
+                >
+                    <CarouselView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal"
+                                           ItemSpacing="0"
+                        />
+                    </CarouselView.ItemsLayout>
+
+                    <CarouselView.ItemTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding MediaStream}"
+                                   Aspect="AspectFill"
+                                   HeightRequest="400"
+                                   WidthRequest="200"
+                                   BackgroundColor="DimGray"
+                            />
+                        </DataTemplate>
+                    </CarouselView.ItemTemplate>
+                </CarouselView>
+
+                <IndicatorView  x:Name="itemIndicator"
+                                IndicatorColor="LightGray"
+                                IndicatorSize="8"
+                                BackgroundColor="White"
+                                SelectedIndicatorColor="#458eff"
+                />
+            </StackLayout>
+
+            <StackLayout Orientation="Vertical"
+                         Padding="0"
+                         Grid.Column="0" Grid.Row="1"
+                         BackgroundColor="White"
+                         Margin="0,40,0,0"
+            >
+                <Button Text="Pick image from gallery"
+                        TextTransform="None"
+                        FontSize="16"
+                        TextColor="Black"
+                        BackgroundColor="White"
+                        HorizontalOptions="Center"
+                        x:Name="btnPickImage"
+                        Clicked="btnPickImage_Clicked"
+                />
+                <Button Text="Pick video from gallery"
+                        TextTransform="None"
+                        FontSize="16"
+                        TextColor="Black"
+                        BackgroundColor="White"
+                        HorizontalOptions="Center"
+                />
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>

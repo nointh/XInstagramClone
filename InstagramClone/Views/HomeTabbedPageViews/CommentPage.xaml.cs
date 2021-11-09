@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using InstagramClone.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace InstagramClone.Views.InteractionViews
+namespace InstagramClone.Views.HomeTabbedPageViews
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CommentPage : ContentPage
@@ -30,7 +29,11 @@ namespace InstagramClone.Views.InteractionViews
         {
             Label heart = (Label)sender;
             heart.FontFamily = "FFASolid";
-            heart.TextColor = Color.Red;
+            if (heart.TextColor == Color.Red)
+            {
+                heart.TextColor = Color.DimGray;
+            }
+            else heart.TextColor = Color.Red;
         }
 
         private void editorCmt_TextChanged(object sender, TextChangedEventArgs e)
@@ -41,10 +44,11 @@ namespace InstagramClone.Views.InteractionViews
             lbPostCmt.IsEnabled = CharacterCount > 0 ? true : false;
             lbPostCmt.Opacity = CharacterCount > 0 ? 1 : 0.5;
 
-            if (CharacterCount <= 40)
+            if (CharacterCount <= 70)
             {
-                if ((CharacterCount * CharacterWidth) > (editorCmt.Width * PlusEditorHeight) + (CharacterWidth * 2))
+                if ((CharacterCount * CharacterWidth) > (editorCmt.Width * PlusEditorHeight) + (CharacterWidth * 20))
                 {
+                    Console.WriteLine(CharacterCount);
                     gridCmt.HeightRequest += CharacterWidth;
                     editorCmt.HeightRequest = gridCmt.HeightRequest;
                     PlusEditorHeight++;
@@ -52,7 +56,7 @@ namespace InstagramClone.Views.InteractionViews
                 else
                 {
                     if ((PlusEditorHeight > 1) &&
-                        (CharacterCount * CharacterWidth) < (editorCmt.Width * (PlusEditorHeight - 1)) + (CharacterWidth * 2))
+                        (CharacterCount * CharacterWidth) < (editorCmt.Width * (PlusEditorHeight - 1)) + (CharacterWidth * 20))
                     {
                         gridCmt.HeightRequest -= CharacterWidth;
                         editorCmt.HeightRequest = gridCmt.HeightRequest;
@@ -62,7 +66,7 @@ namespace InstagramClone.Views.InteractionViews
             }
             else
             {
-                var val = e.NewTextValue.Substring(0, 40);
+                var val = e.NewTextValue.Substring(0, 70);
                 editorCmt.Text = val;
             }
         }

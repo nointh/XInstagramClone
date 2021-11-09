@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.IO;
 
 namespace InstagramClone.Views.HomeTabbedPageViews
 {
@@ -15,6 +16,12 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         public AddPostPage()
         {
             InitializeComponent();
+            BindingContext = this;
+        }
+
+        private void btnPickImage_Clicked(object sender, EventArgs e)
+        {
+
         }
     }
 }
