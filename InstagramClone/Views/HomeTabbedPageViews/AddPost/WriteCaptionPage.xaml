@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fontAwesome="clr-namespace:FontAwesome"
+             NavigationPage.HasBackButton="False"
+             BackgroundColor="{StaticResource InsWhite}"
+             x:Class="InstagramClone.Views.HomeTabbedPageViews.WriteCaptionPage">
+
+    <NavigationPage.TitleView>
+        <Grid BackgroundColor="{StaticResource InsWhite}" Padding="0,0,0,0" Margin="0,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Text="{x:Static fontAwesome:FontAwesomeIcons.LongArrowLeft}"
+                   Grid.Column="0"
+                   FontFamily="PFALight"
+                   FontSize="24"
+                   TextColor="Black"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer x:Name="btnBack" Tapped="btnBack_Tapped"/>
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Text="New Post"
+                   Grid.Column="1"
+                   FontFamily="FA"
+                   FontAttributes="None"
+                   FontSize="24"
+                   TextColor="Black"
+                   WidthRequest="150"
+                   HeightRequest="60"
+                   VerticalTextAlignment="Center"
+                   HorizontalTextAlignment="Center"
+                   HorizontalOptions="StartAndExpand"
+                   VerticalOptions="CenterAndExpand"
+                   />
+            <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Check}"
+                   Grid.Column="2"
+                   FontFamily="PFALight"
+                   FontSize="24"
+                   TextColor="#458eff"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer/>
+                </Label.GestureRecognizers>
+            </Label>
+        </Grid>
+    </NavigationPage.TitleView>
+
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical" Padding="20,20,20,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Frame CornerRadius="10"
+                       BackgroundColor="Black"
+                       Padding="0"
+                       Grid.Row="0" Grid.Column="0"
+                >
+                    <Image x:Name="imgFirstItem"
+                           HeightRequest="300"
+                           Aspect="AspectFill"
+                    />
+                </Frame>
+
+                <Frame CornerRadius="10"
+                       BackgroundColor="Black"
+                       Padding="8"
+                       Margin="0,8,8,0"
+                       Opacity="0.8"
+                       WidthRequest="20"
+                       HeightRequest="20"
+                       Grid.Row="0" Grid.Column="0"
+                       VerticalOptions="Start"
+                       HorizontalOptions="End"
+                       x:Name="frQuantity"
+                >
+                    <Label x:Name="lbQuantity"
+                           FontSize="14"
+                           TextColor="White"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                    />
+                </Frame>
+            </Grid>
+
+            <Editor Placeholder="Write a caption..."
+                    AutoSize="TextChanges"
+                    Margin="0,50,0,0"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

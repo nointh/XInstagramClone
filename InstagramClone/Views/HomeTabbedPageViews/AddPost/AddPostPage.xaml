@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fontAwesome="clr-namespace:FontAwesome"
+             xmlns:dataTemplate="clr-namespace:InstagramClone.Views.DataTemplate"
              NavigationPage.HasBackButton="False"
              BackgroundColor="{StaticResource InsWhite}"
              x:Class="InstagramClone.Views.HomeTabbedPageViews.AddPostPage">
@@ -10,6 +11,10 @@
                          FontFamily="FFASolid"
                         />
     </ContentPage.IconImageSource>
+
+    <ContentPage.Resources>
+        <dataTemplate:MediaDataTemplateSelector x:Key="templateSelector"></dataTemplate:MediaDataTemplateSelector>
+    </ContentPage.Resources>
 
     <NavigationPage.TitleView>
         <Grid BackgroundColor="{StaticResource InsWhite}" Padding="0,0,0,0" Margin="0,0,0,0">
@@ -48,12 +53,12 @@
                    Grid.Column="2"
                    FontFamily="PFARegular"
                    FontSize="24"
-                   TextColor="Black"
+                   TextColor="#458eff"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"
                    >
                 <Label.GestureRecognizers>
-                    <TapGestureRecognizer/>
+                    <TapGestureRecognizer x:Name="btnProceedCaption" Tapped="btnProceedCaption_Tapped"/>
                 </Label.GestureRecognizers>
             </Label>
         </Grid>
@@ -71,37 +76,29 @@
             </Grid.ColumnDefinitions>
 
             <StackLayout Orientation="Vertical"
-                         BackgroundColor="White"
+                         BackgroundColor="{StaticResource InsWhite}"
                          Grid.Column="0" Grid.Row="0"
             >
                 <CarouselView ItemsSource="{Binding items}"
                               HeightRequest="400"
-                              WidthRequest="200"
-                              BackgroundColor="DimGray"
+                              BackgroundColor="Gray"
                               IndicatorView="itemIndicator"
+                              HorizontalOptions="FillAndExpand"
+                              IsBounceEnabled="True"
+                              IsSwipeEnabled="True"
+                              ItemTemplate="{StaticResource templateSelector}" 
                 >
                     <CarouselView.ItemsLayout>
                         <LinearItemsLayout Orientation="Horizontal"
                                            ItemSpacing="0"
                         />
                     </CarouselView.ItemsLayout>
-
-                    <CarouselView.ItemTemplate>
-                        <DataTemplate>
-                            <Image Source="{Binding MediaStream}"
-                                   Aspect="AspectFill"
-                                   HeightRequest="400"
-                                   WidthRequest="200"
-                                   BackgroundColor="DimGray"
-                            />
-                        </DataTemplate>
-                    </CarouselView.ItemTemplate>
                 </CarouselView>
 
                 <IndicatorView  x:Name="itemIndicator"
                                 IndicatorColor="LightGray"
                                 IndicatorSize="8"
-                                BackgroundColor="White"
+                                BackgroundColor="{StaticResource InsWhite}"
                                 SelectedIndicatorColor="#458eff"
                 />
             </StackLayout>
@@ -109,25 +106,44 @@
             <StackLayout Orientation="Vertical"
                          Padding="0"
                          Grid.Column="0" Grid.Row="1"
-                         BackgroundColor="White"
-                         Margin="0,40,0,0"
+                         BackgroundColor="{StaticResource InsWhite}"
+                         Margin="0,60,0,0"
             >
-                <Button Text="Pick image from gallery"
+                <StackLayout Orientation="Horizontal"
+                             Padding="0,15,0,15"
+                             HorizontalOptions="FillAndExpand"
+                             BackgroundColor="{StaticResource InsWhite}"
+                >
+                    <Label Text="{x:Static fontAwesome:FontAwesomeIcons.PhotoVideo}"
+                           FontFamily="PFASolid"
+                           FontSize="24"
+                           TextColor="Black"
+                           VerticalOptions="CenterAndExpand"
+                           HorizontalOptions="EndAndExpand"
+                           Margin="0,0,10,0"
+                    />
+                    <Label Text="Pick items from gallery"
+                           TextTransform="None"
+                           FontSize="18"
+                           TextColor="Black"
+                           BackgroundColor="{StaticResource InsWhite}"
+                           HorizontalOptions="StartAndExpand"
+                    />
+
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer x:Name="btnPickMedia" Tapped="btnPickMedia_Tapped"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+                
+                <!--<Button Text="Pick video from gallery"
                         TextTransform="None"
                         FontSize="16"
                         TextColor="Black"
                         BackgroundColor="White"
                         HorizontalOptions="Center"
-                        x:Name="btnPickImage"
-                        Clicked="btnPickImage_Clicked"
-                />
-                <Button Text="Pick video from gallery"
-                        TextTransform="None"
-                        FontSize="16"
-                        TextColor="Black"
-                        BackgroundColor="White"
-                        HorizontalOptions="Center"
-                />
+                        x:Name="btnPickVideo"
+                        Clicked="btnPickVideo_Clicked"
+                />-->
             </StackLayout>
         </Grid>
     </ContentPage.Content>

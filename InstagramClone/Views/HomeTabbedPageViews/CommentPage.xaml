@@ -187,7 +187,6 @@
             </ListView>
 
             <Grid Padding="0,8,0,8"
-                  HeightRequest="40"
                   x:Name="gridCmt"
                   Grid.Row="1" Grid.Column="0"
                   >
@@ -229,7 +228,7 @@
                         FontFamily="FA"
                         FontAttributes="None"
                         VerticalOptions="CenterAndExpand"
-                        TextChanged="editorCmt_TextChanged"
+                        AutoSize="TextChanges"
                         TextColor="{StaticResource InsBlack}"
                         Placeholder="Add a comment..."
                         x:Name="editorCmt"/>

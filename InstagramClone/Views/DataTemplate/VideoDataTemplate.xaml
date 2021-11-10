@@ -15,7 +15,7 @@
                               Grid.Row="0"/>
       </Grid>-->
         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-            <xct:MediaElement Source="{Binding Url}" AutoPlay="True"
+            <xct:MediaElement Source="{Binding VideoSource}" AutoPlay="True"
                               Aspect="AspectFill"
                               HorizontalOptions="FillAndExpand" 
                               VerticalOptions="FillAndExpand"/>

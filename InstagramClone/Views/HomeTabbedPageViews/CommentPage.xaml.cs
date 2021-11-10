@@ -35,40 +35,5 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             }
             else heart.TextColor = Color.Red;
         }
-
-        private void editorCmt_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var CharacterWidth = editorCmt.FontSize;
-            var CharacterCount = editorCmt.Text.Length;
-
-            lbPostCmt.IsEnabled = CharacterCount > 0 ? true : false;
-            lbPostCmt.Opacity = CharacterCount > 0 ? 1 : 0.5;
-
-            if (CharacterCount <= 70)
-            {
-                if ((CharacterCount * CharacterWidth) > (editorCmt.Width * PlusEditorHeight) + (CharacterWidth * 20))
-                {
-                    Console.WriteLine(CharacterCount);
-                    gridCmt.HeightRequest += CharacterWidth;
-                    editorCmt.HeightRequest = gridCmt.HeightRequest;
-                    PlusEditorHeight++;
-                }
-                else
-                {
-                    if ((PlusEditorHeight > 1) &&
-                        (CharacterCount * CharacterWidth) < (editorCmt.Width * (PlusEditorHeight - 1)) + (CharacterWidth * 20))
-                    {
-                        gridCmt.HeightRequest -= CharacterWidth;
-                        editorCmt.HeightRequest = gridCmt.HeightRequest;
-                        PlusEditorHeight--;
-                    }
-                }
-            }
-            else
-            {
-                var val = e.NewTextValue.Substring(0, 70);
-                editorCmt.Text = val;
-            }
-        }
     }
 }

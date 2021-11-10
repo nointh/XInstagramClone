@@ -4,6 +4,7 @@ using Xamarin.Forms.Xaml;
 using InstagramClone.Views.HomeTabbedPageViews;
 using InstagramClone.Views.LoginPageViews;
 using Xamarin.Essentials;
+using InstagramClone.Views;
 
 namespace InstagramClone
 {
@@ -18,7 +19,7 @@ namespace InstagramClone
             //}
             //else
             //{
-            //    MainPage = new NavigationPage(new HomeTabbedPage());
+            //MainPage = new NavigationPage(new HomeTabbedPage());
             //}
             MainPage = new NavigationPage(new AddPostPage());
         }
