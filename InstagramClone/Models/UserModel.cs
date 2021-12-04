@@ -5,14 +5,20 @@ using Xamarin.Forms;
 
 namespace InstagramClone.Models
 {
-    class UserModel
+    public class UserModel
     {
         public string Phone { get; set; }
         public string Email { get; set; }
+        public string Website { get; set; }
         public string Fullname { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+        public string DOB { get; set; }
+        public string Gender { get; set; }
         public string ImageUri { get; set; }
+        public int TotalFollower { get; set; }
+        public int TotalFollowing { get; set; }
+        public string ProfileDescription { get; set; }
 
         public UriImageSource ImageSource { get
             {

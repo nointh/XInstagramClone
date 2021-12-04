@@ -11,10 +11,10 @@
     </ContentPage.Resources>
     <ContentPage.IconImageSource>
         <FontImageSource Glyph="{x:Static fontAwesome:FontAwesomeIcons.Home}"
-                         FontFamily="FFASolid"
+                         FontFamily="PFASolid"
                         />
     </ContentPage.IconImageSource>
-    <NavigationPage.TitleView >
+    <NavigationPage.TitleView>
         <Grid BackgroundColor="{StaticResource InsWhite}" Padding="0,0,0,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -158,12 +158,6 @@
                                                HeightRequest="75"
                                                HorizontalOptions="Center"
                                                VerticalOptions="Center">
-                                                <Image.Clip>
-                                                    <EllipseGeometry
-                                                        Center="37.5,37.5"
-                                                        RadiusX="37.5"
-                                                        RadiusY="37.5"/>
-                                                </Image.Clip>
                                             </Image>
                                         </Frame>
                                         <Label Text="{Binding Username}" HorizontalTextAlignment="Center" FontSize="Small" VerticalOptions="Center" HorizontalOptions="Center" 
