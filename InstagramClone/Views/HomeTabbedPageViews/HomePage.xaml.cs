@@ -41,11 +41,17 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             ToggleHeartLabel(LikeLabel);
             
         }
+
         private void TapGestureRecognizer_Tapped_1(object sender, EventArgs e)
         {
             DisplayAlert("Title", "You have opened the send", "OK");
         }
 
+        private void btnAddPost_Tapped(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new AddPostPage());
+        }
+        
         public void ToggleHeartLabel(Label LikeLabel)
         {
             if (LikeLabel.FontFamily == "FFARegular")

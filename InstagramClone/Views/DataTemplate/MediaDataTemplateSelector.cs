@@ -1,8 +1,9 @@
-﻿using System;
+﻿using InstagramClone.Models;
+using InstagramClone.Views.HomeTabbedPageViews;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
-using static InstagramClone.Models.PostModel;
 
 namespace InstagramClone.Views.DataTemplate
 {
@@ -18,6 +19,8 @@ namespace InstagramClone.Views.DataTemplate
         protected override Xamarin.Forms.DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
             Media media = (Media)item;
+            //PickMediaItem media = (PickMediaItem)item;
+            
             return media.Type == "video" ? VideoTemplate : ImageTemplate;
         }
     }
