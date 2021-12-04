@@ -37,14 +37,43 @@ namespace InstagramClone.Views.HomeTabbedPageViews
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            Console.WriteLine("label tapped");
             Label LikeLabel = (Label)sender;
-            LikeLabel.FontFamily = "FFASolid";
-            LikeLabel.TextColor = Color.Red;
+            ToggleHeartLabel(LikeLabel);
+            
         }
+
         private void TapGestureRecognizer_Tapped_1(object sender, EventArgs e)
         {
             DisplayAlert("Title", "You have opened the send", "OK");
+        }
+
+        private void btnAddPost_Tapped(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new AddPostPage());
+        }
+        
+        public void ToggleHeartLabel(Label LikeLabel)
+        {
+            if (LikeLabel.FontFamily == "FFARegular")
+            {
+                LikeLabel.FontFamily = "FFASolid";
+                LikeLabel.TextColor = Color.Red;
+            }
+            else
+            {
+                LikeLabel.FontFamily = "FFARegular";
+                LikeLabel.TextColor = Color.Black;
+            }
+        }
+
+        private void TapGestureRecognizer_Tapped_2(object sender, EventArgs e)
+        {
+            CarouselView carouselView = (CarouselView)sender;
+            Grid gridLayout = (Grid)carouselView.Parent;
+            StackLayout subPost = (StackLayout)gridLayout.Children.Where(c => Grid.GetRow(c) == 2);
+            Label heartLabel = (Label)subPost.Children[0];
+            heartLabel.FontFamily = "FFASolid";
+            heartLabel.TextColor = Color.Red;
         }
     }
 }

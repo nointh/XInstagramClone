@@ -1,25 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+             android:Application.WindowSoftInputModeAdjust="Resize"
              x:Class="InstagramClone.App">
     <Application.Resources>
         <ResourceDictionary>
+            <Color x:Key="InsRoyalBlue">#405DE6</Color>
+            <Color x:Key="InsBlue">#5B51D8</Color>
+            <Color x:Key="InsPurple">#833AB4</Color>
+            <Color x:Key="InsDarkPink">#C13584</Color>
+            <Color x:Key="InsPurpleRed">#E1306C</Color>
+            <Color x:Key="InsRed">#FD1D1D</Color>
+            <Color x:Key="InsDarkOrange">#F56040</Color>
+            <Color x:Key="InsOrange">#F77737</Color>
+            <Color x:Key="InsYellow">#FCAF45</Color>
+            <Color x:Key="InsLightYellow">#FFDC80</Color>
+            <Color x:Key="InsWhite">#FFFFFF</Color>
+            <Color x:Key="InsBlack">#262626</Color>
+            <Color x:Key="InsLogoBlue">#30618A</Color>
 
-
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="{StaticResource InsWhite}"/>
+                <Setter Property="BarTextColor" Value="{StaticResource InsBlack}"/>
+                <Setter Property="IconColor" Value="{StaticResource InsBlack}"/>
+            </Style>
         </ResourceDictionary>
-        <Color x:Key="InsRoyalBlue">#405DE6</Color>
-        <Color x:Key="InsBlue">#5B51D8</Color>
-        <Color x:Key="InsPurple">#833AB4</Color>
-        <Color x:Key="InsDarkPink">#C13584</Color>
-        <Color x:Key="InsPurpleRed">#E1306C</Color>
-        <Color x:Key="InsRed">#FD1D1D</Color>
-        <Color x:Key="InsDarkOrange">#F56040</Color>
-        <Color x:Key="InsOrange">#F77737</Color>
-        <Color x:Key="InsYellow">#FCAF45</Color>
-        <Color x:Key="InsLightYellow">#FFDC80</Color>
-        <Color x:Key="InsWhite">#FFFFFF</Color>
-        <Color x:Key="InsBlack">#262626</Color>
-        <Color x:Key="InsLogoBlue">#30618A</Color>
+
         
     </Application.Resources>
 </Application>

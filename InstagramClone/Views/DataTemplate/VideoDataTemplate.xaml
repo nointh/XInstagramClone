@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="InstagramClone.Views.DataTemplate.VideoDataTemplate">
+  <ContentView.Content>
+        <!--<Grid Margin="0" Padding="0" HorizontalOptions="FillAndExpand" 
+                              BackgroundColor="pink">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <xct:MediaElement Source="{Binding Url}" AutoPlay="True" 
+                              HorizontalOptions="FillAndExpand" 
+                              VerticalOptions="FillAndExpand"
+                              Grid.Row="0"/>
+      </Grid>-->
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <xct:MediaElement Source="{Binding VideoSource}" AutoPlay="True"
+                              Aspect="AspectFill"
+                              HorizontalOptions="FillAndExpand" 
+                              VerticalOptions="FillAndExpand"/>
+        </StackLayout>
+  </ContentView.Content>
+</ContentView>

@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace InstagramClone.Views.HomeTabbedPageViews
+namespace InstagramClone.Views.DataTemplate
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddPostPage : ContentPage
+    public partial class VideoDataTemplate : ContentView
     {
-        public AddPostPage()
+        public VideoDataTemplate()
         {
             InitializeComponent();
         }

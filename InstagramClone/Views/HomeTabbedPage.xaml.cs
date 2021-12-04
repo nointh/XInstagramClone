@@ -24,7 +24,7 @@ namespace InstagramClone.Views
         {
             InitializeComponent();
 
-            NavigationPage homePage = new NavigationPage(new HomePage()) { BarBackgroundColor = Color.White };
+            NavigationPage homePage = new NavigationPage(new HomePage());
             homePage.IconImageSource = new FontImageSource { FontFamily = "PFASolid", Glyph = FontAwesomeIcons.HomeAlt };
             Children.Add(homePage);
             Children.Add(new DiscoveryPage());
