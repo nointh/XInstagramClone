@@ -18,6 +18,7 @@ namespace InstagramClone.Models
         public string Caption { get; set; }
         public string PostTime { get; set; }
         public bool IsLike { get; set; }
+        public ObservableCollection<CommentModel> CommentList { get; set; }
         public PostModel()
         {
             PostId = "";
