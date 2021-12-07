@@ -63,18 +63,21 @@
                      HorizontalOptions="FillAndExpand"
                      VerticalOptions="FillAndExpand"
                      >
+                <ActivityIndicator x:Name="LoadingIndicator"></ActivityIndicator>
                 <ListView x:Name="ListViewPost"
                           HasUnevenRows="True"
                           VerticalScrollBarVisibility="Never"
                           SelectionMode="None"
                           SeparatorVisibility="None"
+                          CachingStrategy="RecycleElement"
+                          IsPullToRefreshEnabled="True"
                           >
-                    <ListView.Header>
+                    <!--<ListView.Header>
                         <CollectionView x:Name="CollViewStory" ItemsLayout="HorizontalList" HorizontalScrollBarVisibility="Never" HeightRequest="150"
                                         Margin="0,10,0,0">
                             <CollectionView.Header>
                                 <StackLayout>
-                                    <!--Your story component-->
+                                    --><!--Your story component--><!--
                                     <Grid ColumnSpacing="0" RowSpacing="0" Margin="10,0,0,0">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="42.5"></RowDefinition>
@@ -142,7 +145,7 @@
                             </CollectionView.Header>
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <!--start - list view of stories-->
+                                    --><!--start - list view of stories--><!--
                                     <StackLayout Margin="5">
 
                                         <Frame CornerRadius="100" 
@@ -164,11 +167,11 @@
                                                LineBreakMode="TailTruncation" 
                                                WidthRequest="80"/>
                                     </StackLayout>
-                                    <!--end - list view of stories-->
+                                    --><!--end - list view of stories--><!--
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
-                    </ListView.Header>
+                    </ListView.Header>-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>

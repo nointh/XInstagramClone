@@ -16,7 +16,6 @@ namespace InstagramClone.Models
         public string OwnerImage { get; set; }
         public string PostImage { get; set; }
         public ObservableCollection<Media> MediaList { get; set; }
-        [JsonProperty("Caption")]
         public string Caption { get; set; }
         public string PostTime { get; set; }
         public bool IsLike { get; set; }
@@ -141,6 +140,7 @@ namespace InstagramClone.Models
                 med.Url = "";
                 return med;
             }
+            med.VideoSource = "";
             med.Url = content.Url;
             return med;
         }

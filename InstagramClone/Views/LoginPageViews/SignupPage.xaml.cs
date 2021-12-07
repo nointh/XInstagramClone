@@ -29,9 +29,9 @@ namespace InstagramClone.Views.LoginPageViews
                 var auth = await authProvider.CreateUserWithEmailAndPasswordAsync(TxtEmail.Text,TxtPassword.Text);
                 string getToken = auth.FirebaseToken;
                 string currentEmail = auth.User.Email;
-                await FirebaseDB.addUser(new UserJson
+                await FirebaseDB.AddUser(new UserModel
                 {
-                    Id = auth.User.LocalId,
+                    UID = auth.User.LocalId,
                     Email = TxtEmail.Text,
                     Fullname = TxtFullname.Text,
                     Username = TxtUsername.Text

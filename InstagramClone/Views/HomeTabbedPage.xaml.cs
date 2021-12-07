@@ -40,16 +40,16 @@ namespace InstagramClone.Views
                     ProfileDescription = "Xin chào, mình là Dũng" +
                     "\nMình thích code nhưng không thích code" +
                     "\nRất vui được làm quen với tất cả mọi người!"})));
-            Children.Add(new NavigationPage(new YourProfile(
-                new UserModel { 
-                    Username = "dungtd",
-                    Fullname = "Tong Duc Dung",
-                    ImageUri = "https://randomuser.me/api/portraits/men/72.jpg",
-                    //TotalFollower = 48,
-                    //TotalFollowing = 128,
-                    ProfileDescription = "Xin chào, mình là Dũng" +
-                    "\nMình thích code nhưng không thích code" +
-                    "\nRất vui được làm quen với tất cả mọi người!"})));
+            //Children.Add(new NavigationPage(new YourProfile(
+            //    new UserModel { 
+            //        Username = "dungtd",
+            //        Fullname = "Tong Duc Dung",
+            //        ImageUri = "https://randomuser.me/api/portraits/men/72.jpg",
+            //        //TotalFollower = 48,
+            //        //TotalFollowing = 128,
+            //        ProfileDescription = "Xin chào, mình là Dũng" +
+            //        "\nMình thích code nhưng không thích code" +
+            //        "\nRất vui được làm quen với tất cả mọi người!"})));
         }
         private async void GetProfileInfoAndRefreshToken()
         {

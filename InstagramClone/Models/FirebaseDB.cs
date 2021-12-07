@@ -33,11 +33,11 @@ namespace InstagramClone.Models
         {
             return new FirebaseAuthProvider(new FirebaseConfig(WebAPIKey));
         }
-        public static async Task addUser(UserJson user)
+        public static async Task AddUser(UserModel user)
         {
             await firebaseClient
               .Child("user")
-              .Child(user.Id)
+              .Child(user.UID)
               .PutAsync(user.GetValue());
         }
         public static async Task<List<PostModel>> GetAllPostOfUser(string UID)
@@ -100,6 +100,55 @@ namespace InstagramClone.Models
                 Type = item.Object.Type,
                 Url = item.Object.Url,
             }).ToList();
+
+            return resultList;
+        }
+        public static async Task<List<UserModel>> GetFollowingUser(string UID)
+        {
+            List<UserModel> resultList = new List<UserModel>();
+            try
+            {
+                var users = await firebaseClient
+                .Child("user")
+                .Child(UID)
+                .Child("following")
+                .OnceAsync<UserModel>();
+                resultList = users.Select(item => new UserModel
+                {
+                    UID = item.Key,
+                    Fullname = item.Object.Fullname,
+                    Username = item.Object.Username,
+                    ImageUri = item.Object.ImageUri
+                }).ToList();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }          
+
+            return resultList;
+        }
+        public static async Task<List<PostModel>> GetNewsfeedPost()
+        {
+            List<PostModel> resultList = new List<PostModel>();
+            string UID = CurrentUserId;
+            try
+            {
+                var followingList = await GetFollowingUser(UID);
+                foreach(var user in followingList)
+                {
+                    List<PostModel> postList = await GetAllPostOfUser(user.UID);
+                    foreach(var post in postList)
+                    {
+                        resultList.Add(post);
+                    }
+                }
+                return resultList.OrderByDescending(post => post.PostTime).ToList() ;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
             return resultList;
         }
