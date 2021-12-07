@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using InstagramClone.Views.HomeTabbedPageViews;
+using InstagramClone.Views.ProfilePageViews;
+using InstagramClone.Models;
 using FontAwesome;
 using Xamarin.Essentials;
 using Newtonsoft.Json;
@@ -28,10 +30,16 @@ namespace InstagramClone.Views
             Children.Add(new DiscoveryPage());
             Children.Add(new AddPostPage());
             Children.Add(new LikePage());
-<<<<<<< Updated upstream
-            Children.Add(new ProfilePage());
-            GetProfileInfoAndRefreshToken();
-=======
+            Children.Add(new NavigationPage(new YourProfile(
+                new UserModel { 
+                    Username = "dungtd", 
+                    Fullname = "Tong Duc Dung", 
+                    ImageUri = "https://randomuser.me/api/portraits/men/72.jpg",
+                    TotalFollower = 48,
+                    TotalFollowing = 128,
+                    ProfileDescription = "Xin chào, mình là Dũng" +
+                    "\nMình thích code nhưng không thích code" +
+                    "\nRất vui được làm quen với tất cả mọi người!"})));
             Children.Add(new NavigationPage(new YourProfile(
                 new UserModel { 
                     Username = "dungtd",
@@ -42,7 +50,6 @@ namespace InstagramClone.Views
                     ProfileDescription = "Xin chào, mình là Dũng" +
                     "\nMình thích code nhưng không thích code" +
                     "\nRất vui được làm quen với tất cả mọi người!"})));
->>>>>>> Stashed changes
         }
         private async void GetProfileInfoAndRefreshToken()
         {

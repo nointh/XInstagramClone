@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fontAwesome="clr-namespace:FontAwesome"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             x:Class="InstagramClone.Views.HomeTabbedPageViews.ProfilePage"
-             >
+             x:Class="InstagramClone.Views.HomeTabbedPageViews.YourProfile">
     <ContentPage.IconImageSource>
         <FontImageSource Glyph="{x:Static fontAwesome:FontAwesomeIcons.User}"
                          FontFamily="PFARegular"
@@ -14,21 +13,12 @@
     <NavigationPage.TitleView>
         <Grid BackgroundColor="{StaticResource InsWhite}" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="50"/>
             </Grid.ColumnDefinitions>
-
-            <Label Text="{x:Static fontAwesome:FontAwesomeIcons.LongArrowLeft}"
-                   FontFamily="PFARegular"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   TextColor="{StaticResource InsBlack}"
-                   FontSize="28"
-                   Grid.Column="0"
-                   />
+            
             <Label Text="dungtd"
-                   Grid.Column="1"
+                   Grid.Column="0"
                    HeightRequest="65"
                    FontSize="20"
                    VerticalOptions="Center"
@@ -40,8 +30,11 @@
                    VerticalOptions="Center"
                    TextColor="{StaticResource InsBlack}"
                    FontSize="28"
-                   Grid.Column="2"
+                   Grid.Column="1"
                    >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="options_Clicked" />
+                </Label.GestureRecognizers>
             </Label>
         </Grid>
     </NavigationPage.TitleView>
@@ -105,6 +98,9 @@
                        Grid.Column="1"
                        HorizontalOptions="Center"
                        VerticalOptions="End">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="viewPost_Clicked" />
+                        </Label.GestureRecognizers>
                     </Label>
 
                     <Label Text="Post"
@@ -112,6 +108,9 @@
                        Grid.Column="1"
                        HorizontalOptions="Center"
                        VerticalOptions="Start">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="viewPost_Clicked" />
+                        </Label.GestureRecognizers>
                     </Label>
 
                     <Label x:Name="UserFollower"
@@ -122,12 +121,18 @@
                        Grid.Column="2"
                        HorizontalOptions="Center"
                        VerticalOptions="End">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="viewFollow_Clicked" />
+                        </Label.GestureRecognizers>
                     </Label>
                     <Label Text="Followers"
                        Grid.Row="1"
                        Grid.Column="2"
                        HorizontalOptions="Center"
                        VerticalOptions="Start">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="viewFollow_Clicked" />
+                        </Label.GestureRecognizers>
                     </Label>
 
                     <Label x:Name="UserFollowing"
@@ -138,12 +143,18 @@
                        Grid.Column="3"
                        HorizontalOptions="Center"
                        VerticalOptions="End">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="viewFollow_Clicked" />
+                        </Label.GestureRecognizers>
                     </Label>
                     <Label Text="Following"
                        Grid.Row="1"
                        Grid.Column="3"
                        HorizontalOptions="Center"
                        VerticalOptions="Start">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="viewFollow_Clicked" />
+                        </Label.GestureRecognizers>
                     </Label>
                 </Grid>
                 <Grid x:Name="ProfileHeaderButotn" Padding="10">
@@ -153,21 +164,16 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="FollowButton" Text="Follow" Clicked="FollowButton_Clicked"
-                        FontSize="14"
-                        HeightRequest="40"
-                        BackgroundColor="#405DE6"
-                        TextColor="White"
-                        CornerRadius="5"
-                        Grid.Column="0"></Button>
-                    <Button x:Name="MessageButton" Text="Message" Clicked="MessageButton_Clicked"
+                    <Button x:Name="EditProfile" Text="Edit your Profile" Clicked="EditProfile_Clicked"
                         FontSize="14"
                         HeightRequest="40"
                         BackgroundColor="White"
-                        BorderColor="Black"
-                        BorderWidth="1"
+                        TextColor="Black"
                         CornerRadius="5"
-                        Grid.Column="1"></Button>
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        BorderColor="Black"
+                        BorderWidth="1"></Button>
                     <Button Text="{x:Static fontAwesome:FontAwesomeIcons.Dropbox}" Clicked="Button_Clicked"
                         FontSize="14"
                         HeightRequest="40"
