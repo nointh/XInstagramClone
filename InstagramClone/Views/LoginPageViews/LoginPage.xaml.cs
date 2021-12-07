@@ -11,13 +11,13 @@ using InstagramClone.Views.LoginPageViews;
 using Firebase.Auth;
 using Newtonsoft.Json;
 using Xamarin.Essentials;
+using InstagramClone.Models;
 
 namespace InstagramClone.Views.LoginPageViews
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
-        readonly private string WebAPIKey = "AIzaSyCc-Lrg3ue3OTaFHfYhtQZtgvQZHtsJAUs";
         public LoginPage()
         {
             InitializeComponent();
@@ -27,13 +27,14 @@ namespace InstagramClone.Views.LoginPageViews
         async private void BtnLogIn_Clicked(object sender, EventArgs e)
         {
 
-            var authProvider = new FirebaseAuthProvider(new FirebaseConfig(WebAPIKey));
+            var authProvider = FirebaseDB.GetAuthProvider();
             try
             {
                 var auth = await authProvider.SignInWithEmailAndPasswordAsync(TxtUsername.Text, TxtPassword.Text);
                 var content = await auth.GetFreshAuthAsync();
                 var serializedContent = JsonConvert.SerializeObject(content);
                 Preferences.Set("FirebaseRefreshToken", serializedContent);
+                Preferences.Set("UID", auth.User.LocalId);
                 await Navigation.PushAsync(new HomeTabbedPage());
             }
             catch(Exception ex)
@@ -48,7 +49,7 @@ namespace InstagramClone.Views.LoginPageViews
             //NavigationPage signUpPage = new NavigationPage(new SignupPage());
             //NavigationPage.SetHasNavigationBar(signUpPage, false);
             //Navigation.PushAsync(signUpPage);
-            Application.Current.MainPage = new SignupPage();
+            Application.Current.MainPage = new NavigationPage( new SignupPage());
         }
     }
 }

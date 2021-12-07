@@ -8,13 +8,13 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using Firebase.Auth;
+using InstagramClone.Models;
 
 namespace InstagramClone.Views.LoginPageViews
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SignupPage : ContentPage
     {
-        readonly private string  WebAPIKey = "AIzaSyCc-Lrg3ue3OTaFHfYhtQZtgvQZHtsJAUs";   
         public SignupPage()
         {
             InitializeComponent();
@@ -25,10 +25,20 @@ namespace InstagramClone.Views.LoginPageViews
         {
             try
             {
-                var authProvider = new FirebaseAuthProvider(new FirebaseConfig(WebAPIKey));
+                var authProvider = FirebaseDB.GetAuthProvider();
                 var auth = await authProvider.CreateUserWithEmailAndPasswordAsync(TxtEmail.Text,TxtPassword.Text);
                 string getToken = auth.FirebaseToken;
-                await DisplayAlert("Alert", getToken, "OK");
+                string currentEmail = auth.User.Email;
+                await FirebaseDB.addUser(new UserJson
+                {
+                    Id = auth.User.LocalId,
+                    Email = TxtEmail.Text,
+                    Fullname = TxtFullname.Text,
+                    Username = TxtUsername.Text
+                });
+                //await DisplayAlert("Alert", getToken, "OK");
+                await DisplayAlert("Alert", "Sign up successfully", "OK");
+                await Navigation.PushAsync(new LoginPage());
             }
             catch(Exception ex)
             {
@@ -40,7 +50,7 @@ namespace InstagramClone.Views.LoginPageViews
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new LoginPage();
+            Application.Current.MainPage = new NavigationPage( new LoginPage());
         }
     }
 }

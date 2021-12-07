@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -12,6 +13,7 @@ namespace InstagramClone.Models
         public string OwnerImage { get; set; }
         public string PostImage { get; set; }
         public ObservableCollection<Media> MediaList { get; set; }
+        [JsonProperty("Caption")]
         public string Caption { get; set; }
         public string PostTime { get; set; }
         public bool IsLike { get; set; }
@@ -75,7 +77,28 @@ namespace InstagramClone.Models
             public string Url { get; set; }
 
         }
+<<<<<<< Updated upstream
         
+=======
+        public static Media ParseContent(MediaContent content)
+        {
+            Media med = new Media();
+            med.Type = content.Type;
+            if (med.Type.ToLower() == "video")
+            {
+                med.VideoSource = content.Url;
+                med.Url = "";
+                return med;
+            }
+            med.Url = content.Url;
+            return med;
+        }
+    }
+    public class MediaContent
+    {
+        public string Type { get; set; }
+        public string Url { get; set; }
+>>>>>>> Stashed changes
     }
     
 }

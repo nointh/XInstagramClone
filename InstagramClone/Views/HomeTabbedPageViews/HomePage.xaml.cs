@@ -19,6 +19,18 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             InitializeComponent();
             LogoImage.Source = ImageSource.FromResource("InstagramClone.Resources.Images.InstagramLogo.svg.png");
             InitData();
+            
+        }
+        protected async override void OnAppearing()
+        {
+            base.OnAppearing();
+            var listPost = await FirebaseDB.GetAllPostOfUser(FirebaseDB.CurrentUserId);
+            foreach(var item in listPost)
+            {
+                Console.WriteLine(item.PostId);
+                Console.WriteLine(item.Caption);
+                var x = await FirebaseDB.GetMediaListOfPost(FirebaseDB.CurrentUserId, item.PostId);
+            }
         }
         public void InitData()
         {
@@ -39,7 +51,9 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         {
             Label LikeLabel = (Label)sender;
             ToggleHeartLabel(LikeLabel);
-            
+            var item = (PostModel)((Label)sender).BindingContext;
+            DisplayAlert("Nội dung", "ID : " + item.Caption + "--" + FirebaseDB.CurrentUserId, "OK");
+
         }
         private void TapGestureRecognizer_Tapped_1(object sender, EventArgs e)
         {

@@ -13,8 +13,16 @@ namespace InstagramClone.Models
         public string Username { get; set; }
         public string Password { get; set; }
         public string ImageUri { get; set; }
+<<<<<<< Updated upstream
+=======
+        //public int TotalFollower { get; set; }
+        //public int TotalFollowing { get; set; }
+        public string ProfileDescription { get; set; }
+>>>>>>> Stashed changes
 
-        public UriImageSource ImageSource { get
+        public UriImageSource ImageSource
+        {
+            get
             {
                 return new UriImageSource()
                 {
@@ -24,6 +32,6 @@ namespace InstagramClone.Models
                 };
             }
         }
-        
+
     }
 }
