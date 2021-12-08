@@ -14,7 +14,6 @@ namespace InstagramClone.Views.HomeTabbedPageViews
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class WriteCaptionPage : ContentPage
     {
-        FirebaseDB firebase = new FirebaseDB();
         ObservableCollection<Media> items = new ObservableCollection<Media>();
         List<Stream> pickFiles = new List<Stream>();
         List<string> fileName = new List<string>();
@@ -69,17 +68,21 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             await UploadMediaFile();
 
             PostModelBasic post = new PostModelBasic();
-            post.OwnerId = "tngdcdng";
+            post.OwnerId = FirebaseDB.CurrentUserId;
             post.PostTime = "7/12/2021";
             post.Caption = editorCaption.Text;
 
-            await firebase.AddPost(post);
+            await FirebaseDB.AddPost(post);
 
-            string postId = await firebase.GetPostId(post);
+            string postId = await FirebaseDB.GetPostId(post);
 
             await AddMediaListToPost(postId);
 
             await DisplayAlert("Success", "Added post successfully!", "OK");
+
+            setUpControlProcessing(false);
+
+            await Navigation.PopToRootAsync();
         }
 
         private void setUpControlProcessing(bool work)
@@ -103,8 +106,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         {
             for (int i = 0; i < pickFiles.Count; i++)
             {
-                Url.Add(await firebase.UploadFile(pickFiles[i], fileName[i]));
-                Console.WriteLine(Url[i]);
+                Url.Add(await FirebaseDB.UploadFile(pickFiles[i], fileName[i]));
             }
         }
 
@@ -113,7 +115,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             for (int i = 0; i < items.Count; i++)
             {
                 MediaContent media = new MediaContent(items[i].Type, Url[i]);
-                await firebase.AddMediaToPost(postId, media);
+                await FirebaseDB.AddMediaToPost(postId, media);
             }
         }
     }

@@ -13,12 +13,13 @@ namespace InstagramClone.Models
     {
         public string PostId { get; set; }
         public string OwnerId { get; set; }
+        public string OwnerUsername { get; set; }
+        public string OwnerImage { get; set; }
         public string PostImage { get; set; }
         public ObservableCollection<Media> MediaList { get; set; }
-        public ObservableCollection<CommentModel> CommentList { get; set; }
-        public ObservableCollection<string> UserLiked { get; set; }
         public string Caption { get; set; }
         public string PostTime { get; set; }
+        public bool IsLike { get; set; }
 
         public PostModel()
         {
@@ -138,6 +139,7 @@ namespace InstagramClone.Models
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
+
         public static Media ParseContent(MediaContent content)
         {
             Media med = new Media();
@@ -152,11 +154,6 @@ namespace InstagramClone.Models
             med.Url = content.Url;
             return med;
         }
-    }
-    public class MediaContent
-    {
-        public string Type { get; set; }
-        public string Url { get; set; }
     }
 
     public class MediaContent

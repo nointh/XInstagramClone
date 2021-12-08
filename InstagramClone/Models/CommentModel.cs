@@ -14,7 +14,7 @@ namespace InstagramClone.Models
         private string _UserImage;
         private string _CommentDetail;
         private string _PostTime;
-        //private string _OwnerId;
+        private string _OwnerId;
 
         public string CommentId
         {
@@ -76,18 +76,18 @@ namespace InstagramClone.Models
                 }
             }
         }
-        //public string OwnerId
-        //{
-        //    get { return _OwnerId; }
-        //    set
-        //    {
-        //        if (value != _OwnerId)
-        //        {
-        //            _OwnerId = value;
-        //            OnPropertyChanged("OwnerId");
-        //        }
-        //    }
-        //}
+        public string OwnerId
+        {
+            get { return _OwnerId; }
+            set
+            {
+                if (value != _OwnerId)
+                {
+                    _OwnerId = value;
+                    OnPropertyChanged("OwnerId");
+                }
+            }
+        }
 
         public CommentModel()
         {
@@ -112,7 +112,7 @@ namespace InstagramClone.Models
         private string _UserImage;
         private string _CommentDetail;
         private string _PostTime;
-        //private string _OwnerId;
+        private string _OwnerId;
         private List<UserLiked> _UserLiked;
         private int _LikeCount;
 
@@ -176,18 +176,18 @@ namespace InstagramClone.Models
                 }
             }
         }
-        //public string OwnerId
-        //{
-        //    get { return _OwnerId; }
-        //    set
-        //    {
-        //        if (value != _OwnerId)
-        //        {
-        //            _OwnerId = value;
-        //            OnPropertyChanged("OwnerId");
-        //        }
-        //    }
-        //}
+        public string OwnerId
+        {
+            get { return _OwnerId; }
+            set
+            {
+                if (value != _OwnerId)
+                {
+                    _OwnerId = value;
+                    OnPropertyChanged("OwnerId");
+                }
+            }
+        }
         public List<UserLiked> UserLiked
         {
             get { return _UserLiked; }
@@ -226,6 +226,7 @@ namespace InstagramClone.Models
             UserImage = model.UserImage;
             CommentDetail = model.CommentDetail;
             PostTime = model.PostTime;
+            OwnerId = model.OwnerId;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -240,6 +241,6 @@ namespace InstagramClone.Models
 
     class UserLiked
     {
-        public string Username { get; set; }
+        public string UserId { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace InstagramClone
             }
             //MainPage = new NavigationPage(new HomeTabbedPage());
             //}
-            // MainPage = new NavigationPage(new AddPostPage());
+            //MainPage = new NavigationPage(new AddPostPage());
         }
 
         protected override void OnStart()

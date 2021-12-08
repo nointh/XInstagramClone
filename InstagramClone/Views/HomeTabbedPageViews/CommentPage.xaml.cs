@@ -12,13 +12,21 @@ namespace InstagramClone.Views.HomeTabbedPageViews
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CommentPage : ContentPage
     {
-        FirebaseDB firebase = new FirebaseDB();
         List<FullCommentModel> cmts = new List<FullCommentModel>();
         string selectedCmtId = "";
+        string PostId = "";
+        string OwnerId = "";
 
         public CommentPage()
         {
             InitializeComponent();
+        }
+
+        public CommentPage(string ownerid, string postid)
+        {
+            InitializeComponent();
+            PostId = postid;
+            OwnerId = ownerid;
         }
 
         protected override void OnAppearing()
@@ -30,21 +38,22 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         private async void initData()
         {
             cmts = new List<FullCommentModel>();
-            var data = await firebase.GetPostComments("postid");
+            var data = await FirebaseDB.GetPostComments(OwnerId, PostId);
             for (int i = 0; i < data.Count; i++)
             {
                 FullCommentModel full = new FullCommentModel(data[i]);
-                var likes = await firebase.GetCommentUserLiked("postid", data[i].CommentId);
+                var likes = await FirebaseDB.GetCommentUserLiked(OwnerId, PostId, data[i].CommentId);
                 full.UserLiked = likes;
                 full.LikeCount = full.UserLiked.Count;
                 cmts.Add(full);
+                Console.WriteLine(full.PostTime);
             }
             ListViewComments.ItemsSource = cmts;
         }
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            DisplayAlert("Back button", "Tapped", "OK");
+            Navigation.PopAsync();
         }
 
         private async void btnLike_Tapped(object sender, EventArgs e)
@@ -56,7 +65,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
                 heart.FontFamily = "FFARegular";
                 heart.TextColor = Color.DimGray;
                 var item = (FullCommentModel)((Label)sender).BindingContext;
-                await firebase.DeleteUserLikeForComment("postid", item.CommentId, "zzz");
+                await FirebaseDB.DeleteUserLikeForComment(OwnerId, PostId, item.CommentId, FirebaseDB.CurrentUserId);
 
                 cmts[selectedHeartIndex(sender)].LikeCount--;
             }
@@ -64,7 +73,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             {
                 heart.TextColor = Color.Red;
                 var item = (FullCommentModel)((Label)sender).BindingContext;
-                await firebase.AddUserLikeForComment("postid", item.CommentId, new UserLiked { Username = "zzz" });
+                await FirebaseDB.AddUserLikeForComment(OwnerId, PostId, item.CommentId, new UserLiked { UserId = FirebaseDB.CurrentUserId });
 
                 cmts[selectedHeartIndex(sender)].LikeCount++;
             }
@@ -92,7 +101,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
                 cmt.UserImage = "https://randomuser.me/api/portraits/men/52.jpg";
                 cmt.PostTime = "6/12/2021";
 
-                await firebase.AddComment("postid", cmt);
+                await FirebaseDB.AddComment(OwnerId, PostId, cmt);
 
                 editorCmt.Text = "";
                 editorCmt.Unfocus();
@@ -122,7 +131,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             bool answer = await DisplayAlert("Delete comment?", "This action cannot be undo. Are you sure?", "Delete", "Cancel");
             if (answer)
             {
-                await firebase.DeleteComment("postid", selectedCmtId);
+                await FirebaseDB.DeleteComment(OwnerId, PostId, selectedCmtId);
                 btnCancelDeleting_Clicked(sender, e);
                 initData();
             }

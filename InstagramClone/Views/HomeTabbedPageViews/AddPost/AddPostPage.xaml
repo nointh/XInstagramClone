@@ -33,7 +33,7 @@
                    HorizontalOptions="Center"
                    >
                 <Label.GestureRecognizers>
-                    <TapGestureRecognizer/>
+                    <TapGestureRecognizer x:Name="btnBack" Tapped="btnBack_Tapped"/>
                 </Label.GestureRecognizers>
             </Label>
             <Label Text="New post"

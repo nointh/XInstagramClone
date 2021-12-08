@@ -29,6 +29,5 @@ namespace InstagramClone.Models
                 };
             }
         }*/
-
     }
 }

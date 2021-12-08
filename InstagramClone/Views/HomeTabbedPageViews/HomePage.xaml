@@ -256,7 +256,7 @@
                                                                           NumberOfTapsRequired="1"></TapGestureRecognizer>
                                                 </Label.GestureRecognizers>
                                             </Label>
-                                            
+
                                             <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Comment}"
                                                    FontFamily="FFARegular"
                                                    Grid.Column="1"
@@ -265,7 +265,12 @@
                                                    Margin="5,10,5,0"
                                                    HorizontalOptions="Start"
                                                    VerticalOptions="Center"
-                                                   />
+                                                   >
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer x:Name="lbComment" Tapped="lbComment_Tapped"
+                                                                          NumberOfTapsRequired="1"></TapGestureRecognizer>
+                                                </Label.GestureRecognizers>
+                                            </Label>
                                             <Label Text="{x:Static fontAwesome:FontAwesomeIcons.PaperPlane}"
                                                    FontFamily="FFARegular"
                                                    FontSize="30"

@@ -87,10 +87,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
 
                     using (var stream = await file.OpenReadAsync())
                     using (var newStream = File.OpenWrite(newFile))
-                    {
                         await stream.CopyToAsync(newStream);
-                    }
-                    
                     filePath = newFile;
 
                     items.Add(
@@ -102,12 +99,13 @@ namespace InstagramClone.Views.HomeTabbedPageViews
                     );
                 }
 
-                FileStream fileStream = new FileStream(newFile, FileMode.Open, FileAccess.Read);
-
                 byte[] buffer;
-                long length = fileStream.Length;
-                buffer = new byte[length];
-                fileStream.Read(buffer, 0, (int)length);
+                using (var stream = await file.OpenReadAsync())
+                {
+                    long length = stream.Length;
+                    buffer = new byte[length];
+                    stream.Read(buffer, 0, (int)length);
+                }
 
                 fName.Add(fileName + "." + extension);
 
@@ -124,7 +122,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
                     );
                 }
 
-                fileStream.Close();
+                //fileStream.Close();
 
                 file.Dispose();
             }
@@ -136,6 +134,11 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             {
                 Navigation.PushAsync(new WriteCaptionPage(items, PickFiles, fName));
             }
+        }
+
+        private void btnBack_Tapped(object sender, EventArgs e)
+        {
+            Navigation.PopAsync();
         }
     }
 }

@@ -105,5 +105,11 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             heartLabel.FontFamily = "FFASolid";
             heartLabel.TextColor = Color.Red;
         }
+
+        private void lbComment_Tapped(object sender, EventArgs e)
+        {
+            var item = (PostModel)((Label)sender).BindingContext;
+            Navigation.PushAsync(new CommentPage(item.OwnerId, item.PostId));
+        }
     }
 }
