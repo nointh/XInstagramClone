@@ -8,17 +8,45 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using InstagramClone.Models;
 using System.Windows.Input;
+using Xamarin.CommunityToolkit.ObjectModel;
 
 namespace InstagramClone.Views.HomeTabbedPageViews
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePage : ContentPage
     {
+        private bool IsLoading = true;
+        public AsyncCommand LoadNewsfeedCmd { get; }
+
         public HomePage()
         {
             InitializeComponent();
             LogoImage.Source = ImageSource.FromResource("InstagramClone.Resources.Images.InstagramLogo.svg.png");
-            InitData();
+            //InitData();
+            LoadNewsfeedCmd = new AsyncCommand(LoadNewsfeed);
+            ListViewPost.RefreshCommand = LoadNewsfeedCmd;
+            
+        }
+        protected override void OnAppearing()
+        {
+            
+            
+            base.OnAppearing();
+            LoadingIndicator.IsVisible = true;
+            LoadingIndicator.IsRunning = true;
+
+            Task.Run(LoadNewsfeed);
+            
+        }
+        public async Task LoadNewsfeed()
+        {
+            LoadingIndicator.IsVisible = false;
+            LoadingIndicator.IsRunning = false;
+            var listPost = await FirebaseDB.GetNewsfeedPost();
+            ListViewPost.ItemsSource = listPost;
+            ListViewPost.IsRefreshing = false;
+            LoadingIndicator.IsVisible = false;
+            LoadingIndicator.IsRunning = false;
         }
         public void InitData()
         {
@@ -31,7 +59,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
                 new UserModel { Username = "Taka", Fullname = "Nguyen Thanh Noi", ImageUri = "https://randomuser.me/api/portraits/men/72.jpg" }
             };
 
-            CollViewStory.ItemsSource = list;
+            //CollViewStory.ItemsSource = list;
             ListViewPost.ItemsSource = PostModel.GetExamplePostList();
         }
 
@@ -39,7 +67,9 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         {
             Label LikeLabel = (Label)sender;
             ToggleHeartLabel(LikeLabel);
-            
+            var item = (PostModel)((Label)sender).BindingContext;
+            DisplayAlert("Nội dung", "ID : " + item.Caption + "--" + FirebaseDB.CurrentUserId, "OK");
+
         }
 
         private void TapGestureRecognizer_Tapped_1(object sender, EventArgs e)

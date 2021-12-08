@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -137,6 +138,25 @@ namespace InstagramClone.Models
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
+        public static Media ParseContent(MediaContent content)
+        {
+            Media med = new Media();
+            med.Type = content.Type;
+            if (med.Type.ToLower() == "video")
+            {
+                med.VideoSource = content.Url;
+                med.Url = "";
+                return med;
+            }
+            med.VideoSource = "";
+            med.Url = content.Url;
+            return med;
+        }
+    }
+    public class MediaContent
+    {
+        public string Type { get; set; }
+        public string Url { get; set; }
     }
 
     public class MediaContent

@@ -7,6 +7,7 @@ namespace InstagramClone.Models
 {
     public class UserModel
     {
+        public string UID { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public string Website { get; set; }
