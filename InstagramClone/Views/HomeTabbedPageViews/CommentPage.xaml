@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fontAwesome="clr-namespace:FontAwesome"
              NavigationPage.HasBackButton="False"
+             BackgroundColor="White"
              x:Class="InstagramClone.Views.HomeTabbedPageViews.CommentPage">
 
     <NavigationPage.TitleView>
@@ -54,7 +55,7 @@
     </NavigationPage.TitleView>
 
     <ContentPage.Content>
-        <Grid>
+        <Grid BackgroundColor="White">
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*"/>
                 <RowDefinition Height="Auto"/>
@@ -68,8 +69,10 @@
                       Margin="0, 16, 0, 0"
                       HasUnevenRows="True"
                       SeparatorVisibility="None"
+                      BackgroundColor="{StaticResource InsWhite}"
                       VerticalOptions="FillAndExpand"
                       Grid.Row="0" Grid.Column="0"
+                      ItemTapped="ListViewComments_ItemTapped"
                       >
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -158,20 +161,15 @@
                                                 </FormattedString>
                                             </Label.FormattedText>
                                         </Label>
-                                        <Label  Text="Reply"
-                                                FontFamily="FFARegular"
-                                                FontSize="14"
-                                                FontAttributes="None"
-                                                TextColor="DimGray"
-                                               />
                                     </StackLayout>
                                 </StackLayout>
 
                                 <!--Heart icon-->
                                 <Label  Grid.Row="0" Grid.Column="2"
                                         Text="{x:Static fontAwesome:FontAwesomeIcons.Heart}"
+                                        x:Name="{Binding CommentId}"
                                         FontFamily="FFARegular"
-                                        FontSize="16"                                               
+                                        FontSize="16"
                                         TextColor="DimGray"
                                         HorizontalOptions="CenterAndExpand"
                                         VerticalOptions="CenterAndExpand"
@@ -186,8 +184,11 @@
                 </ListView.ItemTemplate>
             </ListView>
 
+            <!--Editor add cmt-->
             <Grid Padding="0,8,0,8"
                   x:Name="gridCmt"
+                  IsVisible="True"
+                  BackgroundColor="{StaticResource InsWhite}"
                   Grid.Row="1" Grid.Column="0"
                   >
                 <Grid.RowDefinitions>
@@ -208,6 +209,7 @@
                         VerticalOptions="Center"
                         HorizontalOptions="Center"
                         Padding="0"
+                        BackgroundColor="White"
                         IsClippedToBounds="True"
                         BorderColor="{StaticResource InsBlack}"
                         >
@@ -240,14 +242,54 @@
                         TextColor="{StaticResource InsLogoBlue}"
                         HorizontalOptions="Center"
                         VerticalOptions="Center"
-                        IsEnabled="False"
-                        Opacity="0.5"
-                        x:Name="lbPostCmt"
+                        IsEnabled="True"
+                        Opacity="1"
                         >
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer/>
+                        <TapGestureRecognizer x:Name="lbPostCmt" Tapped="lbPostCmt_Tapped"/>
                     </Label.GestureRecognizers>
                 </Label>
+            </Grid>
+
+            <!--2 buttons-->
+            <Grid Padding="8,8,8,8"
+                  x:Name="gridDelete"
+                  BackgroundColor="{StaticResource InsWhite}"
+                  IsVisible="False"
+                  Grid.Row="1" Grid.Column="0"
+                  >
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Row="0" Grid.Column="0"
+                        FontSize="16"
+                        FontFamily="FA"
+                        FontAttributes="None"
+                        VerticalOptions="CenterAndExpand"
+                        BackgroundColor="{StaticResource InsLogoBlue}"
+                        TextColor="{StaticResource InsWhite}"
+                        Text="Cancel"
+                        CornerRadius="8"
+                        x:Name="btnCancelDeleting"
+                        Clicked="btnCancelDeleting_Clicked"/>
+
+                <Button Grid.Row="0" Grid.Column="1"
+                        FontSize="16"
+                        FontFamily="FA"
+                        FontAttributes="None"
+                        VerticalOptions="CenterAndExpand"
+                        BackgroundColor="{StaticResource InsRed}"
+                        TextColor="{StaticResource InsWhite}"
+                        Text="Delete"
+                        CornerRadius="8"
+                        x:Name="btnDeleteComment"
+                        Clicked="btnDeleteComment_Clicked"/>
             </Grid>
         </Grid>
     </ContentPage.Content>

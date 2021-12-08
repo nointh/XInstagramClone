@@ -35,8 +35,8 @@ namespace InstagramClone.Views
                     Username = "dungtd", 
                     Fullname = "Tong Duc Dung", 
                     ImageUri = "https://randomuser.me/api/portraits/men/72.jpg",
-                    TotalFollower = 48,
-                    TotalFollowing = 128,
+                    //TotalFollower = 48,
+                    //TotalFollowing = 128,
                     ProfileDescription = "Xin chào, mình là Dũng" +
                     "\nMình thích code nhưng không thích code" +
                     "\nRất vui được làm quen với tất cả mọi người!"})));

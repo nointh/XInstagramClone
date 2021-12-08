@@ -20,6 +20,8 @@ namespace InstagramClone.Views.HomeTabbedPageViews
     public partial class AddPostPage : ContentPage
     {
         public ObservableCollection<Media> items { get; set; }
+        public List<Stream> PickFiles = new List<Stream>();
+        public List<string> fName = new List<string>();
 
         public AddPostPage()
         {
@@ -31,6 +33,8 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         private async void btnPickMedia_Tapped(object sender, EventArgs e)
         {
             items.Clear();
+            PickFiles.Clear();
+            fName.Clear();
 
             var cancelToken = new CancellationTokenSource();
             IMediaFile[] files = null;
@@ -47,6 +51,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
                 cancelToken.CancelAfter(TimeSpan.FromMinutes(1));
 
                 var results = await MediaGallery.PickAsync(request, cancelToken.Token);
+                
                 files = results?.Files?.ToArray();
             }
             catch (OperationCanceledException)
@@ -73,16 +78,19 @@ namespace InstagramClone.Views.HomeTabbedPageViews
                 var extension = file.Extension;
                 var contentType = file.ContentType;
                 var type = file.Type;
+                var newFile = Path.Combine(FileSystem.AppDataDirectory, fileName + "." + extension);
 
                 //file = video
                 if (type.ToString().ToLower() == "video")
                 {
                     var filePath = "";
 
-                    var newFile = Path.Combine(FileSystem.AppDataDirectory, fileName + "." + extension);
                     using (var stream = await file.OpenReadAsync())
                     using (var newStream = File.OpenWrite(newFile))
+                    {
                         await stream.CopyToAsync(newStream);
+                    }
+                    
                     filePath = newFile;
 
                     items.Add(
@@ -93,25 +101,30 @@ namespace InstagramClone.Views.HomeTabbedPageViews
                         }
                     );
                 }
-                //file = image
-                else
-                {
-                    using (var stream = await file.OpenReadAsync())
-                    {
-                        byte[] buffer;
-                        long length = stream.Length;
-                        buffer = new byte[length];
-                        stream.Read(buffer, 0, (int)length);
 
-                        items.Add(
-                            new Media
-                            {
-                                Url = ImageSource.FromStream(() => new MemoryStream(buffer)),
-                                Type = type.ToString().ToLower()
-                            }
-                        );
-                    }
+                FileStream fileStream = new FileStream(newFile, FileMode.Open, FileAccess.Read);
+
+                byte[] buffer;
+                long length = fileStream.Length;
+                buffer = new byte[length];
+                fileStream.Read(buffer, 0, (int)length);
+
+                fName.Add(fileName + "." + extension);
+
+                PickFiles.Add(new MemoryStream(buffer));
+
+                if (type.ToString().ToLower() != "video")
+                {
+                    items.Add(
+                        new Media
+                        {
+                            Url = ImageSource.FromStream(() => new MemoryStream(buffer)),
+                            Type = type.ToString().ToLower()
+                        }
+                    );
                 }
+
+                fileStream.Close();
 
                 file.Dispose();
             }
@@ -121,65 +134,8 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         {
             if (items.Count > 0)
             {
-                Navigation.PushAsync(new WriteCaptionPage(items[0], items.Count));
+                Navigation.PushAsync(new WriteCaptionPage(items, PickFiles, fName));
             }
         }
     }
-
-    //public class PickMediaItem : INotifyPropertyChanged
-    //{
-    //    private string _Type;
-
-    //    private ImageSource _Url;
-
-    //    private MediaSource _VideoSource;
-
-    //    public MediaSource VideoSource
-    //    {
-    //        get { return _VideoSource; }
-    //        set
-    //        {
-    //            if (value != _VideoSource)
-    //            {
-    //                _VideoSource = value;
-    //                OnPropertyChanged("VideoSource");
-    //            }
-    //        }
-    //    }
-
-    //    public ImageSource Url
-    //    {
-    //        get { return _Url; }
-    //        set
-    //        {
-    //            if (value != _Url)
-    //            {
-    //                _Url = value;
-    //                OnPropertyChanged("Url");
-    //            }
-    //        }
-    //    }
-
-    //    public string Type
-    //    {
-    //        get { return _Type; }
-    //        set
-    //        {
-    //            if (value != _Type)
-    //            {
-    //                _Type = value;
-    //                OnPropertyChanged("Type");
-    //            }
-    //        }
-    //    }
-
-    //    public event PropertyChangedEventHandler PropertyChanged;
-
-    //    protected void OnPropertyChanged(string propertyName)
-    //    {
-    //        var handler = PropertyChanged;
-    //        if (handler != null)
-    //            handler(this, new PropertyChangedEventArgs(propertyName));
-    //    }
-    //}
 }
