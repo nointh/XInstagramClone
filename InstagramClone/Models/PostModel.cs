@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace InstagramClone.Models
 {
-    class PostModel
+    class PostModel : INotifyPropertyChanged
     {
         public string PostId { get; set; }
         public string OwnerId { get; set; }
@@ -19,13 +19,60 @@ namespace InstagramClone.Models
         public ObservableCollection<Media> MediaList { get; set; }
         public string Caption { get; set; }
         public string PostTime { get; set; }
-        public bool IsLike { get; set; }
-
+        private bool _isLiked { get; set; }
+        public bool IsLiked { 
+            get {
+                return _isLiked;
+            } 
+            set {
+                if (value != _isLiked)
+                {
+                    _isLiked = value;
+                    OnPropertyChanged("IsLiked");
+                }
+            } }
+        private int _likeCount;
+        public int LikeCount
+        {
+            get
+            {
+                return _likeCount;
+            }
+            set
+            {
+                if (value != _likeCount)
+                {
+                    _likeCount = value;
+                    OnPropertyChanged("LikeCount");
+                }
+            }
+        }
+        private List<UserLiked> _LikedUsers;
+        public List<UserLiked> LikedUsers {
+            get
+            {
+                return _LikedUsers;
+            }
+            set
+            {
+                _LikedUsers = value;
+                LikeCount = value.Count;
+                OnPropertyChanged("LikedUsers");
+            }
+        }
         public PostModel()
         {
             PostId = "";
             PostImage = "";
-            //IsLike = false;
+            IsLiked = false;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
         }
         public static ObservableCollection<PostModel> GetExamplePostList()
         {

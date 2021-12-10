@@ -76,14 +76,24 @@ namespace InstagramClone.Models
                         OwnerId = item.Object.OwnerId
                     };
                 }).ToList();
+                //Get media and userlike of the post
                 foreach(var item in list)
                 {
+                    //get media
                     ObservableCollection<Media> mediaList = new ObservableCollection<Media>();
                     foreach (var mediaContent in await GetMediaListOfPost(UID, item.PostId))
                     {
                         mediaList.Add(Media.ParseContent(mediaContent));
                     }
                     item.MediaList = mediaList;
+                    //get liked users
+                    List<UserLiked> likedUsers = await GetLikedUsersOfPost(item.PostId, item.OwnerId);
+                    item.LikedUsers = likedUsers;
+                    foreach(var userliked in likedUsers)
+                    {
+                        if (userliked.UserId == CurrentUserId)
+                            item.IsLiked = true;
+                    }
                 }
             }
             catch(Exception e)
@@ -149,6 +159,10 @@ namespace InstagramClone.Models
                         resultList.Add(post);
                     }
                 }
+                //get posts of current user
+                List<PostModel> listPostOfOwnUser = await GetAllPostOfUser(UID);
+                foreach (var post in listPostOfOwnUser)
+                    resultList.Add(post);
                 return resultList.OrderByDescending(post => post.PostTime).ToList() ;
             }
             catch(Exception e)
@@ -157,6 +171,54 @@ namespace InstagramClone.Models
             }
 
             return resultList;
+        }
+        public static async Task<List<UserLiked>> GetLikedUsersOfPost(string postId, string ownerId)
+        {
+            List<UserLiked> likedUsers = new List<UserLiked>();
+            try
+            {
+                likedUsers = (await firebaseClient
+                  .Child("post")
+                  .Child(ownerId)
+                  .Child(postId)
+                  .Child("UserLiked")
+                  .OnceAsync<UserLiked>()).Select(item => new UserLiked
+                  {
+                      UserId = item.Object.UserId,
+                  }
+                ).ToList();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return likedUsers;
+        }
+        public static async Task SetLikedToPost(PostModel post)
+        {
+            await firebaseClient.Child("post")
+                .Child(post.OwnerId)
+                .Child(post.PostId)
+                .Child("UserLiked")
+                .PostAsync<UserLiked>(new UserLiked { UserId = CurrentUserId });
+        }
+        public static async Task SetUnlikedToPost(PostModel post)
+        {
+            var likedUser = (await firebaseClient
+                .Child("post")
+                .Child(post.OwnerId)
+                .Child(post.PostId)
+                .Child("UserLiked")
+                .OnceAsync<UserLiked>())
+                .Where(item => item.Object.UserId == CurrentUserId).FirstOrDefault();
+
+            await firebaseClient
+                .Child("post")
+                .Child(post.OwnerId)
+                .Child(post.PostId)
+                .Child("UserLiked")
+                .Child(likedUser.Key)
+                .DeleteAsync();
         }
         //End Nội
 
