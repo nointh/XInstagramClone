@@ -52,19 +52,15 @@ namespace InstagramClone.Views.ProfilePageViews
             try
             {
                 FirebaseDB db = new FirebaseDB();
-                //Call the update profile
-                UserModel user = new UserModel()
-                {
-                    Username = EntryUsername.Text,
-                    Fullname = EntryName.Text,
-                    ProfileDescription = EntryBio.Text,
-                    Email = EntryEmail.Text,
-                    Phone = EntryPhone.Text,
-                    Gender = GenderPicker.SelectedItem.ToString(),
-                    DOB = PickerDOB.Date.ToString("dd/MM/yyyy"),
-                    ImageUri = this.user.ImageUri,
-                    Website = EntryWebsite.Text,
-                };
+                user.Username = EntryUsername.Text;
+                user.Fullname = EntryName.Text;
+                user.ProfileDescription = EntryBio.Text;
+                user.Email = EntryEmail.Text;
+                user.Phone = EntryPhone.Text;
+                user.Gender = GenderPicker.SelectedItem.ToString();
+                user.DOB = PickerDOB.Date.ToString("dd/MM/yyyy");
+                user.ImageUri = this.user.ImageUri;
+                user.Website = EntryWebsite.Text;
                 await db.updateUser(user);
                 await DisplayAlert("Notification", "Your profile has been updated!", "Ok");
                 await Navigation.PopAsync();

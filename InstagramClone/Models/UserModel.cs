@@ -7,6 +7,7 @@ namespace InstagramClone.Models
 {
     public class UserModel
     {
+        public string Key { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public string Website { get; set; }
@@ -17,6 +18,8 @@ namespace InstagramClone.Models
         public string Gender { get; set; }
         public string ImageUri { get; set; }
         public string ProfileDescription { get; set; }
+        //public List<FollowUser> Following;
+        //public List<FollowUser> Follower;
 
         /*public UriImageSource ImageSource { get
             {
@@ -28,6 +31,6 @@ namespace InstagramClone.Models
                 };
             }
         }*/
-        
+
     }
 }

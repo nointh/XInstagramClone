@@ -21,21 +21,27 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         {
             this.user = user;
             InitializeComponent();
-            InitProfile(this.user);
+            //InitProfile(this.user);
             //InitStory(this.user);
             //InitImage(user);
         }
 
-        private void InitProfile(UserModel user)
+        private void InitProfile()
         {
             Title = user.Username;
-            ProfileDescription.Text = user.ProfileDescription;
+            if (user.ProfileDescription != null)
+            {
+                ProfileDescription.Text = user.ProfileDescription;
+            } 
             if (Following != null && Follower != null)
             {
                 UserFollowing.Text = Following.Count.ToString();
                 UserFollower.Text = Follower.Count.ToString();
             }
-            UserImg.Source = user.ImageUri;
+            if (user.ImageUri != null)
+            {
+                UserImg.Source = user.ImageUri;
+            }
         }
         private void InitStory(UserModel user)
         {
@@ -49,20 +55,15 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             };
             CollViewStory.ItemsSource = stories;
         }
-        private void Button_Clicked(object sender, EventArgs e)
-        {
-            
-        }
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             Image img = (Image)sender;
             DisplayAlert("Alert", "You click: " + img.Source, "OK");
         }
-
         private void EditProfile_Clicked(object sender, EventArgs e)
         {
             Title = user.Username;
-            Navigation.PushAsync(new NavigationPage(new EditProfilePage(this.user)));
+            Navigation.PushAsync(new EditProfilePage(this.user));
         }
         private void viewPost_Clicked(object sender, EventArgs e)
         {
@@ -71,16 +72,20 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         }
         private void viewFollow_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new NavigationPage(new FollowView(Follower, Following)));
+            Navigation.PushAsync(new FollowView(Follower, Following, user));
         }
         protected async override void OnAppearing()
         {
             base.OnAppearing();
             FirebaseDB fb = new FirebaseDB();
-            user = await fb.getUser(user.Username);
+            user = await fb.getUser(user.Key);
             Following = await fb.getFollowing(user.Username);
             Follower = await fb.getFollower(user.Username);
-            InitProfile(user);
+            InitProfile();
+        }
+        private void ViewMore_Clicked(object sender, EventArgs e)
+        {
+            CollViewStory.IsVisible = !CollViewStory.IsVisible;
         }
     }
 }

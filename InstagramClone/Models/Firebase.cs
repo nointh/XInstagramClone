@@ -21,10 +21,13 @@ namespace InstagramClone.Models
 
         public async Task<List<UserModel>> getAllUser()
         {
-            return (await firebase
+            try
+            {
+                return (await firebase
                 .Child("user")
                 .OnceAsync<UserModel>()).Select(item => new UserModel
                 {
+                    Key = item.Key,
                     Fullname = item.Object.Fullname,
                     Username = item.Object.Username,
                     ImageUri = item.Object.ImageUri,
@@ -35,61 +38,126 @@ namespace InstagramClone.Models
                     Phone = item.Object.Phone,
                     Website = item.Object.Website,
                     ProfileDescription = item.Object.ProfileDescription,
-                    //Follower = item.Object.Follower,
-                    //Following = item.Object.Following,
                 }).ToList();
+            }
+            catch (NullReferenceException ex)
+            {
+                return null;
+            }
+            
         }
-
         public async Task<UserModel> getUser(string username)
         {
             var users = await getAllUser();
 
             return users.Where(user => user.Username == username).FirstOrDefault();
         }
-        
+        public async Task<UserModel> getUserByKey(string key)
+        {
+            var users = await getAllUser();
+
+            return users.Where(user => user.Key == key).FirstOrDefault();
+        }
         public async Task addUser(UserModel user)
         {
             await firebase
               .Child("user")
               .PostAsync(user);
-        }
 
-        public async Task updateUser(UserModel user)
-        {
-            var toUpdateUser = (await firebase
-              .Child("user")
-              .OnceAsync<UserModel>()).Where(u => u.Object.Username == user.Username).FirstOrDefault();
+            UserModel u = await getUser(user.Username);
 
             await firebase
               .Child("user")
-              .Child(toUpdateUser.Key)
+              .Child(u.Key)
               .PutAsync(user);
         }
+        public async Task updateUser(UserModel user)
+        {
+            await firebase
+              .Child("user")
+              .Child(user.Key)
+              .PutAsync(new UserModel() { 
+                  Username = user.Username,
 
-        public async Task<List<FollowUser>> getFollower(string Username)
+              });
+        }
+        public async Task<List<FollowUser>> getFollower(string UserKey)
         {
             return (await firebase
-                .Child("user")
-                .Child(Username)
-                .Child("Follower")
+                .Child("follower")
+                .Child(UserKey)
                 .OnceAsync<FollowUser>()).Select(item => new FollowUser()
                 {
-                    Username = item.Object.Username,
-                    ImageUri = item.Object.ImageUri,
+                    UserKey = item.Object.UserKey,
                 }).ToList();
         }
-
-        public async Task<List<FollowUser>> getFollowing(string Username)
+        public async Task<List<FollowUser>> getFollowing(string UserKey)
         {
             return (await firebase
-                .Child("user")
-                .Child(Username)
-                .Child("Following")
+                .Child("following")
+                .Child(UserKey)
                 .OnceAsync<FollowUser>()).Select(item => new FollowUser()
                 {
-                    Username = item.Object.Username,
-                    ImageUri = item.Object.ImageUri,
+                    UserKey = item.Object.UserKey,
                 }).ToList();
         }
+        public async Task<Boolean> checkIsFollow(string UserKey1, string UserKey2)
+        {
+            var result = (await firebase
+                .Child("follower")
+                .Child(UserKey2)
+                .OnceAsync<FollowUser>()).Where(a => a.Key == UserKey1).FirstOrDefault();
+            
+            if (result != null) 
+            {
+                return true;
+            } 
+            else
+            {
+                return false;
+            }
+        }
+        public async Task<string> updateFollow(FollowUser user1, FollowUser user2)
+        {
+            if (await checkIsFollow(user1.UserKey, user2.UserKey))
+            {
+                var toDeleteFollowing = (await firebase
+                    .Child("following")
+                    .Child(user1.UserKey)
+                    .OnceAsync<FollowUser>()).Where(a => a.Object.UserKey == user2.UserKey).FirstOrDefault();
+
+                var toDeleteFollower = (await firebase
+                    .Child("follower")
+                    .Child(user2.UserKey)
+                    .OnceAsync<FollowUser>()).Where(a => a.Object.UserKey == user1.UserKey).FirstOrDefault();
+
+                await firebase.Child("following")
+                    .Child(user1.UserKey)
+                    .Child(user2.UserKey)
+                    .DeleteAsync();
+
+                await firebase.Child("follower")
+                    .Child(user2.UserKey)
+                    .Child(user1.UserKey)
+                    .DeleteAsync();
+
+                return "unfollow";
+            }
+            else
+            {
+                await firebase
+                       .Child("follower")
+                       .Child(user2.UserKey)
+                       .PostAsync(user1);
+
+                await firebase
+                       .Child("following")
+                       .Child(user1.UserKey)
+                       .PostAsync(user2);
+
+                return "follow";
+            }
+        }
+    
     }
 }

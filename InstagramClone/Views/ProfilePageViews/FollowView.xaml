@@ -4,18 +4,22 @@
              xmlns:fontAwesome="clr-namespace:FontAwesome"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="InstagramClone.Views.ProfilePageViews.FollowView"
-             NavigationPage.HasNavigationBar="False">
+             >
     <ContentPage.Content>
         <StackLayout>
+            <Entry x:Name="FindUser" Placeholder="Find username"
+                   TextChanged="FindUser_TextChanged"
+                   TextColor="Black" Margin="20,0,20,0">
+            </Entry>
             <Grid x:Name="profileGrid" HeightRequest="700">
-                <xct:TabView
+                <xct:TabView x:Name="TabView"
+                        SelectionChanged="TabView_SelectionChanged"
                         TabStripPlacement="Top"
                         TabStripBackgroundColor="White"
-                        TabStripHeight="100"
+                        TabStripHeight="40"
                         TabIndicatorColor="Black"
                         TabContentBackgroundColor="White">
                     <xct:TabViewItem
-                            x:Name="FollowerCount"
                             FontFamily="PFARegular"
                             Text="Followers"
                             TextColor="DimGray"
@@ -23,60 +27,57 @@
                             FontSize="12"
                             FontSizeSelected="12">
                         <Grid>
-                            <ListView x:Name="FollowingList"
-                                      Margin="0,30,0,0" 
+                            <ListView x:Name="FollowerList"
+                                      ItemSelected="Follow_ItemSelected"
+                                      Margin="0,0,0,0" 
                                       HasUnevenRows="True"
                                       RowHeight="-1">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>
-                                            <Grid RowSpacing="20">
+                                            <Grid RowSpacing="20" Padding="10">
                                                 <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*" />
                                                     <RowDefinition Height="*" />
                                                 </Grid.RowDefinitions>
 
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="50" />
-                                                    <ColumnDefinition Width="200" />
-                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="70" />
+                                                    <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
 
-                                                <Frame CornerRadius="180" 
-                                                       HeightRequest="90"
-                                                       WidthRequest="90"
+                                                <Frame CornerRadius="140" 
+                                                       HeightRequest="70"
+                                                       WidthRequest="70"
                                                        HorizontalOptions="Center"
                                                        Padding="0"
                                                        IsClippedToBounds="True"
                                                        BorderColor="{StaticResource InsBlack}"
-                                                       Grid.Row="0"
+                                                       Grid.Row="0" Grid.RowSpan="2"
                                                        Grid.Column="0">
                                                     <Image x:Name="UserImg"
-                                                           Source="{Binding ImgUri}"
-                                                           WidthRequest="85"   
-                                                           HeightRequest="85"
+                                                           Source="{Binding ImageUri}"
+                                                           WidthRequest="65"   
+                                                           HeightRequest="65"
                                                            HorizontalOptions="Center"
                                                            VerticalOptions="Center">
                                                         <Image.Clip>
                                                             <EllipseGeometry
-                                                                Center=" 42.5 , 42.5"
-                                                                RadiusX="42.5"
-                                                                RadiusY="42.5"/>
-                                                            </Image.Clip>
-                                                        </Image>    
+                                                                Center=" 32.5 , 32.5"
+                                                                RadiusX="32.5"
+                                                                RadiusY="32.5"/>
+                                                        </Image.Clip>
+                                                    </Image>
                                                 </Frame>
 
                                                 <Label Text="{Binding Username}"
-                                                       FontSize="20"
+                                                       FontSize="20" FontAttributes="Bold"
                                                        Grid.Column="1" Grid.Row="0"
-                                                       VerticalOptions="Center"/>
-                                                <Button Text="Following" FontSize="12"
-                                                        Grid.Column="2" Grid.Row="0"
-                                                        BackgroundColor="White"
-                                                        BorderColor="Black" BorderWidth="1" CornerRadius="5"
-                                                        HeightRequest="35"
-                                                        VerticalOptions="Center">
-                                                        
-                                                </Button>
+                                                       VerticalOptions="End"/>
+                                                <Label Text="{Binding Fullname}"
+                                                       FontSize="16"
+                                                       Grid.Column="1" Grid.Row="1"
+                                                       VerticalOptions="Start"/>
                                             </Grid>
                                         </ViewCell>
                                     </DataTemplate>
@@ -92,28 +93,69 @@
                             FontSize="12"
                             FontSizeSelected="12">
                         <Grid>
-                            <ListView x:Name="FollowerList"
-                                      Margin="0,30,0,0">
+                            <ListView x:Name="FollowingList"
+                                      ItemSelected="Follow_ItemSelected"
+                                      Margin="0,0,0,0" 
+                                      HasUnevenRows="True"
+                                      RowHeight="-1">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>
-                                            <Grid>
+                                            <Grid RowSpacing="20" Padding="10">
                                                 <Grid.RowDefinitions>
-                                                    <RowDefinition Height="50" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
                                                 </Grid.RowDefinitions>
 
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="50" />
+                                                    <ColumnDefinition Width="70" />
+                                                    <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="auto" />
                                                 </Grid.ColumnDefinitions>
-                                                
+
+                                                <Frame CornerRadius="140" 
+                                                       HeightRequest="70"
+                                                       WidthRequest="70"
+                                                       HorizontalOptions="Center"
+                                                       Padding="0"
+                                                       IsClippedToBounds="True"
+                                                       BorderColor="{StaticResource InsBlack}"
+                                                       Grid.Row="0" Grid.RowSpan="2"
+                                                       Grid.Column="0">
+                                                    <Image x:Name="UserImg"
+                                                           Source="{Binding ImageUri}"
+                                                           WidthRequest="65"   
+                                                           HeightRequest="65"
+                                                           HorizontalOptions="Center"
+                                                           VerticalOptions="Center">
+                                                        <Image.Clip>
+                                                            <EllipseGeometry
+                                                                Center=" 32.5 , 32.5"
+                                                                RadiusX="32.5"
+                                                                RadiusY="32.5"/>
+                                                        </Image.Clip>
+                                                    </Image>
+                                                </Frame>
+
                                                 <Label Text="{Binding Username}"
-                                                       FontSize="20"
+                                                       FontSize="20" FontAttributes="Bold"
                                                        Grid.Column="1" Grid.Row="0"
-                                                       VerticalOptions="Center"/>
-                                                <Image Source="{Binding ImageUri}"
-                                                       Grid.Column="0" Grid.Row="0"
-                                                       VerticalOptions="Center"/>
+                                                       VerticalOptions="End"/>
+                                                <Label Text="{Binding Fullname}"
+                                                       FontSize="16"
+                                                       Grid.Column="1" Grid.Row="1"
+                                                       VerticalOptions="Start"/>
+                                                <Button x:Name="btnFollow" Clicked="btnFollow_Clicked"
+                                                        ClassId="{Binding Key}"
+                                                        Text="Unfollow" TextColor="Black" FontSize="12"
+                                                        Margin="0,0,10,0"
+                                                        BackgroundColor="White"
+                                                        HeightRequest="35"
+                                                        WidthRequest="100"
+                                                        VerticalOptions="Center"
+                                                        BorderColor="Black" BorderWidth="1" CornerRadius="10"
+                                                        Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"/>
+
                                             </Grid>
                                         </ViewCell>
                                     </DataTemplate>

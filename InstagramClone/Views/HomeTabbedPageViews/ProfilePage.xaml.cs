@@ -11,23 +11,45 @@ namespace InstagramClone.Views.HomeTabbedPageViews
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ProfilePage : ContentPage
     {
+        private UserModel user = new UserModel();
+        private List<FollowUser> Follower;
+        private List<FollowUser> Following;
+
         public ProfilePage(UserModel user)
         {
+            this.user = user;
             InitializeComponent();
-            InitProfile(user);
-            InitStory(user);
-            InitImage(user);
+            //InitProfile(user);
+            //InitImage(user);
         }
-
-        private void InitProfile(UserModel user)
+        protected async override void OnAppearing()
         {
-            ProfileDescription.Text = user.ProfileDescription;
-            UserFollowing.Text = "128";
-            UserFollower.Text = "48";
-            UserImg.Source = user.ImageUri;
+            base.OnAppearing();
+            FirebaseDB fb = new FirebaseDB();
+            user = await fb.getUser(user.Key);
+            Following = await fb.getFollowing(user.Username);
+            Follower = await fb.getFollower(user.Username);
+            InitProfile();
+        }
+        private void InitProfile()
+        {
+            Title = user.Username;
+            if (user.ProfileDescription != null)
+            {
+                ProfileDescription.Text = user.ProfileDescription;
+            }
+            if (Following != null && Follower != null)
+            {
+                UserFollowing.Text = Following.Count.ToString();
+                UserFollower.Text = Follower.Count.ToString();
+            }
+            if (user.ImageUri != null)
+            {
+                UserImg.Source = user.ImageUri;
+            }
         }
 
-        private void InitStory(UserModel user)
+        /*private void InitStory(UserModel user)
         {
             List<StoryCollectionModel> stories = new List<StoryCollectionModel>
             {
@@ -38,7 +60,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
                 new StoryCollectionModel { CoverImage = "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg", Title = "ABC" },
             };
             CollViewStory.ItemsSource = stories;
-        }
+        }*/
         private void InitImage(UserModel user)
         {
             List<string> img = new List<string>
