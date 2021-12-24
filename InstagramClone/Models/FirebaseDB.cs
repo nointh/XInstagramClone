@@ -161,6 +161,28 @@ namespace InstagramClone.Models
         //End Nội
 
         //Danh
+        public static async Task<UserModel> GetUserById(string id)
+        {
+            return (
+                await firebaseClient
+                .Child("user")
+                .Child(id)
+                .OnceAsync<UserModel>()).Select(item => new UserModel
+                {
+                    UID = item.Key,
+                    Fullname = item.Object.Fullname,
+                    Username = item.Object.Username,
+                    ImageUri = item.Object.ImageUri,
+                    Gender = item.Object.Gender,
+                    DOB = item.Object.DOB,
+                    Email = item.Object.Email,
+                    Password = item.Object.Password,
+                    Phone = item.Object.Phone,
+                    Website = item.Object.Website,
+                    ProfileDescription = item.Object.ProfileDescription,
+                }).FirstOrDefault();
+        }
+
         public static async Task<List<CommentModel>> GetPostComments(string ownerId, string postId)
         {
             return (
@@ -275,6 +297,15 @@ namespace InstagramClone.Models
               .Child("post")
               .Child(CurrentUserId)
               .PostAsync(post);
+        }
+
+        public static async Task DeletePost(string postid)
+        {
+            await firebaseClient
+              .Child("post")
+              .Child(CurrentUserId)
+              .Child(postid)
+              .DeleteAsync();
         }
 
         public static async Task<string> GetPostId(PostModelBasic model)

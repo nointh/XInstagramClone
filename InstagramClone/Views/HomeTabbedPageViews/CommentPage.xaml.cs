@@ -43,10 +43,24 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             {
                 FullCommentModel full = new FullCommentModel(data[i]);
                 var likes = await FirebaseDB.GetCommentUserLiked(OwnerId, PostId, data[i].CommentId);
+                //var usr = await FirebaseDB.GetUserById(data[i].OwnerId);
+
+                //full.UserImage = usr.ImageUri;
+                //full.Username = usr.Username;
                 full.UserLiked = likes;
                 full.LikeCount = full.UserLiked.Count;
+                foreach (UserLiked like in likes)
+                {
+                    if (like.UserId == FirebaseDB.CurrentUserId)
+                    {
+                        full.IsLike = "Red";
+                        break;
+                    }
+                }
+                if (full.IsLike != "Red")
+                    full.IsLike = "LightGray";
+
                 cmts.Add(full);
-                Console.WriteLine(full.PostTime);
             }
             ListViewComments.ItemsSource = cmts;
         }
@@ -59,11 +73,9 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         private async void btnLike_Tapped(object sender, EventArgs e)
         {
             Label heart = (Label)sender;
-            heart.FontFamily = "FFASolid";
             if (heart.TextColor == Color.Red)
             {
-                heart.FontFamily = "FFARegular";
-                heart.TextColor = Color.DimGray;
+                heart.TextColor = Color.LightGray;
                 var item = (FullCommentModel)((Label)sender).BindingContext;
                 await FirebaseDB.DeleteUserLikeForComment(OwnerId, PostId, item.CommentId, FirebaseDB.CurrentUserId);
 
@@ -112,10 +124,19 @@ namespace InstagramClone.Views.HomeTabbedPageViews
 
         private void ListViewComments_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            gridCmt.IsVisible = false;
-            gridDelete.IsVisible = true;
+            var cmt = (FullCommentModel)ListViewComments.SelectedItem;
+            selectedCmtId = cmt.CommentId;
 
-            selectedCmtId = ((FullCommentModel)ListViewComments.SelectedItem).CommentId;
+            if (cmt.OwnerId == FirebaseDB.CurrentUserId)
+            {
+                gridCmt.IsVisible = false;
+                gridDelete.IsVisible = true;
+            }
+            else
+            {
+                gridCmt.IsVisible = true;
+                gridDelete.IsVisible = false;
+            }
         }
 
         private void btnCancelDeleting_Clicked(object sender, EventArgs e)

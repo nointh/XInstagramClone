@@ -163,13 +163,13 @@
                                         </Label>
                                     </StackLayout>
                                 </StackLayout>
-
+                                
                                 <!--Heart icon-->
                                 <Label  Grid.Row="0" Grid.Column="2"
                                         Text="{x:Static fontAwesome:FontAwesomeIcons.Heart}"
-                                        FontFamily="FFARegular"
+                                        FontFamily="FFASolid"
                                         FontSize="16"
-                                        TextColor="DimGray"
+                                        TextColor="{Binding IsLike}"
                                         HorizontalOptions="CenterAndExpand"
                                         VerticalOptions="CenterAndExpand"
                                         >

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InstagramClone.Models
 {
@@ -115,6 +111,7 @@ namespace InstagramClone.Models
         private string _OwnerId;
         private List<UserLiked> _UserLiked;
         private int _LikeCount;
+        private string _IsLike;
 
         public string CommentId
         {
@@ -209,6 +206,18 @@ namespace InstagramClone.Models
                 {
                     _LikeCount = value;
                     OnPropertyChanged("LikeCount");
+                }
+            }
+        }
+        public string IsLike
+        {
+            get { return _IsLike; }
+            set
+            {
+                if (value != _IsLike)
+                {
+                    _IsLike = value;
+                    OnPropertyChanged("IsLike");
                 }
             }
         }
