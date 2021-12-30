@@ -13,6 +13,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
     public partial class CommentPage : ContentPage
     {
         List<FullCommentModel> cmts = new List<FullCommentModel>();
+        SearchUserModel usr = new SearchUserModel();
         string selectedCmtId = "";
         string PostId = "";
         string OwnerId = "";
@@ -49,6 +50,8 @@ namespace InstagramClone.Views.HomeTabbedPageViews
                 //full.Username = usr.Username;
                 full.UserLiked = likes;
                 full.LikeCount = full.UserLiked.Count;
+                //imgUserAvatar.Source = usr.ImageUri;
+
                 foreach (UserLiked like in likes)
                 {
                     if (like.UserId == FirebaseDB.CurrentUserId)
@@ -63,6 +66,9 @@ namespace InstagramClone.Views.HomeTabbedPageViews
                 cmts.Add(full);
             }
             ListViewComments.ItemsSource = cmts;
+
+            usr = await FirebaseDB.GetUserById(FirebaseDB.CurrentUserId);
+            imgUserAvatar.Source = usr.ImageUri;
         }
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
@@ -107,11 +113,13 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         {
             if (editorCmt.Text.Length > 0)
             {
-                CommentModel cmt = new CommentModel();
-                cmt.CommentDetail = editorCmt.Text;
-                cmt.Username = "dungtd";
-                cmt.UserImage = "https://randomuser.me/api/portraits/men/52.jpg";
-                cmt.PostTime = "6/12/2021";
+                CommentModel cmt = new CommentModel
+                {
+                    CommentDetail = editorCmt.Text,
+                    Username = usr.Username,
+                    UserImage = usr.ImageUri,
+                    PostTime = DateTime.UtcNow.Date.ToString("dd/MM/yyyy")
+                };
 
                 await FirebaseDB.AddComment(OwnerId, PostId, cmt);
 

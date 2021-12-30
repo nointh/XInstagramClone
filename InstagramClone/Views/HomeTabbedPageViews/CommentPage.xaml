@@ -213,8 +213,9 @@
                         BorderColor="{StaticResource InsBlack}"
                         >
                     <Image Source="https://randomuser.me/api/portraits/women/51.jpg"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center">
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           x:Name="imgUserAvatar">
                         <Image.Clip>
                             <EllipseGeometry
                                 Center="20,20"

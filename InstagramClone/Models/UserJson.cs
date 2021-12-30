@@ -20,4 +20,12 @@ namespace InstagramClone.Models
             };
         }    
     }
+
+    class SearchUserModel
+    {
+        public string Id { get; set; }
+        public string ImageUri { get; set; }
+        public string Fullname { get; set; }
+        public string Username { get; set; }
+    }
 }

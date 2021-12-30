@@ -69,7 +69,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
 
             PostModelBasic post = new PostModelBasic();
             post.OwnerId = FirebaseDB.CurrentUserId;
-            post.PostTime = "7/12/2021";
+            post.PostTime = DateTime.UtcNow.Date.ToString("dd/MM/yyyy");
             post.Caption = editorCaption.Text;
 
             await FirebaseDB.AddPost(post);

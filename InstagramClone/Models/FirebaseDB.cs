@@ -161,26 +161,33 @@ namespace InstagramClone.Models
         //End Nội
 
         //Danh
-        public static async Task<UserModel> GetUserById(string id)
+        public static async Task<SearchUserModel> GetUserById(string id)
         {
             return (
                 await firebaseClient
                 .Child("user")
-                .Child(id)
-                .OnceAsync<UserModel>()).Select(item => new UserModel
+                //.Child(id)
+                .OnceAsync<SearchUserModel>()).Select(item => new SearchUserModel
                 {
-                    UID = item.Key,
+                    Id = item.Key,
                     Fullname = item.Object.Fullname,
                     Username = item.Object.Username,
                     ImageUri = item.Object.ImageUri,
-                    Gender = item.Object.Gender,
-                    DOB = item.Object.DOB,
-                    Email = item.Object.Email,
-                    Password = item.Object.Password,
-                    Phone = item.Object.Phone,
-                    Website = item.Object.Website,
-                    ProfileDescription = item.Object.ProfileDescription,
-                }).FirstOrDefault();
+                }).ToList().Where(a => a.Id==id).FirstOrDefault();
+        }
+
+        public static async Task<List<SearchUserModel>> GetUserOnSearchInput(string input)
+        {
+            return (
+                await firebaseClient
+                .Child("user")
+                .OnceAsync<SearchUserModel>()).Select(item => new SearchUserModel
+                {
+                    Id = item.Key,
+                    Fullname = item.Object.Fullname,
+                    Username = item.Object.Username,
+                    ImageUri = item.Object.ImageUri,
+                }).ToList().Where(a => a.Username.Contains(input)).ToList();
         }
 
         public static async Task<List<CommentModel>> GetPostComments(string ownerId, string postId)

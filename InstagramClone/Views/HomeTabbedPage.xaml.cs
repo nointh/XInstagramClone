@@ -25,9 +25,11 @@ namespace InstagramClone.Views
             GetProfileInfoAndRefreshToken();
 
             NavigationPage homePage = new NavigationPage(new HomePage());
+            NavigationPage discoveryPage = new NavigationPage(new DiscoveryPage());
+            discoveryPage.IconImageSource = new FontImageSource { FontFamily = "FFASolid", Glyph = FontAwesomeIcons.Search };
             homePage.IconImageSource = new FontImageSource { FontFamily = "PFASolid", Glyph = FontAwesomeIcons.HomeAlt };
             Children.Add(homePage);
-            Children.Add(new DiscoveryPage());
+            Children.Add(discoveryPage);
             Children.Add(new NavigationPage(new AddPostPage()));
             Children.Add(new LikePage());
             Children.Add(new NavigationPage(new YourProfile(
