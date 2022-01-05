@@ -9,44 +9,46 @@ using Xamarin.Forms.Xaml;
 using InstagramClone.Models;
 using System.Windows.Input;
 using Xamarin.CommunityToolkit.ObjectModel;
+using System.Collections.ObjectModel;
 
 namespace InstagramClone.Views.HomeTabbedPageViews
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePage : ContentPage
     {
-        private bool IsLoading = true;
-        public AsyncCommand LoadNewsfeedCmd { get; }
-
+        //private bool IsLoading = true;
+        ObservableCollection<PostModel> listCollection  { get; set; } = new ObservableCollection<PostModel>();
+        public AsyncCommand RefreshCommand;
         public HomePage()
         {
             InitializeComponent();
             LogoImage.Source = ImageSource.FromResource("InstagramClone.Resources.Images.InstagramLogo.svg.png");
             //InitData();
-            LoadNewsfeedCmd = new AsyncCommand(LoadNewsfeed);
-            ListViewPost.RefreshCommand = LoadNewsfeedCmd;
-            
+            RefreshCommand = new AsyncCommand(LoadNewsfeedItemsAsync);
+            PostRefresh.Command = RefreshCommand;
+            Task.Run(LoadNewsfeedItemsAsync);
+            CollectionViewPost.ItemsSource = listCollection;
         }
         protected override void OnAppearing()
         {
-            
-            
             base.OnAppearing();
-            LoadingIndicator.IsVisible = true;
-            LoadingIndicator.IsRunning = true;
-
-            Task.Run(LoadNewsfeed);
-            
+            //Task.Run(LoadNewsfeedItemsAsync);
         }
-        public async Task LoadNewsfeed()
+        public void LoadNewsfeed()
         {
-            LoadingIndicator.IsVisible = false;
-            LoadingIndicator.IsRunning = false;
+            //PostRefresh.IsRefreshing = true;
+            Task.Run(LoadNewsfeedItemsAsync);
+
+        }
+        public async Task LoadNewsfeedItemsAsync()
+        {
             var listPost = await FirebaseDB.GetNewsfeedPost();
-            ListViewPost.ItemsSource = listPost;
-            ListViewPost.IsRefreshing = false;
-            LoadingIndicator.IsVisible = false;
-            LoadingIndicator.IsRunning = false;
+            listCollection.Clear();
+            foreach(var item in listPost)
+            {
+                listCollection.Insert(0,item);
+            }
+            PostRefresh.IsRefreshing = false;
         }
         public void InitData()
         {
@@ -60,16 +62,18 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             };
 
             //CollViewStory.ItemsSource = list;
-            ListViewPost.ItemsSource = PostModel.GetExamplePostList();
+            CollectionViewPost.ItemsSource = PostModel.GetExamplePostList();
         }
 
+        //set unlike post tap
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             Label LikeLabel = (Label)sender;
-            ToggleHeartLabel(LikeLabel);
+            //ToggleHeartLabel(LikeLabel);
             var item = (PostModel)((Label)sender).BindingContext;
-            DisplayAlert("Nội dung", "ID : " + item.Caption + "--" + FirebaseDB.CurrentUserId, "OK");
-
+            item.IsLiked = false;
+            Task.Run(async () => await FirebaseDB.SetUnlikedToPost(item));
+            item.LikedUsers = item.LikedUsers.Where(u => u.UserId != FirebaseDB.CurrentUserId).ToList();
         }
 
         private void TapGestureRecognizer_Tapped_1(object sender, EventArgs e)
@@ -106,10 +110,26 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             heartLabel.TextColor = Color.Red;
         }
 
-        private void lbComment_Tapped(object sender, EventArgs e)
+        private async void lbComment_Tapped(object sender, EventArgs e)
         {
             var item = (PostModel)((Label)sender).BindingContext;
-            Navigation.PushAsync(new CommentPage(item.OwnerId, item.PostId));
+            await Navigation.PushAsync(new CommentPage(item.OwnerId, item.PostId));
+        }
+        //set like post tapp
+        private void TapGestureRecognizer_Tapped_3(object sender, EventArgs e)
+        {
+            var item = (PostModel)((Label)sender).BindingContext;
+            item.IsLiked = true;
+            Task.Run(async () => await FirebaseDB.SetLikedToPost(item));
+            var tempList = item.LikedUsers;
+            tempList.Add(new UserLiked { UserId = FirebaseDB.CurrentUserId });
+            item.LikedUsers = tempList;
+        }
+
+        private void userAvatar_Tapped(object sender, EventArgs e)
+        {
+            var item = (PostModel)((StackLayout)sender).BindingContext;
+            DisplayAlert("ale", "open profile of user " + item.OwnerId, "ok");
         }
     }
 }

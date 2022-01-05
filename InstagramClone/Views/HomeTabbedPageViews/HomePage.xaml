@@ -58,26 +58,36 @@
         </Grid>
     </NavigationPage.TitleView>
     <ContentPage.Content>
-        <StackLayout>
             <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource InsWhite}"
                      HorizontalOptions="FillAndExpand"
                      VerticalOptions="FillAndExpand"
                      >
-                <ActivityIndicator x:Name="LoadingIndicator"></ActivityIndicator>
-                <ListView x:Name="ListViewPost"
-                          HasUnevenRows="True"
-                          VerticalScrollBarVisibility="Never"
-                          SelectionMode="None"
+                <!--<ActivityIndicator x:Name="LoadingIndicator" Color="{x:StaticResource InsBlue}"
+                                   IsRunning="False"></ActivityIndicator>-->
+                <RefreshView
+                    x:Name="PostRefresh"
+                    RefreshColor="{x:StaticResource InsBlue}"
+                    >
+                <CollectionView x:Name="CollectionViewPost"
+                                VerticalScrollBarVisibility="Never"
+                                SelectionMode="None"
+                                ItemSizingStrategy="MeasureAllItems"
+                                EmptyView="No post in your newsfeed"
+                               >
+                    <!--HasUnevenRows="True"
+
                           SeparatorVisibility="None"
-                          CachingStrategy="RecycleElement"
+                    CachingStrategy="RetainElement"
                           IsPullToRefreshEnabled="True"
-                          >
-                    <!--<ListView.Header>
+                          >-->
+                    <!--<CollectionView.Header>
                         <CollectionView x:Name="CollViewStory" ItemsLayout="HorizontalList" HorizontalScrollBarVisibility="Never" HeightRequest="150"
                                         Margin="0,10,0,0">
                             <CollectionView.Header>
                                 <StackLayout>
-                                    --><!--Your story component--><!--
+                                    -->
+                    <!--Your story component-->
+                    <!--
                                     <Grid ColumnSpacing="0" RowSpacing="0" Margin="10,0,0,0">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="42.5"></RowDefinition>
@@ -145,7 +155,9 @@
                             </CollectionView.Header>
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    --><!--start - list view of stories--><!--
+                                    -->
+                    <!--start - list view of stories-->
+                    <!--
                                     <StackLayout Margin="5">
 
                                         <Frame CornerRadius="100" 
@@ -167,33 +179,38 @@
                                                LineBreakMode="TailTruncation" 
                                                WidthRequest="80"/>
                                     </StackLayout>
-                                    --><!--end - list view of stories--><!--
+                                    -->
+                    <!--end - list view of stories-->
+                    <!--
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
-                    </ListView.Header>-->
-                    <ListView.ItemTemplate>
+                    </CollectionView.Header>-->
+                    <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
+                            <!--<ViewCell>-->
                                 <!--start - collection view post item-->
                                 <Grid Margin="0,10,0,0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="400"></RowDefinition>
                                         <RowDefinition Height="Auto"></RowDefinition>
                                     </Grid.RowDefinitions>
                                     <StackLayout Grid.Row="0"
                                                  Orientation="Horizontal"
                                                  >
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer x:Name="userAvatar" Tapped="userAvatar_Tapped"></TapGestureRecognizer>
+                                    </StackLayout.GestureRecognizers>
                                         <Frame CornerRadius="100" 
-                                            HeightRequest="45"
-                                            WidthRequest="45"
-                                            HorizontalOptions="Center"
-                                            Padding="0"
-                                            Margin="5"
-                                            IsClippedToBounds="True"
-                                            BorderColor="{StaticResource InsBlack}"
-                                            >
+                                                HeightRequest="45"
+                                                WidthRequest="45"
+                                                HorizontalOptions="Center"
+                                                Padding="0"
+                                                Margin="5"
+                                                IsClippedToBounds="True"
+                                                BorderColor="{StaticResource InsBlack}"
+                                                >
                                             <Image Source="{Binding OwnerImage}"
                                                WidthRequest="40"   
                                                HeightRequest="40"
@@ -221,10 +238,6 @@
                                                VerticalOptions="Center"
                                                HorizontalOptions="EndAndExpand"/>
                                     </StackLayout>
-                                    <!--<Image Aspect="AspectFill"
-                                           Source="{Binding PostImage}"
-                                           Grid.Row="1"
-                                           />-->
                                     <CarouselView ItemsSource="{Binding MediaList}" 
                                                   ItemTemplate="{StaticResource templateSelector}" 
                                                   Grid.Row="1"
@@ -234,22 +247,23 @@
                                                   IsBounceEnabled="True"
                                                   x:Name="{Binding PostId}"
                                                   >
-                                        <CarouselView.GestureRecognizers>
+                                        <!--<CarouselView.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_2"
                                                                   NumberOfTapsRequired="2"></TapGestureRecognizer>
-                                        </CarouselView.GestureRecognizers>
+                                        </CarouselView.GestureRecognizers>-->
                                     </CarouselView>
                                     <StackLayout Grid.Row="2" Padding="10,5,10,5">
                                         <StackLayout Orientation="Horizontal" >
-
+                                        
                                             <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Heart}"
-                                                   FontFamily="FFARegular"
+                                                   FontFamily="FFASolid"
                                                    FontSize="30"                                               
-                                                   TextColor="{StaticResource InsBlack}"
+                                                   TextColor="{StaticResource InsRed}"
                                                    Grid.Column="0"
                                                    HorizontalOptions="Start"
                                                    VerticalOptions="Center"
                                                    Margin="0,10,5,0"
+                                                   IsVisible="{Binding IsLiked}"
                                                    >
                                                 <Label.GestureRecognizers>
                                                     <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"
@@ -257,7 +271,23 @@
                                                 </Label.GestureRecognizers>
                                             </Label>
 
-                                            <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Comment}"
+                                        <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Heart}"
+                                                   FontFamily="FFARegular"
+                                                   FontSize="30"                                               
+                                                   TextColor="{StaticResource InsBlack}"
+                                                   Grid.Column="0"
+                                                   HorizontalOptions="Start"
+                                                   VerticalOptions="Center"
+                                                   Margin="0,10,5,0"
+                                                   IsVisible="{Binding IsLiked, Converter={xct:InvertedBoolConverter}}"
+                                                   >
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_3"
+                                                                          NumberOfTapsRequired="1"></TapGestureRecognizer>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+
+                                        <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Comment}"
                                                    FontFamily="FFARegular"
                                                    Grid.Column="1"
                                                    FontSize="30"
@@ -279,16 +309,14 @@
                                                    Grid.Column="2"
                                                    HorizontalOptions="Start"
                                                    VerticalOptions="Center"
-                                                   />
-                                            <StackLayout HorizontalOptions="FillAndExpand">
-                                                <IndicatorView x:Name= "PostIndicator"  
-                                                               ItemsSource="{Binding MediaList}"
-                                                               HorizontalOptions="Center"
-                                                               VerticalOptions="CenterAndExpand"
-                                                               IndicatorColor="Gray"
-                                                               SelectedIndicatorColor="Blue"
-                                                               />
-                                            </StackLayout>
+                                            />
+                                            <IndicatorView x:Name= "PostIndicator"  
+                                                            ItemsSource="{Binding MediaList}"
+                                                            HorizontalOptions="CenterAndExpand"
+                                                            VerticalOptions="CenterAndExpand"
+                                                            IndicatorColor="Gray"
+                                                            SelectedIndicatorColor="Blue"
+                                                            />
                                             <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Bookmark}"
                                                    FontFamily="FFARegular"
                                                    FontSize="30"
@@ -302,7 +330,15 @@
                                         </StackLayout>
                                         <Label VerticalOptions="Center"
                                                HorizontalOptions="Start"
-                                               Text="18 likes"></Label>
+                                               FontSize="Medium">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding LikeCount}"/>
+                                                <Span Text=" likes"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                        </Label>
+                                        
                                         <Label VerticalOptions="Center"
                                                HorizontalOptions="Start"
                                                MaxLines="2"
@@ -324,11 +360,11 @@
                                         <Label Text="{Binding PostTime}"/>
                                     </StackLayout>
                                 </Grid>
-                            </ViewCell>
+                            <!--</ViewCell>-->
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
             </StackLayout>
-        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

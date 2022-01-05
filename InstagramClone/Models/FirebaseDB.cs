@@ -45,6 +45,36 @@ namespace InstagramClone.Models
             //  .Child(user.UID)
             //  .PutAsync(user.GetValue());
         }
+        public static async Task<UserModel> GetCurentUserInfo()
+        {
+            UserModel currentUser = new UserModel();
+            try
+            {
+                currentUser = (await firebaseClient
+                .Child("user")
+                .OrderByKey()
+                .StartAt(CurrentUserId)
+                .LimitToFirst(1)
+                .OnceAsync<UserModel>()).ToList().Select(i => new UserModel { 
+                    UID = i.Key,
+                    ImageUri = i.Object?.ImageUri,
+                    Email = i.Object?.Email,
+                    Fullname = i.Object?.Fullname,
+                    Username = i.Object?.Username,
+                    DOB = i.Object?.DOB,
+                    Gender = i.Object?.Gender,
+                    ProfileDescription = i.Object?.ProfileDescription,
+                    Phone = i.Object?.Phone,
+                    Website = i.Object?.Website
+                }).FirstOrDefault();
+                return currentUser;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return currentUser;
+            }
+        }
         public static async Task<List<PostModel>> GetAllPostOfUser(string UID)
         {
             List<PostModel> list = new List<PostModel>();
@@ -76,14 +106,24 @@ namespace InstagramClone.Models
                         OwnerId = item.Object.OwnerId
                     };
                 }).ToList();
+                //Get media and userlike of the post
                 foreach(var item in list)
                 {
+                    //get media
                     ObservableCollection<Media> mediaList = new ObservableCollection<Media>();
                     foreach (var mediaContent in await GetMediaListOfPost(UID, item.PostId))
                     {
                         mediaList.Add(Media.ParseContent(mediaContent));
                     }
                     item.MediaList = mediaList;
+                    //get liked users
+                    List<UserLiked> likedUsers = await GetLikedUsersOfPost(item.PostId, item.OwnerId);
+                    item.LikedUsers = likedUsers;
+                    foreach(var userliked in likedUsers)
+                    {
+                        if (userliked.UserId == CurrentUserId)
+                            item.IsLiked = true;
+                    }
                 }
             }
             catch(Exception e)
@@ -149,6 +189,10 @@ namespace InstagramClone.Models
                         resultList.Add(post);
                     }
                 }
+                //get posts of current user
+                List<PostModel> listPostOfOwnUser = await GetAllPostOfUser(UID);
+                foreach (var post in listPostOfOwnUser)
+                    resultList.Add(post);
                 return resultList.OrderByDescending(post => post.PostTime).ToList() ;
             }
             catch(Exception e)
@@ -158,6 +202,81 @@ namespace InstagramClone.Models
 
             return resultList;
         }
+        public static async Task<List<UserLiked>> GetLikedUsersOfPost(string postId, string ownerId)
+        {
+            List<UserLiked> likedUsers = new List<UserLiked>();
+            try
+            {
+                likedUsers = (await firebaseClient
+                  .Child("post")
+                  .Child(ownerId)
+                  .Child(postId)
+                  .Child("UserLiked")
+                  .OnceAsync<UserLiked>()).Select(item => new UserLiked
+                  {
+                      UserId = item.Object.UserId,
+                  }
+                ).ToList();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return likedUsers;
+        }
+        public static async Task SetLikedToPost(PostModel post)
+        {
+            await firebaseClient.Child("post")
+                .Child(post.OwnerId)
+                .Child(post.PostId)
+                .Child("UserLiked")
+                .PostAsync<UserLiked>(new UserLiked { UserId = CurrentUserId });
+            //SendNotificationToUser 
+            UserModel currentUser = await GetCurentUserInfo();
+            NotificationModel noti = new NotificationModel
+            {
+                UserId = CurrentUserId,
+                PostId = post.PostId,
+                PostCaption = post?.Caption,
+                Type = "postlike",
+                Username = currentUser.Username,
+                Image = currentUser?.ImageUri,
+                Time = (DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"))
+            };
+            await SendNotificationToUser(noti, post.OwnerId);
+        }
+        public static async Task SetUnlikedToPost(PostModel post)
+        {
+            var likedUser = (await firebaseClient
+                .Child("post")
+                .Child(post.OwnerId)
+                .Child(post.PostId)
+                .Child("UserLiked")
+                .OnceAsync<UserLiked>())
+                .Where(item => item.Object.UserId == CurrentUserId).FirstOrDefault();
+
+            await firebaseClient
+                .Child("post")
+                .Child(post.OwnerId)
+                .Child(post.PostId)
+                .Child("UserLiked")
+                .Child(likedUser.Key)
+                .DeleteAsync();
+        }
+        public static async Task SendNotificationToUser(NotificationModel noti, string OwnerId)
+        {
+            try
+            {
+                await firebaseClient.Child("notification")
+                    .Child(OwnerId)
+                    .PostAsync(noti);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        
         //End Nội
 
         //Dũng
@@ -379,6 +498,21 @@ namespace InstagramClone.Models
               .Child(postId)
               .Child("Comment")
               .PostAsync(new CommentModel() { Username = cmt.Username, UserImage = cmt.UserImage, PostTime = cmt.PostTime, CommentDetail = cmt.CommentDetail, OwnerId = CurrentUserId });
+            //Sending notification for the post owner
+            UserModel currentUser = await GetCurentUserInfo();
+            NotificationModel noti = new NotificationModel
+            {
+                UserId = CurrentUserId,
+                PostId = postId,
+                CommentContent = cmt.CommentDetail,
+                Type = "postcomment",
+                Username = currentUser.Username,
+                Image = currentUser?.ImageUri,
+                Time = (DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"))
+            };
+            await SendNotificationToUser(noti, ownerId);
+
+
         }
 
         public static async Task AddUserLikeForComment(string ownerId, string postId, string cmtId, UserLiked usr)

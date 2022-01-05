@@ -14,11 +14,12 @@
                               VerticalOptions="FillAndExpand"
                               Grid.Row="0"/>
       </Grid>-->
-        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <!--<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">-->
             <xct:MediaElement Source="{Binding VideoSource}" AutoPlay="True"
                               Aspect="AspectFill"
                               HorizontalOptions="FillAndExpand" 
-                              VerticalOptions="FillAndExpand"/>
-        </StackLayout>
+                              VerticalOptions="FillAndExpand"
+                              HeightRequest="400"/>
+        <!--</StackLayout>-->
   </ContentView.Content>
 </ContentView>

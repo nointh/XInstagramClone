@@ -21,7 +21,7 @@ namespace InstagramClone.Views.DataTemplate
             Media media = (Media)item;
             //PickMediaItem media = (PickMediaItem)item;
             
-            return media.Type == "video" ? VideoTemplate : ImageTemplate;
+            return media.Type.ToLower() == "video" ? VideoTemplate : ImageTemplate;
         }
     }
 }
