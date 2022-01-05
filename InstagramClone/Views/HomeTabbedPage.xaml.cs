@@ -19,11 +19,11 @@ namespace InstagramClone.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomeTabbedPage : TabbedPage
     {
+        readonly private string WebAPIKey = "AIzaSyCc-Lrg3ue3OTaFHfYhtQZtgvQZHtsJAUs";
+        UserModel user;
         public HomeTabbedPage()
         {
             InitializeComponent();
-            GetProfileInfoAndRefreshToken();
-
             NavigationPage homePage = new NavigationPage(new HomePage());
             NavigationPage discoveryPage = new NavigationPage(new DiscoveryPage());
             discoveryPage.IconImageSource = new FontImageSource { FontFamily = "FFASolid", Glyph = FontAwesomeIcons.Search };
@@ -32,26 +32,8 @@ namespace InstagramClone.Views
             Children.Add(discoveryPage);
             Children.Add(new NavigationPage(new AddPostPage()));
             Children.Add(new LikePage());
-            Children.Add(new NavigationPage(new YourProfile(
-                new UserModel { 
-                    Username = "dungtd", 
-                    Fullname = "Tong Duc Dung", 
-                    ImageUri = "https://randomuser.me/api/portraits/men/72.jpg",
-                    //TotalFollower = 48,
-                    //TotalFollowing = 128,
-                    ProfileDescription = "Xin chào, mình là Dũng" +
-                    "\nMình thích code nhưng không thích code" +
-                    "\nRất vui được làm quen với tất cả mọi người!"})));
-            //Children.Add(new NavigationPage(new YourProfile(
-            //    new UserModel { 
-            //        Username = "dungtd",
-            //        Fullname = "Tong Duc Dung",
-            //        ImageUri = "https://randomuser.me/api/portraits/men/72.jpg",
-            //        //TotalFollower = 48,
-            //        //TotalFollowing = 128,
-            //        ProfileDescription = "Xin chào, mình là Dũng" +
-            //        "\nMình thích code nhưng không thích code" +
-            //        "\nRất vui được làm quen với tất cả mọi người!"})));
+            Children.Add(new NavigationPage(new YourProfile(new UserModel() { Key = "tngdcdng"})));
+            GetProfileInfoAndRefreshToken();
         }
         private async void GetProfileInfoAndRefreshToken()
         {
@@ -71,5 +53,6 @@ namespace InstagramClone.Views
                 //await DisplayAlert("Alert", "Token expired", "OK");
             }
         }
+        
     }
 }

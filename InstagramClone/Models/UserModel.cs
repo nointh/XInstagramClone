@@ -18,6 +18,8 @@ namespace InstagramClone.Models
         public string Gender { get; set; }
         public string ImageUri { get; set; }
         public string ProfileDescription { get; set; }
+        //public List<FollowUser> Following;
+        //public List<FollowUser> Follower;
 
         /*public UriImageSource ImageSource { get
             {

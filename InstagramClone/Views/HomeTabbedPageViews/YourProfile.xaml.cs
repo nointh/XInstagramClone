@@ -14,21 +14,34 @@ namespace InstagramClone.Views.HomeTabbedPageViews
     public partial class YourProfile : ContentPage
     {
         private UserModel user;
+        private List<FollowUser> Follower;
+        private List<FollowUser> Following;
+
         public YourProfile(UserModel user)
         {
             this.user = user;
             InitializeComponent();
-            InitProfile(this.user);
-            InitStory(this.user);
+            //InitProfile(this.user);
+            //InitStory(this.user);
             //InitImage(user);
         }
 
-        private void InitProfile(UserModel user)
+        private void InitProfile()
         {
-            ProfileDescription.Text = user.ProfileDescription;
-            UserFollowing.Text = "128";
-            UserFollower.Text = "48";
-            UserImg.Source = user.ImageUri;
+            Title = user.Username;
+            if (user.ProfileDescription != null)
+            {
+                ProfileDescription.Text = user.ProfileDescription;
+            } 
+            if (Following != null && Follower != null)
+            {
+                UserFollowing.Text = Following.Count.ToString();
+                UserFollower.Text = Follower.Count.ToString();
+            }
+            if (user.ImageUri != null)
+            {
+                UserImg.Source = user.ImageUri;
+            }
         }
         private void InitStory(UserModel user)
         {
@@ -42,24 +55,15 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             };
             CollViewStory.ItemsSource = stories;
         }
-        private void Button_Clicked(object sender, EventArgs e)
-        {
-            
-        }
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             Image img = (Image)sender;
             DisplayAlert("Alert", "You click: " + img.Source, "OK");
         }
-
         private void EditProfile_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new NavigationPage(new EditProfilePage(this.user)));
-        }
-
-        private void options_Clicked(object sender, EventArgs e)
-        {
-            DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Email", "Twitter", "Facebook");
+            Title = user.Username;
+            Navigation.PushAsync(new EditProfilePage(this.user));
         }
         private void viewPost_Clicked(object sender, EventArgs e)
         {
@@ -68,8 +72,20 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         }
         private void viewFollow_Clicked(object sender, EventArgs e)
         {
-            Label lb = (Label)sender;
-            Navigation.PushAsync(new NavigationPage(new FollowView()));
+            Navigation.PushAsync(new FollowView(Follower, Following, user));
+        }
+        protected async override void OnAppearing()
+        {
+            base.OnAppearing();
+            FirebaseDB fb = new FirebaseDB();
+            user = await fb.getUser(user.Key);
+            Following = await fb.getFollowing(user.Username);
+            Follower = await fb.getFollower(user.Username);
+            InitProfile();
+        }
+        private void ViewMore_Clicked(object sender, EventArgs e)
+        {
+            CollViewStory.IsVisible = !CollViewStory.IsVisible;
         }
     }
 }

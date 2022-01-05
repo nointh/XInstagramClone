@@ -20,7 +20,7 @@ namespace InstagramClone.Models
         public string Caption { get; set; }
         public string PostTime { get; set; }
         public bool IsLike { get; set; }
-
+        
         public PostModel()
         {
             PostId = "";
