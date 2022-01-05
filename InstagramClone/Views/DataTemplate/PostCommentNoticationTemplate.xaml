@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:InstagramClone.Models"
+             x:Class="InstagramClone.Views.DataTemplate.PostCommentNoticationTemplate">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <model:TimeDifferenceConverter x:Key="TimeConverter"/>
+            <model:QuoteConverter x:Key="QuoteConverter"/>
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <ContentView.Content>
+        <StackLayout HeightRequest="80" Orientation="Horizontal" Padding="10,5,10,10">
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" NumberOfTapsRequired="1"></TapGestureRecognizer>
+            </StackLayout.GestureRecognizers>
+            <Image Source="{Binding Image}"
+                    WidthRequest="60"   
+                    HeightRequest="60"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Aspect="AspectFill">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer x:Name="Avatar" Tapped="Avatar_Tapped"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+                <Image.Clip>
+                    <EllipseGeometry
+                        Center="30,30"
+                        RadiusX="30"
+                        RadiusY="30"/>
+                </Image.Clip>
+            </Image>
+            <Label VerticalOptions="Center" Margin="10,0,10,0" >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding Username}" TextColor="Black" ></Span>
+                        <Span Text=" has commented to your post"></Span>
+                        <Span Text="{Binding CommentContent, Converter={StaticResource QuoteConverter}}" TextColor="{StaticResource InsBlack}"></Span>
+                        <Span Text="{Binding Time, Converter={StaticResource TimeConverter}}" FontSize="Small"></Span>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

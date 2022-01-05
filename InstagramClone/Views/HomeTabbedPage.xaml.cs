@@ -20,43 +20,39 @@ namespace InstagramClone.Views
     public partial class HomeTabbedPage : TabbedPage
     {
         readonly private string WebAPIKey = "AIzaSyCc-Lrg3ue3OTaFHfYhtQZtgvQZHtsJAUs";
+        UserModel user;
         public HomeTabbedPage()
         {
             InitializeComponent();
-
             NavigationPage homePage = new NavigationPage(new HomePage());
+            NavigationPage discoveryPage = new NavigationPage(new DiscoveryPage());
+            discoveryPage.IconImageSource = new FontImageSource { FontFamily = "FFASolid", Glyph = FontAwesomeIcons.Search };
             homePage.IconImageSource = new FontImageSource { FontFamily = "PFASolid", Glyph = FontAwesomeIcons.HomeAlt };
             Children.Add(homePage);
-            Children.Add(new DiscoveryPage());
-            Children.Add(new AddPostPage());
+            Children.Add(discoveryPage);
+            Children.Add(new NavigationPage(new AddPostPage()));
             Children.Add(new LikePage());
-            Children.Add(new NavigationPage(new YourProfile(
-                new UserModel { 
-                    Username = "dungtd", 
-                    Fullname = "Tong Duc Dung", 
-                    ImageUri = "https://randomuser.me/api/portraits/men/72.jpg",
-                    TotalFollower = 48,
-                    TotalFollowing = 128,
-                    ProfileDescription = "Xin chào, mình là Dũng" +
-                    "\nMình thích code nhưng không thích code" +
-                    "\nRất vui được làm quen với tất cả mọi người!"})));
+            Children.Add(new NavigationPage(new YourProfile(new UserModel() { UID = "tngdcdng" })));
             GetProfileInfoAndRefreshToken();
         }
-        async private void GetProfileInfoAndRefreshToken()
+        private async void GetProfileInfoAndRefreshToken()
         {
-            var authProvider = new FirebaseAuthProvider(new FirebaseConfig(WebAPIKey));
+            var authProvider = FirebaseDB.GetAuthProvider();
             try
             {
                 var savedFirebaseAuth = JsonConvert.DeserializeObject<Firebase.Auth.FirebaseAuth>(Preferences.Get("FirebaseRefreshToken", ""));
                 var RefreshContent = await authProvider.RefreshAuthAsync(savedFirebaseAuth);
+                FirebaseDB.CurrentUserId = RefreshContent.User.LocalId;
                 Preferences.Set("FirebaseRefreshToken", JsonConvert.SerializeObject(RefreshContent));
+                Preferences.Set("UID", RefreshContent.User.LocalId);
 
             }
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                await DisplayAlert("Alert", "Token expired", "OK");
+                //await DisplayAlert("Alert", "Token expired", "OK");
             }
         }
+        
     }
 }

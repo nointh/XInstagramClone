@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fontAwesome="clr-namespace:FontAwesome"
+             xmlns:dataTemplate="clr-namespace:InstagramClone.Views.DataTemplate"
              x:Class="InstagramClone.Views.HomeTabbedPageViews.LikePage">
     <ContentPage.IconImageSource>
         <FontImageSource Glyph="{x:Static fontAwesome:FontAwesomeIcons.Heart}"
@@ -9,23 +10,21 @@
                          Color="Black"
                         />
     </ContentPage.IconImageSource>
+    <NavigationPage.TitleView>
+        <StackLayout >
+            <Label Text="Activity" FontSize="Large" TextColor="{StaticResource InsBlack}"
+                   Margin="10"></Label>
+        </StackLayout>
+    </NavigationPage.TitleView>
+    <ContentPage.Resources>
+        <dataTemplate:NotificationTemplateSelector x:Key="templateSelector"></dataTemplate:NotificationTemplateSelector>
+    </ContentPage.Resources>
     <StackLayout>
-        <Label
-            Text="This is the like page"
-            HorizontalTextAlignment="Center"
-            VerticalTextAlignment="Center"
-            VerticalOptions="CenterAndExpand"/>
-        <Label Text="font of Font Awesome"
-               HorizontalOptions="CenterAndExpand"
-               VerticalOptions="CenterAndExpand"
-               FontFamily="FARegular"/>
-        <Label Text="font of Font Awesome"
-               HorizontalOptions="CenterAndExpand"
-               VerticalOptions="CenterAndExpand"
-               FontFamily="FASolid"/>
-        <Label Text="font of Font Awesome"
-               HorizontalOptions="CenterAndExpand"
-               VerticalOptions="CenterAndExpand"
-               FontFamily="FABrands"/>
+        <CollectionView x:Name="MessageList"
+                        ItemTemplate="{DynamicResource templateSelector}"
+                        ItemsSource="{Binding notificationCollection}"
+                  >
+            
+        </CollectionView>
     </StackLayout>
 </ContentPage>

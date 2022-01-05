@@ -21,6 +21,7 @@
                    TextColor="Black"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"
+                   x:Name="lbBack"
                    >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer x:Name="btnBack" Tapped="btnBack_Tapped"/>
@@ -38,7 +39,7 @@
                    HorizontalTextAlignment="Center"
                    HorizontalOptions="StartAndExpand"
                    VerticalOptions="CenterAndExpand"
-                   />
+            />
             <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Check}"
                    Grid.Column="2"
                    FontFamily="PFALight"
@@ -46,11 +47,32 @@
                    TextColor="#458eff"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"
+                   x:Name="lbFinish"
                    >
                 <Label.GestureRecognizers>
-                    <TapGestureRecognizer/>
+                    <TapGestureRecognizer x:Name="btnFinishPost" Tapped="btnFinishPost_Tapped"/>
                 </Label.GestureRecognizers>
             </Label>
+            <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Spinner}"
+                   Grid.Column="2"
+                   FontFamily="PFALight"
+                   FontAttributes="None"
+                   FontSize="24"
+                   TextColor="#458eff"
+                   WidthRequest="150"
+                   HeightRequest="60"
+                   VerticalTextAlignment="Center"
+                   HorizontalTextAlignment="Center"
+                   HorizontalOptions="StartAndExpand"
+                   VerticalOptions="CenterAndExpand"
+                   IsVisible="False"
+                   x:Name="lbLoading"
+            />
+            <ActivityIndicator x:Name="LoadingIndicator"
+                               Color="#458eff"
+                               Grid.Column="2"
+                               IsVisible="False"
+            />
         </Grid>
     </NavigationPage.TitleView>
 
@@ -99,7 +121,8 @@
 
             <Editor Placeholder="Write a caption..."
                     AutoSize="TextChanges"
-                    Margin="0,50,0,0"/>
+                    Margin="0,50,0,0"
+                    x:Name="editorCaption"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

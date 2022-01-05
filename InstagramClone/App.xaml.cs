@@ -15,7 +15,7 @@ namespace InstagramClone
             InitializeComponent();
             if (string.IsNullOrEmpty(Preferences.Get("FirebaseRefreshToken", "")))
             {
-                MainPage = new NavigationPage(new HomeTabbedPage());
+                MainPage = new NavigationPage(new LoginPage());
             }
             else
             {
@@ -23,7 +23,7 @@ namespace InstagramClone
             }
             //MainPage = new NavigationPage(new HomeTabbedPage());
             //}
-            // MainPage = new NavigationPage(new AddPostPage());
+            //MainPage = new NavigationPage(new AddPostPage());
         }
 
         protected override void OnStart()
