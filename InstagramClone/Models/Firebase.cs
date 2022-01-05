@@ -27,7 +27,7 @@ namespace InstagramClone.Models
                 .Child("user")
                 .OnceAsync<UserModel>()).Select(item => new UserModel
                 {
-                    Key = item.Key,
+                    UID = item.Key,
                     Fullname = item.Object.Fullname,
                     Username = item.Object.Username,
                     ImageUri = item.Object.ImageUri,
@@ -56,7 +56,7 @@ namespace InstagramClone.Models
         {
             var users = await getAllUser();
 
-            return users.Where(user => user.Key == key).FirstOrDefault();
+            return users.Where(user => user.UID == key).FirstOrDefault();
         }
         public async Task addUser(UserModel user)
         {
@@ -68,14 +68,14 @@ namespace InstagramClone.Models
 
             await firebase
               .Child("user")
-              .Child(u.Key)
+              .Child(u.UID)
               .PutAsync(user);
         }
         public async Task updateUser(UserModel user)
         {
             await firebase
               .Child("user")
-              .Child(user.Key)
+              .Child(user.UID)
               .PutAsync(new UserModel() { 
                   Username = user.Username,
 
@@ -106,7 +106,7 @@ namespace InstagramClone.Models
             var result = (await firebase
                 .Child("follower")
                 .Child(UserKey2)
-                .OnceAsync<FollowUser>()).Where(a => a.Key == UserKey1).FirstOrDefault();
+                .OnceAsync<FollowUser>()).Where(a => a.Object.UserKey == UserKey1).FirstOrDefault();
             
             if (result != null) 
             {
@@ -133,12 +133,12 @@ namespace InstagramClone.Models
 
                 await firebase.Child("following")
                     .Child(user1.UserKey)
-                    .Child(user2.UserKey)
+                    .Child(toDeleteFollowing.Key)
                     .DeleteAsync();
 
                 await firebase.Child("follower")
                     .Child(user2.UserKey)
-                    .Child(user1.UserKey)
+                    .Child(toDeleteFollower.Key)
                     .DeleteAsync();
 
                 return "unfollow";

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using InstagramClone.Models;
 using InstagramClone.Views.ProfilePageViews;
+using InstagramClone.Views.LoginPageViews;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -21,11 +20,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         {
             this.user = user;
             InitializeComponent();
-            //InitProfile(this.user);
-            //InitStory(this.user);
-            //InitImage(user);
         }
-
         private void InitProfile()
         {
             Title = user.Username;
@@ -42,18 +37,6 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             {
                 UserImg.Source = user.ImageUri;
             }
-        }
-        private void InitStory(UserModel user)
-        {
-            List<StoryCollectionModel> stories = new List<StoryCollectionModel>
-            {
-                new StoryCollectionModel { CoverImage = "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg", Title = "ABC" },
-                new StoryCollectionModel { CoverImage = "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg", Title = "ABC" },
-                new StoryCollectionModel { CoverImage = "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg", Title = "ABC" },
-                new StoryCollectionModel { CoverImage = "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg", Title = "ABC" },
-                new StoryCollectionModel { CoverImage = "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg", Title = "ABC" },
-            };
-            CollViewStory.ItemsSource = stories;
         }
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
@@ -78,14 +61,21 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         {
             base.OnAppearing();
             FirebaseDB fb = new FirebaseDB();
-            user = await fb.getUser(user.Key);
-            Following = await fb.getFollowing(user.Username);
-            Follower = await fb.getFollower(user.Username);
+            user = await fb.getUser(user.UID);
+            Following = await fb.getFollowing(user.UID);
+            Follower = await fb.getFollower(user.UID);
             InitProfile();
         }
         private void ViewMore_Clicked(object sender, EventArgs e)
         {
             CollViewStory.IsVisible = !CollViewStory.IsVisible;
+        }
+        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        {
+            Preferences.Set("FirebaseRefreshToken", null);
+            NavigationPage loginPage = new NavigationPage(new LoginPage());
+            NavigationPage.SetHasNavigationBar(loginPage, false);
+            Navigation.PushAsync(loginPage);
         }
     }
 }
