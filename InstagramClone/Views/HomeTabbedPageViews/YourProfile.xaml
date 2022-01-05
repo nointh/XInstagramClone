@@ -10,6 +10,12 @@
                          Color="Black"
         />
     </ContentPage.IconImageSource>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="ToolbarItem_Clicked">
+            
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>

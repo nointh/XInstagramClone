@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using InstagramClone.Models;
 using InstagramClone.Views.ProfilePageViews;
+using InstagramClone.Views.LoginPageViews;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -22,7 +21,6 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             this.user = user;
             InitializeComponent();
         }
-
         private void InitProfile()
         {
             Title = user.Username;
@@ -63,14 +61,21 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         {
             base.OnAppearing();
             FirebaseDB fb = new FirebaseDB();
-            user = await fb.getUser(user.Key);
-            Following = await fb.getFollowing(user.Key);
-            Follower = await fb.getFollower(user.Key);
+            user = await fb.getUser(user.UID);
+            Following = await fb.getFollowing(user.UID);
+            Follower = await fb.getFollower(user.UID);
             InitProfile();
         }
         private void ViewMore_Clicked(object sender, EventArgs e)
         {
             CollViewStory.IsVisible = !CollViewStory.IsVisible;
+        }
+        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        {
+            Preferences.Set("FirebaseRefreshToken", null);
+            NavigationPage loginPage = new NavigationPage(new LoginPage());
+            NavigationPage.SetHasNavigationBar(loginPage, false);
+            Navigation.PushAsync(loginPage);
         }
     }
 }

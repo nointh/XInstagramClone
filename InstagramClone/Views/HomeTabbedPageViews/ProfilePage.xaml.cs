@@ -28,8 +28,8 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         {
             base.OnAppearing();
             user = await fb.getUser(user.Username);
-            Following = await fb.getFollowing(user.Key);
-            Follower = await fb.getFollower(user.Key);
+            Following = await fb.getFollowing(user.UID);
+            Follower = await fb.getFollower(user.UID);
             InitProfile();
             InitButton();
         }
@@ -54,7 +54,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         async private void InitButton()
         {
             Button btn = FollowButton;
-            var result = await fb.checkIsFollow(you.Key, user.Key);
+            var result = await fb.checkIsFollow(you.UID, user.UID);
             if (result)
             {
                 btn.Text = "Unfollow";
@@ -85,9 +85,9 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             try
             {
                 FollowUser user1 = new FollowUser();
-                user1.UserKey = you.Key;
+                user1.UserKey = you.UID;
                 FollowUser user2 = new FollowUser();
-                user2.UserKey = user.Key;
+                user2.UserKey = user.UID;
                 if (await fb.updateFollow(user1, user2) == "unfollow")
                 {
                     btn.Text = "Follow";

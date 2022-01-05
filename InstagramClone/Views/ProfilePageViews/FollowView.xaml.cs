@@ -55,7 +55,7 @@ namespace InstagramClone.Views.ProfilePageViews
             try
             {
                 FollowUser user1 = new FollowUser();
-                user1.UserKey = user.Key;
+                user1.UserKey = user.UID;
                 FollowUser user2 = new FollowUser();
                 user2.UserKey = UserKey;
                 if (await db.updateFollow(user1, user2) == "unfollow")
