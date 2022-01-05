@@ -28,8 +28,8 @@ namespace InstagramClone.Views
             homePage.IconImageSource = new FontImageSource { FontFamily = "PFASolid", Glyph = FontAwesomeIcons.HomeAlt };
             Children.Add(homePage);
             Children.Add(new DiscoveryPage());
-            Children.Add(new NavigationPage(new AddPostPage()));
-            Children.Add(new LikePage());
+            Children.Add(new NavigationPage(new AddPostPage()) { IconImageSource = new FontImageSource { FontFamily = "PFASolid", Glyph = FontAwesomeIcons.Plus } });
+            Children.Add(new NavigationPage(new LikePage()) { IconImageSource = new FontImageSource { FontFamily = "PFASolid", Glyph = FontAwesomeIcons.Heart } });
             Children.Add(new NavigationPage(new YourProfile(
                 new UserModel { 
                     Username = "dungtd", 

@@ -9,6 +9,7 @@ using Xamarin.Forms.Xaml;
 using InstagramClone.Models;
 using System.Windows.Input;
 using Xamarin.CommunityToolkit.ObjectModel;
+using System.Collections.ObjectModel;
 
 namespace InstagramClone.Views.HomeTabbedPageViews
 {
@@ -16,6 +17,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
     public partial class HomePage : ContentPage
     {
         //private bool IsLoading = true;
+        ObservableCollection<PostModel> listCollection  { get; set; } = new ObservableCollection<PostModel>();
         public AsyncCommand RefreshCommand;
         public HomePage()
         {
@@ -24,31 +26,14 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             //InitData();
             RefreshCommand = new AsyncCommand(LoadNewsfeedItemsAsync);
             PostRefresh.Command = RefreshCommand;
-
+            Task.Run(LoadNewsfeedItemsAsync);
+            CollectionViewPost.ItemsSource = listCollection;
         }
         protected override void OnAppearing()
         {
-            
-            
             base.OnAppearing();
-            PostRefresh.IsRefreshing = true;
-            Task.Run(LoadNewsfeedItemsAsync);
-
+            //Task.Run(LoadNewsfeedItemsAsync);
         }
-        //public void ToggleLoadingIndicator()
-        //{
-        //    if (LoadingIndicator.IsRunning)
-        //    {
-        //        LoadingIndicator.IsVisible = false;
-        //        LoadingIndicator.IsRunning = false;
-        //        LoadingIndicator.IsEnabled = false;
-        //        return;
-        //    }
-        //    LoadingIndicator.IsVisible = true;
-        //    LoadingIndicator.IsRunning = true;
-        //    LoadingIndicator.IsEnabled = true;
-
-        //}
         public void LoadNewsfeed()
         {
             //PostRefresh.IsRefreshing = true;
@@ -58,7 +43,11 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         public async Task LoadNewsfeedItemsAsync()
         {
             var listPost = await FirebaseDB.GetNewsfeedPost();
-            CollectionViewPost.ItemsSource = listPost;
+            listCollection.Clear();
+            foreach(var item in listPost)
+            {
+                listCollection.Insert(0,item);
+            }
             PostRefresh.IsRefreshing = false;
         }
         public void InitData()
@@ -135,6 +124,12 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             var tempList = item.LikedUsers;
             tempList.Add(new UserLiked { UserId = FirebaseDB.CurrentUserId });
             item.LikedUsers = tempList;
+        }
+
+        private void userAvatar_Tapped(object sender, EventArgs e)
+        {
+            var item = (PostModel)((StackLayout)sender).BindingContext;
+            DisplayAlert("ale", "open profile of user " + item.OwnerId, "ok");
         }
     }
 }

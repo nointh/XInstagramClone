@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InstagramClone.Views.DataTemplate.PostLikeNotificationTemplate"             
+             xmlns:timeConverter="clr-namespace:InstagramClone.Models"
+             xmlns:quoteConverter="clr-namespace:InstagramClone.Models"
+             >
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <timeConverter:TimeDifferenceConverter x:Key="TimeConverter"/>
+            <quoteConverter:QuoteConverter x:Key="QuoteConverter"/>
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+  <ContentView.Content>
+        <StackLayout HeightRequest="80" Orientation="Horizontal" Padding="10,5,10,10">
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" NumberOfTapsRequired="1"></TapGestureRecognizer>
+            </StackLayout.GestureRecognizers>
+            <Image Source="{Binding Image}"
+                    WidthRequest="60"   
+                    HeightRequest="60"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Aspect="AspectFill">
+                <Image.Clip>
+                    <EllipseGeometry
+                        Center="30,30"
+                        RadiusX="30"
+                        RadiusY="30"/>
+                </Image.Clip>
+            </Image>
+            <Label VerticalOptions="Center" Margin="10,0,10,0" >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding Username}" TextColor="Black" ></Span>
+                        <Span Text=" has like your post"></Span>
+                        <Span Text="{Binding PostCaption, Converter={StaticResource QuoteConverter}}" TextColor="{StaticResource InsBlack}"></Span>
+                        <Span Text="{Binding Time, Converter={StaticResource TimeConverter}}" FontSize="Small"></Span>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>
