@@ -21,9 +21,6 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         {
             this.user = user;
             InitializeComponent();
-            //InitProfile(this.user);
-            //InitStory(this.user);
-            //InitImage(user);
         }
 
         private void InitProfile()
@@ -42,18 +39,6 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             {
                 UserImg.Source = user.ImageUri;
             }
-        }
-        private void InitStory(UserModel user)
-        {
-            List<StoryCollectionModel> stories = new List<StoryCollectionModel>
-            {
-                new StoryCollectionModel { CoverImage = "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg", Title = "ABC" },
-                new StoryCollectionModel { CoverImage = "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg", Title = "ABC" },
-                new StoryCollectionModel { CoverImage = "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg", Title = "ABC" },
-                new StoryCollectionModel { CoverImage = "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg", Title = "ABC" },
-                new StoryCollectionModel { CoverImage = "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg", Title = "ABC" },
-            };
-            CollViewStory.ItemsSource = stories;
         }
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
@@ -79,8 +64,8 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             base.OnAppearing();
             FirebaseDB fb = new FirebaseDB();
             user = await fb.getUser(user.Key);
-            Following = await fb.getFollowing(user.Username);
-            Follower = await fb.getFollower(user.Username);
+            Following = await fb.getFollowing(user.Key);
+            Follower = await fb.getFollower(user.Key);
             InitProfile();
         }
         private void ViewMore_Clicked(object sender, EventArgs e)

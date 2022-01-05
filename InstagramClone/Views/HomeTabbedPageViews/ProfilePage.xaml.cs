@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Xamarin.Essentials;
+using Firebase.Database;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using InstagramClone.Models;
@@ -11,25 +12,26 @@ namespace InstagramClone.Views.HomeTabbedPageViews
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ProfilePage : ContentPage
     {
+        FirebaseDB fb = new FirebaseDB();
         private UserModel user = new UserModel();
+        private UserModel you = new UserModel();
         private List<FollowUser> Follower;
         private List<FollowUser> Following;
 
-        public ProfilePage(UserModel user)
+        public ProfilePage(UserModel user, UserModel you)
         {
             this.user = user;
+            this.you = you;
             InitializeComponent();
-            //InitProfile(user);
-            //InitImage(user);
         }
         protected async override void OnAppearing()
         {
             base.OnAppearing();
-            FirebaseDB fb = new FirebaseDB();
-            user = await fb.getUser(user.Key);
-            Following = await fb.getFollowing(user.Username);
-            Follower = await fb.getFollower(user.Username);
+            user = await fb.getUser(user.Username);
+            Following = await fb.getFollowing(user.Key);
+            Follower = await fb.getFollower(user.Key);
             InitProfile();
+            InitButton();
         }
         private void InitProfile()
         {
@@ -49,68 +51,24 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             }
         }
 
-        /*private void InitStory(UserModel user)
+        async private void InitButton()
         {
-            List<StoryCollectionModel> stories = new List<StoryCollectionModel>
+            Button btn = FollowButton;
+            var result = await fb.checkIsFollow(you.Key, user.Key);
+            if (result)
             {
-                new StoryCollectionModel { CoverImage = "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg", Title = "ABC" },
-                new StoryCollectionModel { CoverImage = "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg", Title = "ABC" },
-                new StoryCollectionModel { CoverImage = "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg", Title = "ABC" },
-                new StoryCollectionModel { CoverImage = "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg", Title = "ABC" },
-                new StoryCollectionModel { CoverImage = "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg", Title = "ABC" },
-            };
-            CollViewStory.ItemsSource = stories;
-        }*/
-        private void InitImage(UserModel user)
-        {
-            List<string> img = new List<string>
+                btn.Text = "Unfollow";
+                btn.BackgroundColor = Color.White;
+                btn.TextColor = Color.Black;
+                btn.BorderColor = Color.Black;
+            } 
+            else
             {
-                "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg",
-                "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg",
-                "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg",
-            }; 
-
-            //profileGrid.HeightRequest = 100 * (img.Count / 3 + 1);
-            var imageGrid = new Grid();
-            int r =  img.Count / 3 + 1;
-            for (int i = 0; i < r; i++)
-            {
-                imageGrid.RowDefinitions.Add(new RowDefinition { Height = 100 });
+                btn.Text = "Follow";
+                btn.BackgroundColor = Color.FromHex("#405DE6");
+                btn.BorderColor = Color.FromHex("#405DE6");
+                btn.TextColor = Color.White;
             }
-            for (int j = 0; j < 3; j++)
-            {
-                imageGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            }
-            int row = 0;
-            var tapGestureRecognizer = new TapGestureRecognizer();
-            tapGestureRecognizer.Tapped += (s, e) => {
-                TapGestureRecognizer_Tapped(s, e);
-            };
-            
-            //image.GestureRecognizers.Add(tapGestureRecognizer);
-            for (int num = 0; num < img.Count; num++)
-            {
-                var image = new Image();
-                image.HeightRequest = 100;
-                if (num % 3 == 0)
-                {
-                    image.Source = img[num];
-                    imageGrid.Children.Add(image, 0, row);
-
-                }
-                else if (num % 3 == 1)
-                {
-                    image.Source = img[num];
-                    imageGrid.Children.Add(image, 1, row);
-                }
-                else 
-                {
-                    image.Source = img[num];
-                    imageGrid.Children.Add(image, 2, row);
-                }
-                row++;
-            }
-            ImageGrid = imageGrid;
         }
 
         private void Button_Clicked(object sender, EventArgs e)
@@ -121,9 +79,35 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             Navigation.PushAsync(loginPage);
         }
 
-        private void FollowButton_Clicked(object sender, EventArgs e)
+        async private void FollowButton_Clicked(object sender, EventArgs e)
         {
+            Button btn = FollowButton;
+            try
+            {
+                FollowUser user1 = new FollowUser();
+                user1.UserKey = you.Key;
+                FollowUser user2 = new FollowUser();
+                user2.UserKey = user.Key;
+                if (await fb.updateFollow(user1, user2) == "unfollow")
+                {
+                    btn.Text = "Follow";
+                    btn.BackgroundColor = Color.FromHex("#405DE6");
+                    btn.BorderColor = Color.FromHex("#405DE6");
+                    btn.TextColor = Color.White;
+                }
+                else
+                {
+                    btn.Text = "Unfollow";
+                    btn.BackgroundColor = Color.White;
+                    btn.TextColor = Color.Black;
+                    btn.BorderColor = Color.Black;
+                }
 
+            }
+            catch (FirebaseException ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         private void MessageButton_Clicked(object sender, EventArgs e)

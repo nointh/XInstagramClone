@@ -106,7 +106,7 @@ namespace InstagramClone.Models
             var result = (await firebase
                 .Child("follower")
                 .Child(UserKey2)
-                .OnceAsync<FollowUser>()).Where(a => a.Key == UserKey1).FirstOrDefault();
+                .OnceAsync<FollowUser>()).Where(a => a.Object.UserKey == UserKey1).FirstOrDefault();
             
             if (result != null) 
             {
@@ -133,12 +133,12 @@ namespace InstagramClone.Models
 
                 await firebase.Child("following")
                     .Child(user1.UserKey)
-                    .Child(user2.UserKey)
+                    .Child(toDeleteFollowing.Key)
                     .DeleteAsync();
 
                 await firebase.Child("follower")
                     .Child(user2.UserKey)
-                    .Child(user1.UserKey)
+                    .Child(toDeleteFollower.Key)
                     .DeleteAsync();
 
                 return "unfollow";

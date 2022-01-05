@@ -123,6 +123,7 @@
                         Text="Follow" FontSize="14"
                         HeightRequest="40"
                         BackgroundColor="#405DE6"
+                        BorderWidth="1"
                         TextColor="White"
                         CornerRadius="5"
                         Grid.Column="0"></Button>

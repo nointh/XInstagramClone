@@ -30,7 +30,7 @@ namespace InstagramClone.Views
             Children.Add(new DiscoveryPage());
             Children.Add(new AddPostPage());
             Children.Add(new LikePage());
-            Children.Add(new NavigationPage(new YourProfile(new UserModel() { Key = "tngdcdng"})));
+            Children.Add(new NavigationPage(new YourProfile(new UserModel() { Key = "tngdcdng" })));
             GetProfileInfoAndRefreshToken();
         }
         async private void GetProfileInfoAndRefreshToken()

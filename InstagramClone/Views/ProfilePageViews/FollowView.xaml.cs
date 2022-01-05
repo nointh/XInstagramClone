@@ -48,7 +48,6 @@ namespace InstagramClone.Views.ProfilePageViews
                 Following.Add(await db.getUserByKey(user.UserKey));
             }
         }
-
         async private void btnFollow_Clicked(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
@@ -80,7 +79,6 @@ namespace InstagramClone.Views.ProfilePageViews
                 Console.WriteLine(ex);
             }
         }
-
         private void TabView_SelectionChanged(object sender, TabSelectionChangedEventArgs e)
         {
             if (e.NewPosition == 0)
@@ -93,7 +91,6 @@ namespace InstagramClone.Views.ProfilePageViews
                 //InitFollowing();
             }
         }
-
         private void FindUser_TextChanged(object sender, TextChangedEventArgs e)
         {
             string toFind = e.NewTextValue;
@@ -122,11 +119,10 @@ namespace InstagramClone.Views.ProfilePageViews
                 FollowingList.ItemsSource = searchFollwingList;
             }
         }
-   
         async private void Follow_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            UserModel user = (UserModel)e.SelectedItem;
-            await Navigation.PushAsync(new ProfilePage(user));
+            UserModel u = (UserModel)e.SelectedItem;
+            await Navigation.PushAsync(new ProfilePage(u, user));
         }
     }
 }
