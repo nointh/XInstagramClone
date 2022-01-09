@@ -20,6 +20,10 @@
         <dataTemplate:NotificationTemplateSelector x:Key="templateSelector"></dataTemplate:NotificationTemplateSelector>
     </ContentPage.Resources>
     <StackLayout>
+        <StackLayout >
+            <Label Text="Activity" FontSize="Large" TextColor="{StaticResource InsBlack}"
+                   Margin="10"></Label>
+        </StackLayout>
         <CollectionView x:Name="MessageList"
                         ItemTemplate="{DynamicResource templateSelector}"
                         ItemsSource="{Binding notificationCollection}"

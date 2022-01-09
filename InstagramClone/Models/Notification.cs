@@ -8,6 +8,7 @@ namespace InstagramClone.Models
 {
     public class NotificationModel
     {
+        public string Id { get; set; }
         public string Type { get; set; }
         public string Image { get; set; }
         public string UserId { get; set; }
@@ -30,7 +31,7 @@ namespace InstagramClone.Models
                     return ((int)difference.TotalSeconds).ToString() + " second" + (difference.TotalDays == 1 ? "" : "s") + " ago";
                 if (difference.TotalMinutes < 60)
                     return ((int)difference.TotalMinutes).ToString() + " minute" + (difference.TotalDays == 1 ? "" : "s") + " ago";
-                if (difference.TotalHours < 60)
+                if (difference.TotalHours < 24)
                     return ((int)difference.TotalHours).ToString() + " hour" + (difference.TotalDays == 1 ? "" : "s") + " ago";
                 return ((int)difference.TotalDays).ToString() + " day" + (difference.TotalDays == 1 ? "" : "s") + " ago";
 

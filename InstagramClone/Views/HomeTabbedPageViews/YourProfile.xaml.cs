@@ -18,8 +18,9 @@ namespace InstagramClone.Views.HomeTabbedPageViews
 
         public YourProfile(UserModel user)
         {
-            this.user = user;
             InitializeComponent();
+            this.user = user;
+
         }
         private void InitProfile()
         {
@@ -75,7 +76,8 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             Preferences.Set("FirebaseRefreshToken", null);
             NavigationPage loginPage = new NavigationPage(new LoginPage());
             NavigationPage.SetHasNavigationBar(loginPage, false);
-            Navigation.PushAsync(loginPage);
+            //Navigation.PushAsync(loginPage);
+            Application.Current.MainPage = new NavigationPage(loginPage);
         }
     }
 }

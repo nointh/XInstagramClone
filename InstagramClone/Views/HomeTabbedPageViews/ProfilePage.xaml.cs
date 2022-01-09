@@ -27,7 +27,14 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         protected async override void OnAppearing()
         {
             base.OnAppearing();
-            user = await fb.getUser(user.Username);
+            user = await fb.getUser(user.UID);
+            Following = await fb.getFollowing(user.UID);
+            Follower = await fb.getFollower(user.UID);
+            InitProfile();
+            InitButton();
+        }
+        public async void FirstInit()
+        {
             Following = await fb.getFollowing(user.UID);
             Follower = await fb.getFollower(user.UID);
             InitProfile();

@@ -16,6 +16,9 @@
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
                     Aspect="AspectFill">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer x:Name="AvatarTap" Tapped="AvatarTap_Tapped"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
                 <Image.Clip>
                     <EllipseGeometry
                         Center="30,30"
@@ -32,7 +35,8 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Label BackgroundColor="{StaticResource InsBlue}" TextColor="{StaticResource InsWhite}"
+            <Label x:Name="FollowLabel"
+                BackgroundColor="{StaticResource InsBlue}" TextColor="{StaticResource InsWhite}"
                     Text="Follow"
                      Margin="10,0,0,0" 
                     Padding="15,5,15,5"
@@ -40,8 +44,12 @@
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
                     TextTransform="None"
-                    FontSize="15"
-            ></Label>
+                    FontSize="12"
+            >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer x:Name="FollowTap" Tapped="FollowTap_Tapped"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>
         </StackLayout>
     </ContentView.Content>
 </ContentView>

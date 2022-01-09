@@ -35,6 +35,7 @@ namespace InstagramClone.Views.LoginPageViews
                 var serializedContent = JsonConvert.SerializeObject(content);
                 Preferences.Set("FirebaseRefreshToken", serializedContent);
                 Preferences.Set("UID", auth.User.LocalId);
+                FirebaseDB.CurrentUserId = auth.User.LocalId;
                 await Navigation.PushAsync(new HomeTabbedPage());
             }
             catch(Exception ex)

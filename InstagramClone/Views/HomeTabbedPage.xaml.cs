@@ -24,16 +24,17 @@ namespace InstagramClone.Views
         public HomeTabbedPage()
         {
             InitializeComponent();
+            GetProfileInfoAndRefreshToken();
+
             NavigationPage homePage = new NavigationPage(new HomePage());
             NavigationPage discoveryPage = new NavigationPage(new DiscoveryPage());
             discoveryPage.IconImageSource = new FontImageSource { FontFamily = "FFASolid", Glyph = FontAwesomeIcons.Search };
             homePage.IconImageSource = new FontImageSource { FontFamily = "PFASolid", Glyph = FontAwesomeIcons.HomeAlt };
-            Children.Add(homePage);
+            Children.Add(new HomePage());
             Children.Add(discoveryPage);
             Children.Add(new NavigationPage(new AddPostPage()));
             Children.Add(new LikePage());
-            Children.Add(new NavigationPage(new YourProfile(new UserModel() { UID = "tngdcdng" })));
-            GetProfileInfoAndRefreshToken();
+            Children.Add(new NavigationPage(new YourProfile(new UserModel() { UID = FirebaseDB.CurrentUserId })));
         }
         private async void GetProfileInfoAndRefreshToken()
         {

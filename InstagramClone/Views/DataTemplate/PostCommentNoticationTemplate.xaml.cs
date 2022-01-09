@@ -28,11 +28,17 @@ namespace InstagramClone.Views.DataTemplate
             Navigation.PushAsync(new CommentPage(noti.UserId, noti.PostId));
         }
 
-        private void Avatar_Tapped(object sender, EventArgs e)
+        private async void Avatar_Tapped(object sender, EventArgs e)
         {
             PostId = ((NotificationModel)BindingContext).PostId;
             var noti = (NotificationModel)BindingContext;
-            Navigation.PushAsync(new Page1(noti.UserId));
+            FirebaseDB firebase = new FirebaseDB();
+            if (noti.UserId == FirebaseDB.CurrentUserId)
+            {
+                await Navigation.PushAsync(new YourProfile( await FirebaseDB.GetCurentUserInfo()));
+            }
+            else
+            await Navigation.PushAsync(new ProfilePage(await firebase.getUser(noti.UserId), await FirebaseDB.GetCurentUserInfo()));
         }
     }
 }

@@ -23,6 +23,7 @@ namespace InstagramClone.Models
             {
                 if (_currentUserId == null)
                 {
+                    _currentUserId = Convert.ToString(Preferences.Get("UID", ""));
                     return Convert.ToString(Preferences.Get("UID", ""));
                 }
                 return _currentUserId;
@@ -38,14 +39,18 @@ namespace InstagramClone.Models
         }
 
         //Nội
-        public static async Task AddUser(UserModel user)
-        {
-            //await firebaseClient
-            //  .Child("user")
-            //  .Child(user.UID)
-            //  .PutAsync(user.GetValue());
-        }
+        //public static async Task AddUser(UserModel user)
+        //{
+        //    //await firebaseClient
+        //    //  .Child("user")
+        //    //  .Child(user.UID)
+        //    //  .PutAsync(user.GetValue());
+        //}
         public static async Task<UserModel> GetCurentUserInfo()
+        {
+            return await GetUserModelById(CurrentUserId);
+        }
+        public static async Task<UserModel> GetUserModelById(string id)
         {
             UserModel currentUser = new UserModel();
             try
@@ -53,9 +58,10 @@ namespace InstagramClone.Models
                 currentUser = (await firebaseClient
                 .Child("user")
                 .OrderByKey()
-                .StartAt(CurrentUserId)
+                .StartAt(id)
                 .LimitToFirst(1)
-                .OnceAsync<UserModel>()).ToList().Select(i => new UserModel { 
+                .OnceAsync<UserModel>()).ToList().Select(i => new UserModel
+                {
                     UID = i.Key,
                     ImageUri = i.Object?.ImageUri,
                     Email = i.Object?.Email,
@@ -69,7 +75,7 @@ namespace InstagramClone.Models
                 }).FirstOrDefault();
                 return currentUser;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 return currentUser;
@@ -149,41 +155,42 @@ namespace InstagramClone.Models
 
             return resultList;
         }
-        public static async Task<List<UserModel>> GetFollowingUser(string UID)
-        {
-            List<UserModel> resultList = new List<UserModel>();
-            try
-            {
-                var users = await firebaseClient
-                .Child("user")
-                .Child(UID)
-                .Child("following")
-                .OnceAsync<UserModel>();
-                resultList = users.Select(item => new UserModel
-                {
-                    UID = item.Key,
-                    Fullname = item.Object.Fullname,
-                    Username = item.Object.Username,
-                    ImageUri = item.Object.ImageUri
-                }).ToList();
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }          
+        //public static async Task<List<UserModel>> GetFollowingUser(string UID)
+        //{
+        //    List<UserModel> resultList = new List<UserModel>();
+        //    try
+        //    {
+        //        var users = await firebaseClient
+        //        .Child("user")
+        //        .Child(UID)
+        //        .Child("following")
+        //        .OnceAsync<UserModel>();
+        //        resultList = users.Select(item => new UserModel
+        //        {
+        //            UID = item.Key,
+        //            Fullname = item.Object.Fullname,
+        //            Username = item.Object.Username,
+        //            ImageUri = item.Object.ImageUri
+        //        }).ToList();
+        //    }
+        //    catch(Exception e)
+        //    {
+        //        Console.WriteLine(e.Message);
+        //    }          
 
-            return resultList;
-        }
+        //    return resultList;
+        //}
         public static async Task<List<PostModel>> GetNewsfeedPost()
         {
             List<PostModel> resultList = new List<PostModel>();
             string UID = CurrentUserId;
             try
             {
-                var followingList = await GetFollowingUser(UID);
+                FirebaseDB db = new FirebaseDB();
+                var followingList = await db.getFollowing(UID);
                 foreach(var user in followingList)
                 {
-                    List<PostModel> postList = await GetAllPostOfUser(user.UID);
+                    List<PostModel> postList = await GetAllPostOfUser(user.UserKey);
                     foreach(var post in postList)
                     {
                         resultList.Add(post);
@@ -276,7 +283,133 @@ namespace InstagramClone.Models
                 Console.WriteLine(e.Message);
             }
         }
-        
+        public static async Task<FollowUserModel> GetFollowUserModelById(string id)
+        {
+            FollowUserModel user = new FollowUserModel();
+            try
+            {
+                user = (await firebaseClient
+                .Child("user")
+                .OrderByKey()
+                .StartAt(id)
+                .LimitToFirst(1)
+                .OnceAsync<FollowUserModel>()).ToList().Select(i => new FollowUserModel
+                {
+                    Id = i.Key,
+                    Fullname = i.Object.Fullname,
+                    ImageUri = i.Object.ImageUri,
+                    Username = i.Object.Username
+                }).FirstOrDefault();
+                FirebaseDB db = new FirebaseDB();
+                user.IsFollowed = await db.checkIsFollow(user.Id, CurrentUserId);
+
+                return user;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return user;
+            }
+        }
+        public static void SetNotificationRealTimeListenter(ObservableCollection<NotificationModel> collection)
+        {
+            var result = FirebaseDB.firebaseClient
+                .Child("notification")
+                .Child(FirebaseDB.CurrentUserId)
+                .AsObservable<NotificationModel>()
+                .Subscribe((e) => {
+                    if (e.Object != null)
+                    {
+                        e.Object.Id = e.Key;
+                        collection.Insert(0, e.Object);
+                    }
+                });
+        }
+        public static async Task<string> InsertChatBox(string friendId)
+        {
+            UserChatboxModel userChatbox = new UserChatboxModel
+            {
+                ReceiverID = friendId
+            };
+            var chatbox = await firebaseClient
+                .Child("userchat")
+                .Child(CurrentUserId)
+                .PostAsync<UserChatboxModel>(userChatbox);
+            await firebaseClient
+                .Child("userchat")
+                .Child(friendId)
+                .Child(chatbox.Key)
+                .PutAsync(new UserChatboxModel { ReceiverID = CurrentUserId});
+            return chatbox.Key;
+        }
+        public static async Task<List<UserChatboxModel>> GetUserChatboxList()
+        {
+            return (await firebaseClient
+                .Child("userchat")
+                .Child(CurrentUserId)
+                .OnceAsync<UserChatboxModel>()).Select(i => new UserChatboxModel
+                {
+                    ID = i.Key,
+                    ReceiverID = i.Object.ReceiverID,
+                    LastMessage = i.Object?.LastMessage,
+                    IsRead = i.Object.IsRead,
+                    UpdateAt = i.Object.UpdateAt
+                }).ToList();
+        }
+        public static async Task UpdateUserChatBox(string userId, string chatboxId, ChatMessage chat)
+        {
+            var chatBox = (await firebaseClient
+                .Child("userchat")
+                .Child(userId)
+                .OrderByKey()
+                .StartAt(chatboxId)
+                .LimitToFirst(1)
+                .OnceAsync<UserChatboxModel>()).Select(i => new UserChatboxModel
+                {
+                    ID = i.Key,
+                    ReceiverID = i.Object.ReceiverID,
+                    LastMessage = chat.Message,
+                    IsRead = false,
+                    UpdateAt = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")
+                }).FirstOrDefault();
+            await firebaseClient
+                .Child("userchat")
+                .Child(userId)
+                .Child(chatboxId)
+                .PutAsync(chatBox);
+        }
+        public static async Task UpdateSeenForChatBox(string chatboxId)
+        {
+            var chatBox = (await firebaseClient
+                .Child("userchat")
+                .Child(CurrentUserId)
+                .OrderByKey()
+                .StartAt(chatboxId)
+                .LimitToFirst(1)
+                .OnceAsync<UserChatboxModel>()).Select(i => new UserChatboxModel
+                {
+                    ID = i.Key,
+                    ReceiverID = i.Object.ReceiverID,
+                    LastMessage = i.Object.LastMessage,
+                    IsRead = true,
+                    UpdateAt = i.Object.UpdateAt
+                }).FirstOrDefault();
+            await firebaseClient
+                .Child("userchat")
+                .Child(CurrentUserId)
+                .Child(chatboxId)
+                .PutAsync(chatBox);
+        }
+        public static async Task SendMessage(string chatboxId, string receiverId, ChatMessage chat)
+        {
+            var result = FirebaseDB.firebaseClient
+                .Child("chatmessage")
+                .Child(chatboxId)
+                .PostAsync(chat);
+            await UpdateUserChatBox(CurrentUserId, chatboxId, chat);
+            await UpdateUserChatBox(receiverId, chatboxId, chat);
+        }
+
         //End Nội
 
         //Dũng
@@ -307,11 +440,11 @@ namespace InstagramClone.Models
             }
 
         }
-        public async Task<UserModel> getUser(string username)
+        public async Task<UserModel> getUser(string UID)
         {
             var users = await getAllUser();
 
-            return users.Where(user => user.Username == username).FirstOrDefault();
+            return users.Where(user => user.UID == UID).FirstOrDefault();
         }
         public async Task<UserModel> getUserByKey(string key)
         {
@@ -417,6 +550,17 @@ namespace InstagramClone.Models
                        .Child(user1.UserKey)
                        .PostAsync(user2);
 
+                //sent follow notification
+                UserModel currentUser = await GetCurentUserInfo();
+                NotificationModel noti = new NotificationModel
+                {
+                    UserId = CurrentUserId,
+                    Type = "follow",
+                    Username = currentUser.Username,
+                    Image = currentUser?.ImageUri,
+                    Time = (DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"))
+                };
+                await SendNotificationToUser(noti, user2.UserKey);
                 return "follow";
             }
         }

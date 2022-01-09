@@ -16,28 +16,35 @@ namespace InstagramClone.Views.HomeTabbedPageViews
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LikePage : ContentPage
     {
-        ObservableCollection<NotificationModel> notificationCollection = new ObservableCollection<NotificationModel>();
+        ObservableCollection<NotificationModel> notificationCollection;
         public LikePage()
         {
             InitializeComponent();
             BindingContext = this;
-            Task.Run(LoadData);
-            Console.WriteLine(notificationCollection.Count);
+            notificationCollection = new ObservableCollection<NotificationModel>();
+            LoadData();
             MessageList.ItemsSource = notificationCollection;
 
         }
-        public async Task LoadData()
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+        }
+        public async void LoadData()
         {
             var collection = FirebaseDB.firebaseClient
                 .Child("notification")
                 .Child(FirebaseDB.CurrentUserId)
                 .AsObservable<NotificationModel>()
-                .Subscribe((e) =>{ 
-                    if(e.Object != null)
+                .Subscribe((e) =>
+                {
+                    if (e.Object != null)
                     {
+                        e.Object.Id = e.Key;
                         notificationCollection.Insert(0, e.Object);
                     }
                 });
+            //await FirebaseDB.SetNotificationRealTimeListenter(notificationCollection);
         }
     }
 }

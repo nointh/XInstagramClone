@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InstagramClone.Views.PostPageViews.TestChatBox">
+    <ContentPage.Content>
+        <StackLayout>
+            <Entry x:Name="MessageInput"></Entry>
+            <Button x:Name="Enter" Clicked="Enter_Clicked"></Button>
+            <ListView x:Name="MessListview">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding SenderUsername}" FontSize="Large" TextColor="{StaticResource InsBlack}"></Label>
+                                <Label Text="{Binding Message}" FontSize="Medium" TextColor="Gray"></Label>
+                                <Label Text="{Binding Time}" FontSize="Small"></Label>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
