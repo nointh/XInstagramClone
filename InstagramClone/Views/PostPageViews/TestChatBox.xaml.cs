@@ -17,7 +17,7 @@ namespace InstagramClone.Views.PostPageViews
     {
         string chatboxId;
         string receiverId;
-        ObservableCollection<ChatMessage> messCollection = new ObservableCollection<ChatMessage>();
+        ObservableCollection<ChatMessageWithFriendAvatar> messCollection = new ObservableCollection<ChatMessageWithFriendAvatar>();
         UserModel CurrentUser;
         public TestChatBox()
         {
@@ -40,25 +40,29 @@ namespace InstagramClone.Views.PostPageViews
             else chatboxId = currentChatBox.ID;
 
             CurrentUser = await FirebaseDB.GetCurentUserInfo();
-            MessListview.ItemsSource = messCollection;
+            lbFriendUsr.Text = (await FirebaseDB.GetUserById(receiverId)).Username;
+          
             var result = FirebaseDB.firebaseClient
                 .Child("chatmessage")
                 .Child(chatboxId)
-                .AsObservable<ChatMessage>()
+                .AsObservable<ChatMessageWithFriendAvatar>()
                 .Subscribe(async (e) => {
                     if (e.Object != null)
                     {
                         await FirebaseDB.UpdateSeenForChatBox(chatboxId);
-                        messCollection.Insert(0, e.Object);
+                        e.Object.ImageUri = CurrentUser.ImageUri;
+                        //messCollection.Insert(messCollection.Count, e.Object);
+                        messCollection.Add(e.Object);
                     }
                 });
+            MessageListview.ItemsSource = messCollection;
         }
 
-        private async void Enter_Clicked(object sender, EventArgs e)
+        private async void lbSendMsg_Tapped(object sender, EventArgs e)
         {
             ChatMessage mess = new ChatMessage()
             {
-                Message = MessageInput.Text,
+                Message = editorMessage.Text,
                 Time = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
                 SenderID = CurrentUser.UID,
                 SenderUsername = CurrentUser.Username,

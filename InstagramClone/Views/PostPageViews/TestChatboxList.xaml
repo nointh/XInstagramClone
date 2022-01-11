@@ -1,17 +1,95 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             BackgroundColor="White"
              x:Class="InstagramClone.Views.PostPageViews.TestChatboxList">
+
+    <NavigationPage.TitleView>
+        <Label  Text="Chat"
+                FontAttributes="Bold"
+                FontSize="18"                                               
+                TextColor="{StaticResource InsBlack}"
+                HorizontalOptions="Start"
+                VerticalOptions="CenterAndExpand"
+        />
+    </NavigationPage.TitleView>
+    
     <ContentPage.Content>
-        <ListView x:Name="ChatboxListView" ItemTapped="ChatboxListView_ItemTapped">
+        <ListView x:Name="ChatboxListView"
+                  ItemTapped="ChatboxListView_ItemTapped"
+                  SeparatorVisibility="None"
+                  HasUnevenRows="True"
+                  BackgroundColor="{StaticResource InsWhite}"
+                  VerticalOptions="FillAndExpand"
+        >
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Orientation="Horizontal">
+                        <!--<StackLayout Orientation="Horizontal">
                             <Label Text="{Binding ReceiverID}"></Label>
                             <Label Text="{Binding LastMessage}"></Label>
                             <Label Text="{Binding IsRead}"></Label>
-                        </StackLayout>
+                        </StackLayout>-->
+                        <Grid Padding="8,8,8,8">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Avatar-->
+                            <Frame  Grid.Row="0" Grid.Column="0"
+                                    CornerRadius="30" 
+                                    HeightRequest="60"
+                                    WidthRequest="60"
+                                    VerticalOptions="Center"
+                                    HorizontalOptions="Center"
+                                    Padding="0"
+                                    IsClippedToBounds="True"
+                                    BorderColor="{StaticResource InsBlack}"
+                            >
+                                <Image Source="{Binding ImageUri}"
+                                       Aspect="AspectFill"
+                                       HeightRequest="60"
+                                       WidthRequest="60"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center">
+                                    <!--<Image.Clip>
+                                        <EllipseGeometry
+                                            Center="30,30"
+                                            RadiusX="30"
+                                            RadiusY="30"/>
+                                    </Image.Clip>-->
+                                </Image>
+                            </Frame>
+
+                            <!--Fullname and last message-->
+                            <StackLayout Grid.Row="0" Grid.Column="1"
+                                         Margin="12,0,0,0"
+                                         Orientation="Vertical"
+                                         VerticalOptions="CenterAndExpand"
+                                         HorizontalOptions="FillAndExpand"
+                                         Spacing="12"
+                            >
+                                <Label  Text="{Binding Fullname}"
+                                        FontFamily="FFARegular"
+                                        FontSize="16"
+                                        TextColor="Black"
+                                        FontAttributes="Bold"
+                                        VerticalOptions="CenterAndExpand"
+                                />
+
+                                <Label  Text="{Binding LastMessage}"
+                                        FontFamily="FFARegular"
+                                        FontSize="16"
+                                        TextColor="{Binding LastMessageColor}"
+                                        VerticalOptions="CenterAndExpand"
+                                />
+                            </StackLayout>
+                        </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

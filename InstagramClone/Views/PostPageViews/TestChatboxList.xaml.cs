@@ -15,7 +15,8 @@ namespace InstagramClone.Views.PostPageViews
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TestChatboxList : ContentPage
     {
-        ObservableCollection<UserChatboxModel> chatboxCollection = new ObservableCollection<UserChatboxModel>();
+        ObservableCollection<ChatboxModelWithReceiverInfo> chatboxCollection = new ObservableCollection<ChatboxModelWithReceiverInfo>();
+        
         public TestChatboxList()
         {
             InitializeComponent();
@@ -23,18 +24,27 @@ namespace InstagramClone.Views.PostPageViews
         }
         public void initData()
         {
-            ChatboxListView.ItemsSource = chatboxCollection;
+            ChatboxListView.ItemsSource = chatboxCollection;    
             var result = FirebaseDB.firebaseClient
                 .Child("userchat")
                 .Child(FirebaseDB.CurrentUserId)
-                .AsObservable<UserChatboxModel>()
+                .AsObservable<ChatboxModelWithReceiverInfo>()
                 .Subscribe((e) => {
                     if (e.Object != null)
                     {
                         if (e.EventType == Firebase.Database.Streaming.FirebaseEventType.InsertOrUpdate)
                         {
-                            List<UserChatboxModel> list = chatboxCollection.ToList();
-                            UserChatboxModel chat = list.Where(i => i.ID == e.Key).FirstOrDefault() ;
+                            List<ChatboxModelWithReceiverInfo> list = chatboxCollection.ToList();
+                            ChatboxModelWithReceiverInfo chat = list.Where(i => i.ID == e.Key).FirstOrDefault() ;
+
+                            var userInfo = FirebaseDB.GetUserById(e.Object.ReceiverID);
+                            e.Object.ImageUri = userInfo.Result.ImageUri;
+                            e.Object.Fullname = userInfo.Result.Fullname;
+                            if (e.Object.IsRead)
+                            {
+                                e.Object.LastMessageColor = "DimGray";
+                            }
+                            else e.Object.LastMessageColor = "Black";
 
                             if (chat == null) //if not in chatboxCollection yet, insert it then
                             {
@@ -54,12 +64,12 @@ namespace InstagramClone.Views.PostPageViews
                             }
                         }
                     }
-                });
+                }); 
         }
 
         private void ChatboxListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            UserChatboxModel chatmodel = ChatboxListView.SelectedItem as UserChatboxModel;
+            ChatboxModelWithReceiverInfo chatmodel = ChatboxListView.SelectedItem as ChatboxModelWithReceiverInfo;
             Navigation.PushAsync(new TestChatBox(chatmodel.ReceiverID));
         }
     }

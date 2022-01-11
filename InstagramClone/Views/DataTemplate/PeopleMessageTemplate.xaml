@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:InstagramClone.Models"
+             x:Class="InstagramClone.Views.DataTemplate.PeopleMessageTemplate">
+    
+    <ContentView.Content>
+        <Grid Padding="0,8,8,8">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Avatar-->
+            <Frame  Grid.Row="0" Grid.Column="0"
+                    CornerRadius="20" 
+                    HeightRequest="40"
+                    WidthRequest="40"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Padding="0"
+                    IsClippedToBounds="True"
+                    BorderColor="{StaticResource InsBlack}"
+                            >
+                <Image Source="{Binding ImageUri}"
+                        Aspect="AspectFill"
+                        HeightRequest="40"
+                        WidthRequest="40"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                />
+            </Frame>
+
+            <!--Message-->
+            <Frame Grid.Row="0" Grid.Column="1"
+                   Margin="0,0,0,0"
+                   Padding="12,12,12,12"
+                   CornerRadius="16"
+                   IsClippedToBounds="True"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start"
+                   BackgroundColor="WhiteSmoke"
+            >
+                <Label  Text="{Binding Message}"
+                        FontFamily="FFARegular"
+                        FontSize="16"
+                        TextColor="Black"
+                        FontAttributes="Bold"
+                        VerticalOptions="CenterAndExpand"
+                />
+            </Frame>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

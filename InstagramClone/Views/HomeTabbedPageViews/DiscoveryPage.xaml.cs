@@ -44,7 +44,11 @@ namespace InstagramClone.Views.HomeTabbedPageViews
 
         private void lsvAccounts_ItemTapped(object sender, ItemTappedEventArgs e)
         {
+            var item = (SearchUserModel)lsvAccounts.SelectedItem;
+            UserModel search = new UserModel { UID = item.Id };
+            UserModel me = new UserModel { UID = FirebaseDB.CurrentUserId };
 
+            Navigation.PushAsync(new ProfilePage(search, me));
         }
     }
 }
