@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fontAwesome="clr-namespace:FontAwesome"
-            xmlns:dataTemplate="clr-namespace:InstagramClone.Views.DataTemplate"
+             NavigationPage.HasNavigationBar="False"
+             xmlns:dataTemplate="clr-namespace:InstagramClone.Views.DataTemplate"
              x:Class="InstagramClone.Views.PostPageViews.PostDetailPage">
     <ContentPage.Resources>
         <dataTemplate:MediaDataTemplateSelector x:Key="templateSelector"></dataTemplate:MediaDataTemplateSelector>

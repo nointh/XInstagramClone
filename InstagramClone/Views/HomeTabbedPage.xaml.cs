@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using InstagramClone.Views.HomeTabbedPageViews;
@@ -24,6 +23,7 @@ namespace InstagramClone.Views
         public HomeTabbedPage()
         {
             InitializeComponent();
+            GetProfileInfoAndRefreshToken();
             NavigationPage homePage = new NavigationPage(new HomePage());
             NavigationPage discoveryPage = new NavigationPage(new DiscoveryPage());
             discoveryPage.IconImageSource = new FontImageSource { FontFamily = "FFASolid", Glyph = FontAwesomeIcons.Search };
@@ -32,8 +32,7 @@ namespace InstagramClone.Views
             Children.Add(discoveryPage);
             Children.Add(new NavigationPage(new AddPostPage()));
             Children.Add(new LikePage());
-            Children.Add(new NavigationPage(new YourProfile(new UserModel() { UID = "tngdcdng" })));
-            GetProfileInfoAndRefreshToken();
+            Children.Add(new NavigationPage(new YourProfile(new UserModel() { UID = FirebaseDB.CurrentUserId })));
         }
         private async void GetProfileInfoAndRefreshToken()
         {
@@ -45,12 +44,10 @@ namespace InstagramClone.Views
                 FirebaseDB.CurrentUserId = RefreshContent.User.LocalId;
                 Preferences.Set("FirebaseRefreshToken", JsonConvert.SerializeObject(RefreshContent));
                 Preferences.Set("UID", RefreshContent.User.LocalId);
-
             }
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                //await DisplayAlert("Alert", "Token expired", "OK");
             }
         }
         

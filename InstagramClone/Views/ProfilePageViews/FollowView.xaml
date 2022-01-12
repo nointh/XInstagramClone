@@ -3,8 +3,45 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fontAwesome="clr-namespace:FontAwesome"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             NavigationPage.HasBackButton="False"
              x:Class="InstagramClone.Views.ProfilePageViews.FollowView"
              >
+    <NavigationPage.TitleView>
+        <Grid BackgroundColor="{StaticResource InsWhite}" Padding="0,0,0,0" Margin="0,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label
+                   Text="{x:Static fontAwesome:FontAwesomeIcons.LongArrowLeft}"
+                   Grid.Column="0"
+                   FontFamily="PFARegular"
+                   FontSize="24"
+                   TextColor="Black"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                </Label.GestureRecognizers>
+            </Label>
+            <Label x:Name="TitleUsername"
+                   Text=""
+                   Grid.Column="1"
+                   FontFamily="FA"
+                   FontAttributes="None"
+                   FontSize="24"
+                   TextColor="Black"
+                   WidthRequest="150"
+                   HeightRequest="60"
+                   VerticalTextAlignment="Center"
+                   HorizontalTextAlignment="Center"
+                   HorizontalOptions="StartAndExpand"
+                   VerticalOptions="CenterAndExpand"
+                   />
+        </Grid>
+    </NavigationPage.TitleView>
     <ContentPage.Content>
         <StackLayout>
             <Entry x:Name="FindUser" Placeholder="Find username"

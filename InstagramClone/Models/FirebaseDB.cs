@@ -307,11 +307,11 @@ namespace InstagramClone.Models
             }
 
         }
-        public async Task<UserModel> getUser(string username)
+        public async Task<UserModel> getUser(string UID)
         {
             var users = await getAllUser();
 
-            return users.Where(user => user.Username == username).FirstOrDefault();
+            return users.Where(user => user.UID == UID).FirstOrDefault();
         }
         public async Task<UserModel> getUserByKey(string key)
         {
@@ -419,6 +419,32 @@ namespace InstagramClone.Models
 
                 return "follow";
             }
+        }
+
+        public async Task<List<UserModel>> getSuggestFollow(string UserKey, List<FollowUser> follwing)
+        {
+            FirebaseDB db = new FirebaseDB();
+            List<FollowUser> suggest = new List<FollowUser>();
+            foreach (FollowUser user in follwing)
+            {
+                List<FollowUser> temp = await db.getFollowing(user.UserKey);
+                foreach (FollowUser u in temp)
+                {
+                    if (!suggest.Contains(u))
+                    {
+                        suggest.Add(u);
+                    }
+                }
+            }
+            List<UserModel> users = new List<UserModel>();
+            foreach (FollowUser u in suggest)
+            {
+                if (!(await checkIsFollow(UserKey, u.UserKey)))
+                {
+                    users.Add(await db.getUserByKey(u.UserKey));
+                }
+            }
+            return users;
         }
 
         //End Dũng
