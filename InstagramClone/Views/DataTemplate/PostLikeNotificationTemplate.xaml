@@ -23,6 +23,9 @@
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
                     Aspect="AspectFill">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer x:Name="AvatarTap" Tapped="AvatarTap_Tapped"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
                 <Image.Clip>
                     <EllipseGeometry
                         Center="30,30"

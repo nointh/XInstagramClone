@@ -10,6 +10,7 @@ using InstagramClone.Models;
 using System.Windows.Input;
 using Xamarin.CommunityToolkit.ObjectModel;
 using System.Collections.ObjectModel;
+using InstagramClone.Views.PostPageViews;
 
 namespace InstagramClone.Views.HomeTabbedPageViews
 {
@@ -26,6 +27,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             //InitData();
             RefreshCommand = new AsyncCommand(LoadNewsfeedItemsAsync);
             PostRefresh.Command = RefreshCommand;
+            PostRefresh.IsRefreshing = true;
             Task.Run(LoadNewsfeedItemsAsync);
             CollectionViewPost.ItemsSource = listCollection;
         }
@@ -46,7 +48,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             listCollection.Clear();
             foreach(var item in listPost)
             {
-                listCollection.Insert(0,item);
+                listCollection.Insert(0, item);
             }
             PostRefresh.IsRefreshing = false;
         }
@@ -78,7 +80,8 @@ namespace InstagramClone.Views.HomeTabbedPageViews
 
         private void TapGestureRecognizer_Tapped_1(object sender, EventArgs e)
         {
-            DisplayAlert("Title", "You have opened the send", "OK");
+            //DisplayAlert("Title", "You have opened the send", "OK");
+            Navigation.PushAsync(new Page1());
         }
 
         private void btnAddPost_Tapped(object sender, EventArgs e)
@@ -113,6 +116,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         private async void lbComment_Tapped(object sender, EventArgs e)
         {
             var item = (PostModel)((Label)sender).BindingContext;
+            await Navigation.PopAsync();
             await Navigation.PushAsync(new CommentPage(item.OwnerId, item.PostId));
         }
         //set like post tapp
@@ -126,10 +130,17 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             item.LikedUsers = tempList;
         }
 
-        private void userAvatar_Tapped(object sender, EventArgs e)
+        private async void userAvatar_Tapped(object sender, EventArgs e)
         {
-            var item = (PostModel)((StackLayout)sender).BindingContext;
-            DisplayAlert("ale", "open profile of user " + item.OwnerId, "ok");
+            var item = (PostModel)((Image)sender).BindingContext;
+            FirebaseDB firebase = new FirebaseDB();
+            if (item.OwnerId == FirebaseDB.CurrentUserId)
+            {
+                await Navigation.PushAsync(new YourProfile(await FirebaseDB.GetCurentUserInfo()));
+            }
+            else
+                await Navigation.PushAsync(new ProfilePage(await firebase.getUser(item.OwnerId), await FirebaseDB.GetCurentUserInfo()));
+
         }
     }
 }

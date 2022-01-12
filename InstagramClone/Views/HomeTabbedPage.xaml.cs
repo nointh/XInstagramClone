@@ -28,7 +28,7 @@ namespace InstagramClone.Views
             NavigationPage discoveryPage = new NavigationPage(new DiscoveryPage());
             discoveryPage.IconImageSource = new FontImageSource { FontFamily = "FFASolid", Glyph = FontAwesomeIcons.Search };
             homePage.IconImageSource = new FontImageSource { FontFamily = "PFASolid", Glyph = FontAwesomeIcons.HomeAlt };
-            Children.Add(homePage);
+            Children.Add(new HomePage());
             Children.Add(discoveryPage);
             Children.Add(new NavigationPage(new AddPostPage()));
             Children.Add(new LikePage());
