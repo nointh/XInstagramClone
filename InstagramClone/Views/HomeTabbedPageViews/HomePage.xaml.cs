@@ -27,6 +27,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             //InitData();
             RefreshCommand = new AsyncCommand(LoadNewsfeedItemsAsync);
             PostRefresh.Command = RefreshCommand;
+            PostRefresh.IsRefreshing = true;
             Task.Run(LoadNewsfeedItemsAsync);
             CollectionViewPost.ItemsSource = listCollection;
         }

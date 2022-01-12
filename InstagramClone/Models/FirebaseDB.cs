@@ -370,7 +370,7 @@ namespace InstagramClone.Models
                     ReceiverID = i.Object.ReceiverID,
                     LastMessage = chat.Message,
                     IsRead = false,
-                    UpdateAt = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")
+                    UpdateAt = chat.Time
                 }).FirstOrDefault();
             await firebaseClient
                 .Child("userchat")

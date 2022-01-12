@@ -46,13 +46,15 @@ namespace InstagramClone.Views.PostPageViews
                 .Child("chatmessage")
                 .Child(chatboxId)
                 .AsObservable<ChatMessageWithFriendAvatar>()
-                .Subscribe(async (e) => {
+                .Subscribe((e) => {
                     if (e.Object != null)
                     {
-                        await FirebaseDB.UpdateSeenForChatBox(chatboxId);
+                        //await FirebaseDB.UpdateSeenForChatBox(chatboxId);
+                        Task.Run(async () => await FirebaseDB.UpdateSeenForChatBox(chatboxId));
                         e.Object.ImageUri = CurrentUser.ImageUri;
                         //messCollection.Insert(messCollection.Count, e.Object);
                         messCollection.Add(e.Object);
+                        MessageListview.ScrollTo(messCollection.Count - 1, -1, ScrollToPosition.End, true);
                     }
                 });
             MessageListview.ItemsSource = messCollection;

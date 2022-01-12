@@ -49,7 +49,14 @@ namespace InstagramClone.Views.PostPageViews
                             if (chat == null) //if not in chatboxCollection yet, insert it then
                             {
                                 e.Object.ID = e.Key;
-                                chatboxCollection.Insert(0, e.Object);
+                                if (chatboxCollection.Count > 0
+                                && 
+                                CompareTimeString(e.Object.UpdateAt, chatboxCollection[chatboxCollection.Count - 1].UpdateAt)
+                                )
+                                {
+                                    chatboxCollection.Insert(0, e.Object);
+                                }    
+                                else chatboxCollection.Add(e.Object);
                             }
                             else // else meaning that chatbox already has that chatbox model
                             {
@@ -59,14 +66,26 @@ namespace InstagramClone.Views.PostPageViews
                                 chatboxCollection.Clear();
                                 foreach(var item in list)
                                 {
-                                    chatboxCollection.Insert(0, item);
+                                    chatboxCollection.Add(item);
                                 }
                             }
                         }
                     }
                 }); 
         }
-
+        private bool CompareTimeString(string time1, string time2)
+        {
+            try
+            {
+                DateTime datetime1 = DateTime.Parse(time1);
+                DateTime datetime2 = DateTime.Parse(time2);
+                return DateTime.Compare(datetime1, datetime2) > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         private void ChatboxListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             ChatboxModelWithReceiverInfo chatmodel = ChatboxListView.SelectedItem as ChatboxModelWithReceiverInfo;
