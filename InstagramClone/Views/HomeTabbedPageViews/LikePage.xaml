@@ -27,6 +27,7 @@
         <CollectionView x:Name="MessageList"
                         ItemTemplate="{DynamicResource templateSelector}"
                         ItemsSource="{Binding notificationCollection}"
+                        ItemSizingStrategy="MeasureFirstItem"
                   >
             
         </CollectionView>

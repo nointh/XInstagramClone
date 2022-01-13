@@ -28,13 +28,12 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             RefreshCommand = new AsyncCommand(LoadNewsfeedItemsAsync);
             PostRefresh.Command = RefreshCommand;
             PostRefresh.IsRefreshing = true;
-            Task.Run(LoadNewsfeedItemsAsync);
             CollectionViewPost.ItemsSource = listCollection;
         }
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            //Task.Run(LoadNewsfeedItemsAsync);
+            Task.Run(LoadNewsfeedItemsAsync);
         }
         public void LoadNewsfeed()
         {
@@ -52,21 +51,6 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             }
             PostRefresh.IsRefreshing = false;
         }
-        public void InitData()
-        {
-            List<UserModel> list = new List<UserModel>
-            {
-                new UserModel { Username = "ntncxzcaaaaaaaaaaaaaaaaaaaaaaaa", Fullname = "Nguyen Thanh Noi", ImageUri = "https://randomuser.me/api/portraits/men/51.jpg" },
-                new UserModel { Username = "Shizune", Fullname = "Nguyen Thanh Noi", ImageUri = "https://randomuser.me/api/portraits/women/51.jpg" },
-                new UserModel { Username = "Ngthclone", Fullname = "Nguyen Thanh Noi", ImageUri = "https://randomuser.me/api/portraits/men/26.jpg" },
-                new UserModel { Username = "Andre", Fullname = "Nguyen Thanh Noi", ImageUri = "https://randomuser.me/api/portraits/women/64.jpg" },
-                new UserModel { Username = "Taka", Fullname = "Nguyen Thanh Noi", ImageUri = "https://randomuser.me/api/portraits/men/72.jpg" }
-            };
-
-            //CollViewStory.ItemsSource = list;
-            CollectionViewPost.ItemsSource = PostModel.GetExamplePostList();
-        }
-
         //set unlike post tap
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
@@ -116,7 +100,6 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         private async void lbComment_Tapped(object sender, EventArgs e)
         {
             var item = (PostModel)((Label)sender).BindingContext;
-            await Navigation.PopAsync();
             await Navigation.PushAsync(new CommentPage(item.OwnerId, item.PostId));
         }
         //set like post tapp

@@ -32,7 +32,7 @@ namespace InstagramClone.Views
             Children.Add(discoveryPage);
             Children.Add(new NavigationPage(new AddPostPage()));
             Children.Add(new LikePage());
-            Children.Add(new NavigationPage(new YourProfile(new UserModel() { UID = FirebaseDB.CurrentUserId })));
+            Children.Add(new YourProfile(new UserModel() { UID = FirebaseDB.CurrentUserId }));
         }
         private async void GetProfileInfoAndRefreshToken()
         {
