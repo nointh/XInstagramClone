@@ -96,7 +96,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             Following = await fb.getFollowing(user.UID);
             Follower = await fb.getFollower(user.UID);
             Posts = await FirebaseDB.GetAllPostOfUser(user.UID);
-            //SavePosts = await fb.
+            SavePosts = await FirebaseDB.GetAllSavedPost();
 
             InitProfile();
         }
