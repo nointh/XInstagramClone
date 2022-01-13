@@ -6,12 +6,12 @@
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="InstagramClone.Views.HomeTabbedPageViews.YourProfile">
     <ContentPage.IconImageSource>
-        <FontImageSource Glyph="{x:Static fontAwesome:FontAwesomeIcons.Home}"
+        <FontImageSource Glyph="{x:Static fontAwesome:FontAwesomeIcons.User}"
                          FontFamily="PFASolid"
                          Color="Black"
         />
     </ContentPage.IconImageSource>
-    <NavigationPage.TitleView>
+    <!--<NavigationPage.TitleView>
         <Grid BackgroundColor="{StaticResource InsWhite}" Padding="0,0,0,0" Margin="0,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -44,10 +44,42 @@
                    VerticalOptions="CenterAndExpand"
                    />
         </Grid>
-    </NavigationPage.TitleView>
+    </NavigationPage.TitleView>-->
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
+                <Grid BackgroundColor="{StaticResource InsWhite}" Padding="0,0,0,0" Margin="0,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label
+                   Text="Logout"
+                   Grid.Column="1"
+                   FontSize="14"
+                   TextColor="Black"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   >
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Logout"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label x:Name="TitleUsername"
+                   Text=""
+                   Grid.Column="0"
+                   FontAttributes="None"
+                   FontSize="20"
+                   TextColor="Black"
+                   WidthRequest="150"
+                   HeightRequest="60"
+                   VerticalTextAlignment="Center"
+                   HorizontalTextAlignment="Center"
+                   HorizontalOptions="StartAndExpand"
+                   VerticalOptions="CenterAndExpand"
+                   />
+                </Grid>
                 <Grid x:Name="ProfileView"
                   Padding="20"
                   RowSpacing="0"

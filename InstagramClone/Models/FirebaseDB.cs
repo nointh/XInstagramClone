@@ -274,6 +274,15 @@ namespace InstagramClone.Models
         {
             try
             {
+                //Check for duplicate notication (spam case)
+                var result = (await FirebaseDB.firebaseClient
+                .Child("notification")
+                .Child(FirebaseDB.CurrentUserId)
+                .OnceAsync<NotificationModel>()).Where(item => item.Object.Type == noti.Type && item.Object.UserId == noti.UserId &&
+                (noti.Type == "follow" || (noti.Type == "postlike" && item.Object.PostId == noti.PostId)));
+
+                if (result != null) return;
+
                 await firebaseClient.Child("notification")
                     .Child(OwnerId)
                     .PostAsync(noti);
@@ -325,6 +334,7 @@ namespace InstagramClone.Models
                     }
                 });
         }
+
         public static async Task<string> InsertChatBox(string friendId)
         {
             UserChatboxModel userChatbox = new UserChatboxModel
@@ -410,6 +420,101 @@ namespace InstagramClone.Models
             await UpdateUserChatBox(receiverId, chatboxId, chat);
         }
 
+
+
+        public static async Task SavePost(PostModel post)
+        {
+            try
+            {
+                await firebaseClient
+                    .Child("savepost")
+                    .Child(CurrentUserId)
+                    .Child(post.PostId)
+                    .PutAsync(new PostModel
+                    {
+                        PostId = post.PostId,
+                        OwnerId = post.OwnerId,
+                        OwnerUsername = post.OwnerUsername,
+                        OwnerImage = post.OwnerImage,
+                        Caption = post.Caption,
+                        PostTime = post.PostTime
+                    });
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        public static async Task UnsavePost(PostModel post)
+        {
+            try
+            {
+                await firebaseClient
+                    .Child("savepost")
+                    .Child(CurrentUserId)
+                    .Child(post.PostId)
+                    .DeleteAsync();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        public static async Task<bool> IsPostSaved(PostModel post)
+        {
+            try
+            {
+                var savePost = await firebaseClient
+                    .Child("savepost")
+                    .Child(CurrentUserId)
+                    .Child(post.PostId)
+                    .OnceSingleAsync<PostModel>();
+                return savePost != null;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+        public static async Task<List<PostModel>> GetAllSavedPost()
+        {
+            List<PostModel> savedPost = new List<PostModel>();
+            try
+            {
+                savedPost = (await firebaseClient
+                    .Child("savepost")
+                    .Child(CurrentUserId)
+                    .OnceAsync<PostModel>()
+                    ).Select(i => new PostModel {
+                        PostId = i.Object.PostId,
+                        OwnerId = i.Object.OwnerId,
+                        OwnerUsername = i.Object.OwnerUsername,
+                        OwnerImage = i.Object.OwnerImage,
+                        Caption = i.Object.Caption,
+                        PostTime = i.Object.PostTime
+                    }).ToList();
+                foreach(var item in savedPost)
+                {
+                    //get media
+                    ObservableCollection<Media> mediaList = new ObservableCollection<Media>();
+                    foreach (var mediaContent in await GetMediaListOfPost(item.OwnerId, item.PostId))
+                    {
+                        mediaList.Add(Media.ParseContent(mediaContent));
+                    }
+                    item.MediaList = mediaList;
+                    //get liked users
+                    List<UserLiked> likedUsers = await GetLikedUsersOfPost(item.PostId, item.OwnerId);
+                    item.LikedUsers = likedUsers;
+                    item.IsLiked = likedUsers.Where(u => u.UserId == CurrentUserId).ToList().Count > 0;
+                }
+            }
+            catch(Exception e)
+            {
+                Console.Write(e.Message);
+            }
+            return savedPost;
+        }
         //End Nội
 
         //Dũng
@@ -521,16 +626,16 @@ namespace InstagramClone.Models
                     .Child("follower")
                     .Child(user2.UserKey)
                     .OnceAsync<FollowUser>()).Where(a => a.Object.UserKey == user1.UserKey).FirstOrDefault();
-
-                await firebaseClient.Child("following")
-                    .Child(user1.UserKey)
-                    .Child(toDeleteFollowing.Key)
-                    .DeleteAsync();
-
-                await firebaseClient.Child("follower")
-                    .Child(user2.UserKey)
-                    .Child(toDeleteFollower.Key)
-                    .DeleteAsync();
+                if (toDeleteFollowing != null)
+                    await firebaseClient.Child("following")
+                        .Child(user1.UserKey)
+                        .Child(toDeleteFollowing.Key)
+                        .DeleteAsync();
+                if (toDeleteFollower != null)
+                    await firebaseClient.Child("follower")
+                        .Child(user2.UserKey)
+                        .Child(toDeleteFollower.Key)
+                        .DeleteAsync();
 
                 return "unfollow";
             }
