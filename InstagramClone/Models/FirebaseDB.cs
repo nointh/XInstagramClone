@@ -335,7 +335,6 @@ namespace InstagramClone.Models
                 });
         }
 
-
         public static async Task<string> InsertChatBox(string friendId)
         {
             UserChatboxModel userChatbox = new UserChatboxModel
@@ -477,6 +476,44 @@ namespace InstagramClone.Models
                 Console.WriteLine(e.Message);
                 return false;
             }
+        }
+        public static async Task<List<PostModel>> GetAllSavedPost()
+        {
+            List<PostModel> savedPost = new List<PostModel>();
+            try
+            {
+                savedPost = (await firebaseClient
+                    .Child("savepost")
+                    .Child(CurrentUserId)
+                    .OnceAsync<PostModel>()
+                    ).Select(i => new PostModel {
+                        PostId = i.Object.PostId,
+                        OwnerId = i.Object.OwnerId,
+                        OwnerUsername = i.Object.OwnerUsername,
+                        OwnerImage = i.Object.OwnerImage,
+                        Caption = i.Object.Caption,
+                        PostTime = i.Object.PostTime
+                    }).ToList();
+                foreach(var item in savedPost)
+                {
+                    //get media
+                    ObservableCollection<Media> mediaList = new ObservableCollection<Media>();
+                    foreach (var mediaContent in await GetMediaListOfPost(item.OwnerId, item.PostId))
+                    {
+                        mediaList.Add(Media.ParseContent(mediaContent));
+                    }
+                    item.MediaList = mediaList;
+                    //get liked users
+                    List<UserLiked> likedUsers = await GetLikedUsersOfPost(item.PostId, item.OwnerId);
+                    item.LikedUsers = likedUsers;
+                    item.IsLiked = likedUsers.Where(u => u.UserId == CurrentUserId).ToList().Count > 0;
+                }
+            }
+            catch(Exception e)
+            {
+                Console.Write(e.Message);
+            }
+            return savedPost;
         }
         //End Nội
 
