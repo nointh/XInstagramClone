@@ -477,6 +477,45 @@ namespace InstagramClone.Models
                 return false;
             }
         }
+        public static async Task<PostModel> LoadPostModel(PostModel post)
+        {
+            PostModel result = new PostModel();
+            try
+            {
+                var user = await GetUserModelById(post.OwnerId);
+                result = (await firebaseClient
+                    .Child("post")
+                    .Child(post.OwnerId)
+                    .OrderByKey()
+                    .StartAt(post.PostId)
+                    .LimitToFirst(1)
+                    .OnceAsync<PostModel>()).Select(i => new PostModel 
+                    { 
+                        OwnerId = post.OwnerId,
+                        PostId = post.PostId,
+                        Caption = i.Object.Caption,
+                        PostTime = i.Object.PostTime,
+                        OwnerImage = user.ImageUri,
+                        OwnerUsername = user.Username
+                    }).FirstOrDefault();
+                    //get media
+                ObservableCollection<Media> mediaList = new ObservableCollection<Media>();
+                foreach (var mediaContent in await GetMediaListOfPost(result.OwnerId, result.PostId))
+                {
+                    mediaList.Add(Media.ParseContent(mediaContent));
+                }
+                result.MediaList = mediaList;
+                //get liked users
+                List<UserLiked> likedUsers = await GetLikedUsersOfPost(result.PostId, result.OwnerId);
+                result.LikedUsers = likedUsers;
+                result.IsLiked = likedUsers.Where(u => u.UserId == CurrentUserId).ToList().Count > 0;
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message);
+            }
+            return result;
+        }
         public static async Task<List<PostModel>> GetAllSavedPost()
         {
             List<PostModel> savedPost = new List<PostModel>();

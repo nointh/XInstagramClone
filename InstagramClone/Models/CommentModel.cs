@@ -248,7 +248,7 @@ namespace InstagramClone.Models
         }
     }
 
-    class UserLiked
+    public class UserLiked
     {
         public string UserId { get; set; }
     }

@@ -27,6 +27,14 @@ namespace InstagramClone.Views.PostPageViews
             InitPostData(postId);
 
         }
+        public PostDetailPage(PostModel postParam)
+        {
+            InitializeComponent();
+            this.post = postParam;
+            this.postId = postParam.PostId;
+            InitPostData(postId);
+        }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -34,7 +42,8 @@ namespace InstagramClone.Views.PostPageViews
         }
         public async void InitPostData(string postId)
         {
-            post = (await FirebaseDB.GetAllPostOfUser(FirebaseDB.CurrentUserId)).Where(i => i.PostId == postId).FirstOrDefault();
+            //post = (await FirebaseDB.GetAllPostOfUser(FirebaseDB.CurrentUserId)).Where(i => i.PostId == postId).FirstOrDefault();
+            post = await FirebaseDB.LoadPostModel(post);
             BindPostData();
         }
         public void BindPostData()

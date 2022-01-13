@@ -19,6 +19,7 @@ namespace InstagramClone.Models
         public string Time { get; set; }
         public string Message { get; set; }
         public string PostID { get; set; }
+        public string PostUserID { get; set; }
     }
     class ChatMessageWithFriendAvatar
     {

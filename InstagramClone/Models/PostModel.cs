@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace InstagramClone.Models
 {
-    class PostModel : INotifyPropertyChanged
+    public class PostModel : INotifyPropertyChanged
     {
         public string PostId { get; set; }
         public string OwnerId { get; set; }
