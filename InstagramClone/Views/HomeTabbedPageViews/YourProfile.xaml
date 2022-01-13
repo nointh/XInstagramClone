@@ -326,10 +326,27 @@
                             TextColorSelected="Black"
                             FontSize="20"
                             FontSizeSelected="20">
-                            <Label    
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center"
-                                Text="TabContent2" />
+                            <StackLayout>
+                                <CollectionView x:Name="SavePost" Margin="0,10,0,0">
+                                    <CollectionView.ItemsLayout>
+                                        <GridItemsLayout Orientation="Vertical"
+                                                        Span="3" />
+                                    </CollectionView.ItemsLayout>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Image ClassId="{Binding PostId}"
+                                                    Aspect="AspectFill"   
+                                                    Source="{Binding MediaList[0].Url.Uri}">
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer
+                                                            Tapped="TapGestureRecognizer_Tapped"
+                                                            NumberOfTapsRequired="1"/>
+                                                </Image.GestureRecognizers>
+                                            </Image>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </StackLayout>
                         </xct:TabViewItem>
                     </xct:TabView>
                 </Grid>

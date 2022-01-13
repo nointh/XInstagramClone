@@ -187,21 +187,6 @@
                                 </CollectionView>
                             </StackLayout>
                         </xct:TabViewItem>
-
-                        <xct:TabViewItem
-                            FontFamily="PFARegular"
-                            Text="{x:Static fontAwesome:FontAwesomeIcons.Tag}"
-                            TextColor="DimGray"
-                            TextColorSelected="Black"
-                            FontSize="20"
-                            FontSizeSelected="20">
-                            <Grid>
-                                <Label    
-                                    HorizontalOptions="Center"
-                                    VerticalOptions="Center"
-                                    Text="TabContent2" />
-                            </Grid>
-                        </xct:TabViewItem>
                     </xct:TabView>
                 </Grid>
             </StackLayout>
