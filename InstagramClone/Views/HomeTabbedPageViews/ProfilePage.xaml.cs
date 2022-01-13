@@ -7,6 +7,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using InstagramClone.Models;
 using InstagramClone.Views.ProfilePageViews;
+using InstagramClone.Views.PostPageViews;
 
 
 namespace InstagramClone.Views.HomeTabbedPageViews
@@ -33,8 +34,15 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             user = await fb.getUser(user.UID);
             Following = await fb.getFollowing(user.UID);
             Follower = await fb.getFollower(user.UID);
+            Posts = await FirebaseDB.GetAllPostOfUser(user.UID);
+
             InitProfile();
             InitButton();
+        }
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            Image img = (Image)sender;
+            Navigation.PushAsync(new PostDetailPage(img.ClassId));
         }
         private void InitProfile()
         {
@@ -126,13 +134,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
 
         private void MessageButton_Clicked(object sender, EventArgs e)
         {
-
-        }
-
-        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
-        {
-            Image img = (Image)sender;
-            DisplayAlert("Alert", "You click: " + img.Source, "OK");
+            Navigation.PushAsync(new TestChatBox(user.UID));
         }
     }
 }
