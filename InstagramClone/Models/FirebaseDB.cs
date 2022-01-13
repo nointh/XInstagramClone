@@ -583,9 +583,12 @@ namespace InstagramClone.Models
             List<UserModel> users = new List<UserModel>();
             foreach (FollowUser u in suggest)
             {
-                if (!(await checkIsFollow(UserKey, u.UserKey)))
+                if (u.UserKey != UserKey)
                 {
-                    users.Add(await db.getUserByKey(u.UserKey));
+                    if (!(await checkIsFollow(UserKey, u.UserKey)))
+                    {
+                        users.Add(await db.getUserByKey(u.UserKey));
+                    }
                 }
             }
             return users;
