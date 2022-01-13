@@ -36,6 +36,7 @@ namespace InstagramClone.Views.PostPageViews
             else
             {
                 lbClearText.IsVisible = false;
+                GoToChatBox.IsVisible = true;
                 list = new List<SearchUserModel>();
             }
             lsvAccounts.ItemsSource = list;
@@ -44,13 +45,18 @@ namespace InstagramClone.Views.PostPageViews
         private void lsvAccounts_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             SearchUserModel user = lsvAccounts.SelectedItem as SearchUserModel;
-            DisplayAlert("info", "this user id is " + user.Id, "ok");
+            //DisplayAlert("info", "this user id is " + user.Id, "ok");
             Navigation.PushAsync(new TestChatBox(user.Id));
         }
 
         private void GoToChatBox_Clicked(object sender, EventArgs e)
         {
             Navigation.PushAsync(new TestChatboxList());
+        }
+
+        private void entrySearch_Focused(object sender, FocusEventArgs e)
+        {
+            GoToChatBox.IsVisible = false;
         }
     }
 }

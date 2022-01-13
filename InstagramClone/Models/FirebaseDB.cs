@@ -470,11 +470,7 @@ namespace InstagramClone.Models
             await firebaseClient
               .Child("user")
               .Child(user.UID)
-              .PutAsync(new UserModel()
-              {
-                  Username = user.Username,
-
-              });
+              .PutAsync(user);
         }
         public async Task<List<FollowUser>> getFollower(string UserKey)
         {
@@ -681,8 +677,6 @@ namespace InstagramClone.Models
                 Time = (DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"))
             };
             await SendNotificationToUser(noti, ownerId);
-
-
         }
 
         public static async Task AddUserLikeForComment(string ownerId, string postId, string cmtId, UserLiked usr)
@@ -783,6 +777,5 @@ namespace InstagramClone.Models
               .PostAsync(media);
         }
         //End Danh
-
     }
 }

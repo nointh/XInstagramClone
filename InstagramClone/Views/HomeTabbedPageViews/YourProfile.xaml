@@ -86,6 +86,10 @@
                                 RadiusX="42.5"
                                 RadiusY="42.5"/>
                             </Image.Clip>
+
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer x:Name="usrAvatar" Tapped="usrAvatar_Tapped"/>
+                            </Image.GestureRecognizers>
                         </Image>
                     </Frame>
 

@@ -26,13 +26,21 @@ namespace InstagramClone.Views
             GetProfileInfoAndRefreshToken();
             NavigationPage homePage = new NavigationPage(new HomePage());
             NavigationPage discoveryPage = new NavigationPage(new DiscoveryPage());
+            NavigationPage addPostPage = new NavigationPage(new AddPostPage());
+            NavigationPage profilePage = new NavigationPage(new YourProfile(new UserModel() { UID = FirebaseDB.CurrentUserId }));
+            Page notiPage = new LikePage();
+
             discoveryPage.IconImageSource = new FontImageSource { FontFamily = "FFASolid", Glyph = FontAwesomeIcons.Search };
             homePage.IconImageSource = new FontImageSource { FontFamily = "PFASolid", Glyph = FontAwesomeIcons.HomeAlt };
+            addPostPage.IconImageSource = new FontImageSource { FontFamily = "FFARegular", Glyph = FontAwesomeIcons.PlusSquare };
+            notiPage.IconImageSource = new FontImageSource { FontFamily = "FFARegular", Glyph = FontAwesomeIcons.Bell };
+            profilePage.IconImageSource = new FontImageSource { FontFamily = "FFARegular", Glyph = FontAwesomeIcons.User };
+
             Children.Add(new HomePage());
             Children.Add(discoveryPage);
-            Children.Add(new NavigationPage(new AddPostPage()));
-            Children.Add(new LikePage());
-            Children.Add(new NavigationPage(new YourProfile(new UserModel() { UID = FirebaseDB.CurrentUserId })));
+            Children.Add(addPostPage);
+            Children.Add(notiPage);
+            Children.Add(profilePage);
         }
         private async void GetProfileInfoAndRefreshToken()
         {
