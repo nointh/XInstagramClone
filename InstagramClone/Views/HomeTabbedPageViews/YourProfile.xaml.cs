@@ -18,6 +18,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         private List<FollowUser> Follower;
         private List<FollowUser> Following;
         private List<PostModel> Posts;
+        private List<PostModel> SavePosts;
         private List<UserModel> suggestFollow;
 
         public YourProfile(UserModel user)
@@ -42,6 +43,10 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             {
                 UserPost.Text = Posts.Count.ToString();
                 InitPost();
+            }
+            if (SavePosts != null)
+            {
+                SavePost.ItemsSource = SavePosts;
             }
             if (user.ImageUri != null)
             {
@@ -91,6 +96,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             Following = await fb.getFollowing(user.UID);
             Follower = await fb.getFollower(user.UID);
             Posts = await FirebaseDB.GetAllPostOfUser(user.UID);
+            //SavePosts = await fb.
 
             InitProfile();
         }
