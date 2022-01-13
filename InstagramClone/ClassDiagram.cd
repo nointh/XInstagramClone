@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="InstagramClone.Models.ChatMessageWithFriendAvatar">
+    <Position X="3.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAIAAAAAAAAAAAgAAQAAIAAAAQA=</HashCode>
+      <FileName>Models\ChatModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InstagramClone.Models.ChatboxModelWithReceiverInfo">
+    <Position X="0.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAEAAAAAAAgAAAAAAAEIAAAAAAIAgAAAAAAAAAAAQ=</HashCode>
+      <FileName>Models\ChatModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InstagramClone.Models.FirebaseDB">
+    <Position X="5.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ADECAAMIAY4AAQgAACAhACCChAKRAgqIoAAAIxAABAA=</HashCode>
+      <FileName>Models\FirebaseDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InstagramClone.Models.FullCommentModel" BaseTypeListCollapsed="true">
+    <Position X="15.25" Y="1.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAIABDAEAAAMQMAAAQBgAAAAAAgABBACAAACAI=</HashCode>
+      <FileName>Models\CommentModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="InstagramClone.Models.UserLiked">
+    <Position X="17.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\CommentModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InstagramClone.Models.FollowUser">
+    <Position X="20.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\FollowUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InstagramClone.Models.NotificationModel">
+    <Position X="10.75" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAEAAQAAAAgAAAAgABAgCQAAAAAAAQA=</HashCode>
+      <FileName>Models\Notification.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InstagramClone.Models.TimeDifferenceConverter" BaseTypeListCollapsed="true">
+    <Position X="8.25" Y="1" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Notification.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="InstagramClone.Models.QuoteConverter" BaseTypeListCollapsed="true">
+    <Position X="9" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Notification.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.565" Collapsed="true" />
+  </Class>
+  <Class Name="InstagramClone.Models.PostModel" BaseTypeListCollapsed="true">
+    <Position X="13.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAgAAAIAAAAAAEAIGAAAAQAhAIAABAACAAAAQAACAA=</HashCode>
+      <FileName>Models\PostModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="InstagramClone.Models.MediaContent">
+    <Position X="25.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQAAAAAAAAA=</HashCode>
+      <FileName>Models\PostModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InstagramClone.Models.UserJson">
+    <Position X="20.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAICAAAAICAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\UserJson.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InstagramClone.Models.FollowUserModel" BaseTypeListCollapsed="true">
+    <Position X="22" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAICIAAAAAAAAgAAIQAAAAAAgAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\UserJson.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="InstagramClone.Models.UserModel">
+    <Position X="23.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAACCAAgACAAQAAAAAAAAAAAAgCAAAAIAgAEAA=</HashCode>
+      <FileName>Models\UserModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

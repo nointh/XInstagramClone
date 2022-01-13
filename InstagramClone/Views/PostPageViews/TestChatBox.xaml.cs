@@ -40,7 +40,8 @@ namespace InstagramClone.Views.PostPageViews
             else chatboxId = currentChatBox.ID;
 
             CurrentUser = await FirebaseDB.GetCurentUserInfo();
-            lbFriendUsr.Text = (await FirebaseDB.GetUserById(receiverId)).Username;
+            var friend = await FirebaseDB.GetUserById(receiverId);
+            lbFriendUsr.Text = friend.Username;
           
             var result = FirebaseDB.firebaseClient
                 .Child("chatmessage")
@@ -51,7 +52,7 @@ namespace InstagramClone.Views.PostPageViews
                     {
                         //await FirebaseDB.UpdateSeenForChatBox(chatboxId);
                         Task.Run(async () => await FirebaseDB.UpdateSeenForChatBox(chatboxId));
-                        e.Object.ImageUri = CurrentUser.ImageUri;
+                        e.Object.ImageUri = friend.ImageUri;
                         //messCollection.Insert(messCollection.Count, e.Object);
                         messCollection.Add(e.Object);
                         MessageListview.ScrollTo(messCollection.Count - 1, -1, ScrollToPosition.End, true);
@@ -70,6 +71,8 @@ namespace InstagramClone.Views.PostPageViews
                 SenderUsername = CurrentUser.Username,
             };
             await FirebaseDB.SendMessage(chatboxId, receiverId, mess);
+
+            editorMessage.Text = "";
         }
     }
 }

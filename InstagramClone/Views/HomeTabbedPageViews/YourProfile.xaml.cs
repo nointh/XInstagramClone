@@ -147,5 +147,10 @@ namespace InstagramClone.Views.HomeTabbedPageViews
             temp.UID = img.ClassId;
             Navigation.PushAsync(new ProfilePage(temp, user));
         }
+
+        private void usrAvatar_Tapped(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new ChangeAvatarPage(user));
+        }
     }
 }

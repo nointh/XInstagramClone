@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             NavigationPage.HasBackButton="True"
+             BackgroundColor="White"
+             x:Class="InstagramClone.Views.ProfilePageViews.ChangeAvatarPage">
+    <ContentPage.Title>
+        Change Profile Photo
+    </ContentPage.Title>
+    
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical" BackgroundColor="White" Margin="0,12,0,0">
+            <Frame CornerRadius="80" 
+                   HeightRequest="160"
+                   WidthRequest="160"
+                   HorizontalOptions="Center"
+                   Padding="0"
+                   IsClippedToBounds="True">
+                <Image x:Name="UserImg"
+                       Source="https://i.natgeofe.com/n/46b07b5e-1264-42e1-ae4b-8a021226e2d0/domestic-cat_thumb_square.jpg"
+                       WidthRequest="160"   
+                       HeightRequest="160"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center">
+                    <!--<Image.Clip>
+                        <EllipseGeometry
+                                Center=" 42.5 , 42.5"
+                                RadiusX="42.5"
+                                RadiusY="42.5"/>
+                    </Image.Clip>-->
+                </Image>
+            </Frame>
+
+            <Button x:Name="btnChoosePhoto"
+                    Margin="0,40,0,0"
+                    Text="Choose photo"
+                    TextColor="White"
+                    FontSize="16"
+                    CornerRadius="10"
+                    WidthRequest="180"
+                    HeightRequest="45"
+                    HorizontalOptions="CenterAndExpand"
+                    BackgroundColor="{StaticResource InsLogoBlue}"
+                    Clicked="btnChoosePhoto_Clicked"/>
+
+            <Button x:Name="btnSave"
+                    Margin="0,16,0,0"
+                    Text="Save change"
+                    TextColor="White"
+                    FontSize="16"
+                    CornerRadius="10"
+                    WidthRequest="180"
+                    HeightRequest="45"
+                    HorizontalOptions="CenterAndExpand"
+                    BackgroundColor="Black"
+                    IsVisible="False"
+                    Clicked="btnSave_Clicked"/>
+
+            <ActivityIndicator Color="{StaticResource InsLogoBlue}"
+                               Margin="0,16,0,0"
+                               x:Name="activityIndicator"
+                               IsRunning="True"
+                               IsVisible="False"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

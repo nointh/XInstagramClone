@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fontAwesome="clr-namespace:FontAwesome"
+             BackgroundColor="White"
              x:Class="InstagramClone.Views.PostPageViews.Page1">
     <ContentPage.IconImageSource>
         <FontImageSource Glyph="{x:Static fontAwesome:FontAwesomeIcons.Search}"
@@ -39,6 +40,7 @@
                        x:Name="entrySearch"
                        BackgroundColor="Transparent"
                        TextChanged="entrySearch_TextChanged"
+                       Focused="entrySearch_Focused"
                 />
             <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Times}"
                        FontFamily="PFALight"
@@ -127,7 +129,13 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button x:Name="GoToChatBox" Text="Go to chat box List" Clicked="GoToChatBox_Clicked"></Button>
+            
+        <Button x:Name="GoToChatBox"
+                Text="Go to chat box List"
+                Clicked="GoToChatBox_Clicked"
+                TextColor="White"
+                BackgroundColor="{StaticResource InsLogoBlue}"
+                ></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
