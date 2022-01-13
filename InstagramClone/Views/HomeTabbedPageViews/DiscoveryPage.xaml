@@ -77,7 +77,7 @@
                             </Grid.RowDefinitions>
 
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="72"/>
+                                <ColumnDefinition Width="70"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
@@ -93,14 +93,17 @@
                                     BorderColor="{StaticResource InsBlack}"
                             >
                                 <Image Source="{Binding ImageUri}"
-                                        HorizontalOptions="Center"
-                                        VerticalOptions="Center">
-                                    <Image.Clip>
+                                       Aspect="AspectFit"
+                                       HeightRequest="60"
+                                       WidthRequest="60"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center">
+                                    <!--<Image.Clip>
                                         <EllipseGeometry
                                             Center="30,30"
                                             RadiusX="30"
                                             RadiusY="30"/>
-                                    </Image.Clip>
+                                    </Image.Clip>-->
                                 </Image>
                             </Frame>
 

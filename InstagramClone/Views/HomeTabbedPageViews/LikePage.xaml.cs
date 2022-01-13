@@ -30,7 +30,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         {
             base.OnAppearing();
         }
-        public async void LoadData()
+        public void LoadData()
         {
             var collection = FirebaseDB.firebaseClient
                 .Child("notification")

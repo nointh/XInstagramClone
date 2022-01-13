@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fontAwesome="clr-namespace:FontAwesome"
+             NavigationPage.HasBackButton="False"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="InstagramClone.Views.HomeTabbedPageViews.YourProfile">
     <ContentPage.IconImageSource>
@@ -10,12 +11,40 @@
                          Color="Black"
         />
     </ContentPage.IconImageSource>
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Clicked="ToolbarItem_Clicked">
-            
-        </ToolbarItem>
-    </ContentPage.ToolbarItems>
-    
+    <NavigationPage.TitleView>
+        <Grid BackgroundColor="{StaticResource InsWhite}" Padding="0,0,0,0" Margin="0,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label
+                   Text="Logout"
+                   Grid.Column="1"
+                   FontSize="14"
+                   TextColor="Black"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Logout"/>
+                </Label.GestureRecognizers>
+            </Label>
+            <Label x:Name="TitleUsername"
+                   Text=""
+                   Grid.Column="0"
+                   FontAttributes="None"
+                   FontSize="20"
+                   TextColor="Black"
+                   WidthRequest="150"
+                   HeightRequest="60"
+                   VerticalTextAlignment="Center"
+                   HorizontalTextAlignment="Center"
+                   HorizontalOptions="StartAndExpand"
+                   VerticalOptions="CenterAndExpand"
+                   />
+        </Grid>
+    </NavigationPage.TitleView>
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
@@ -152,7 +181,9 @@
                         Grid.ColumnSpan="2"
                         BorderColor="Black"
                         BorderWidth="1"></Button>
-                    <Button x:Name="ViewMore"  Text="{x:Static fontAwesome:FontAwesomeIcons.Dropbox}" Clicked="ViewMore_Clicked"
+                    <Button x:Name="ViewMore" 
+                        FontFamily="PFARegular" 
+                        Text="{x:Static fontAwesome:FontAwesomeIcons.ArrowDown}" Clicked="ViewMore_Clicked"
                         FontSize="14"
                         HeightRequest="40"
                         BackgroundColor="White"
@@ -161,36 +192,62 @@
                         CornerRadius="5"
                         Grid.Column="2"></Button>
                 </Grid>
-                
-                <CollectionView IsVisible="False" x:Name="CollViewStory" ItemsLayout="HorizontalList" HorizontalScrollBarVisibility="Never" HeightRequest="150"
+
+                <StackLayout x:Name="SuggestFollow" IsVisible="False">
+                    <Label Text="People you may know" HorizontalOptions="Center"
+                           FontAttributes="Bold" FontSize="15">
+                    </Label>
+                    
+                    <CollectionView x:Name="CollSuggestFollow" ItemsLayout="HorizontalList" HorizontalScrollBarVisibility="Never" HeightRequest="150"
                             Margin="0,10,0,0">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <StackLayout Margin="5">
-                                <Frame CornerRadius="100" 
-                                    HeightRequest="85"
-                                    WidthRequest="85"
-                                    HorizontalOptions="Center"
-                                    Padding="0"
-                                    IsClippedToBounds="True"
-                                    BorderColor="{StaticResource InsOrange}"
-                                    >
-                                    <Image Source="{Binding CoverImage}"
-                                    WidthRequest="75"   
-                                    HeightRequest="75"
-                                    HorizontalOptions="Center"
-                                    VerticalOptions="Center">
-                                    </Image>
-                                </Frame>
-                                <Label Text="{Binding Title}" HorizontalTextAlignment="Center" FontSize="Small" VerticalOptions="Center" HorizontalOptions="Center" 
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Margin="5" Padding="10">
+                                    <Frame CornerRadius="130" 
+                                       HeightRequest="65"
+                                       WidthRequest="65"
+                                       HorizontalOptions="Center"
+                                       Padding="0"
+                                       IsClippedToBounds="True"
+                                       BorderColor="{StaticResource InsBlack}"
+                                       Grid.Row="0"
+                                       Grid.Column="0"
+                                       Grid.RowSpan="2">
+                                        <Image x:Name="UserImg"
+                                               ClassId="{Binding UID}"
+                                           Source="{Binding ImageUri}"
+                                           WidthRequest="60"   
+                                           HeightRequest="60"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center">
+                                            <Image.Clip>
+                                                <EllipseGeometry
+                                                    Center="30, 30"
+                                                    RadiusX="30"
+                                                    RadiusY="30"/>  
+                                            </Image.Clip>
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer 
+                                                    Tapped="TapGestureRecognizer_Tapped_1">
+                                                </TapGestureRecognizer>
+                                            </Image.GestureRecognizers>
+                                        </Image>
+                                    </Frame>
+                                    <Label Text="{Binding Username}" HorizontalTextAlignment="Center" FontSize="Small" VerticalOptions="Center" HorizontalOptions="Center" 
                                     LineBreakMode="TailTruncation" 
                                     WidthRequest="80"/>
-                            </StackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-
-                <Grid x:Name="profileGrid" HeightRequest="500">
+                                    <Button x:Name="FollowButton" ClassId="{Binding UID}" Text="Follow" FontSize="12"
+                                        HeightRequest="35" WidthRequest="100"
+                                        CornerRadius="5"
+                                        BorderWidth="1" BorderColor="Black" BackgroundColor="White"
+                                        Clicked="FollowButton_Clicked"/>
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+                
+                <Grid x:Name="profileGrid" HeightRequest="1000">
                     <xct:TabView
                         TabStripPlacement="Top"
                         TabStripBackgroundColor="White"
@@ -204,82 +261,27 @@
                             TextColorSelected="Black"
                             FontSize="20"
                             FontSizeSelected="20">
-                            <Grid x:Name="ImageGrid"
-                                Margin="0,15,0,0">
-                                <ListView>
-                                    <ListView.ItemTemplate>
+                            <StackLayout>
+                                <CollectionView x:Name="UserPosts" Margin="0,10,0,0">
+                                    <CollectionView.ItemsLayout>
+                                        <GridItemsLayout Orientation="Vertical"
+                                                        Span="3" />
+                                    </CollectionView.ItemsLayout>
+                                    <CollectionView.ItemTemplate>
                                         <DataTemplate>
-                                            <ViewCell>
-                                                
-                                            </ViewCell>
+                                            <Image ClassId="{Binding PostId}"
+                                                    Aspect="AspectFill"   
+                                                    Source="{Binding MediaList[0].Url.Uri}">
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer
+                                                            Tapped="TapGestureRecognizer_Tapped"
+                                                            NumberOfTapsRequired="1"/>
+                                                </Image.GestureRecognizers>
+                                            </Image>
                                         </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-                            </Grid>
-                        </xct:TabViewItem>
-
-                        <xct:TabViewItem
-                            FontFamily="PFARegular"
-                            Text="{x:Static fontAwesome:FontAwesomeIcons.Play}"
-                            TextColor="DimGray"
-                            TextColorSelected="Black"
-                            FontSize="20"
-                            FontSizeSelected="20">
-                            <Grid x:Name="ImageGrid2"
-                                Margin="0,15,0,0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="100"></RowDefinition>
-                                    <RowDefinition Height="100"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-
-                                <Image
-                                    HeightRequest="100"
-                                    Source="https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg"
-                                    Grid.Column="0"
-                                    Grid.Row="0">
-                                    <Image.GestureRecognizers>
-                                        <TapGestureRecognizer
-                                            Tapped="TapGestureRecognizer_Tapped"
-                                            NumberOfTapsRequired="1"/>
-                                    </Image.GestureRecognizers>
-                                </Image>
-
-                                <Image
-                                    HeightRequest="100"
-                                    Source="https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg"
-                                    Grid.Column="1"
-                                    Grid.Row="0"
-                                />
-                                <Image
-                                    HeightRequest="100"
-                                    Source="https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg"
-                                    Grid.Column="2"
-                                    Grid.Row="0"
-                                />
-                                <Image
-                                    HeightRequest="100"
-                                    Source="https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg"
-                                    Grid.Column="0"
-                                    Grid.Row="1"
-                                />
-                                <Image
-                                    HeightRequest="100"
-                                    Source="https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg"
-                                    Grid.Column="1"
-                                    Grid.Row="1"
-                                />
-                                <Image
-                                    HeightRequest="100"
-                                    Source="https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_960_720.jpg"
-                                    Grid.Column="2"
-                                    Grid.Row="1"
-                                />
-                            </Grid>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </StackLayout>
                         </xct:TabViewItem>
                         <xct:TabViewItem
                             FontFamily="PFARegular"
@@ -288,12 +290,10 @@
                             TextColorSelected="Black"
                             FontSize="20"
                             FontSizeSelected="20">
-                            <Grid>
-                                <Label    
-                                        HorizontalOptions="Center"
-                                        VerticalOptions="Center"
-                                        Text="TabContent2" />
-                            </Grid>
+                            <Label    
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                Text="TabContent2" />
                         </xct:TabViewItem>
                     </xct:TabView>
                 </Grid>

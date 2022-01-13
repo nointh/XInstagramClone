@@ -88,6 +88,9 @@
                        Grid.Column="2"
                        HorizontalOptions="Center"
                        VerticalOptions="End">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="viewFollow_Clicked" />
+                        </Label.GestureRecognizers>
                     </Label>
                     <Label Text="Followers"
                        Grid.Row="1"
@@ -104,6 +107,9 @@
                        Grid.Column="3"
                        HorizontalOptions="Center"
                        VerticalOptions="End">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="viewFollow_Clicked" />
+                        </Label.GestureRecognizers>
                     </Label>
                     <Label Text="Following"
                        Grid.Row="1"
@@ -159,10 +165,25 @@
                             TextColorSelected="Black"
                             FontSize="20"
                             FontSizeSelected="20">
-                            <Grid x:Name="ImageGrid"
-                                Margin="0,15,0,0">
-
-                            </Grid>
+                            <ListView x:Name="UserPosts" Margin="0, 20, 0, 0">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell Height="500">
+                                            <Image ClassId="{Binding PostId}"
+                                                HeightRequest="500"
+                                                Source="{Binding MediaList[0].Url.Uri}"
+                                                Grid.Column="0"
+                                                Grid.Row="0">
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer
+                                                    Tapped="TapGestureRecognizer_Tapped"
+                                                    NumberOfTapsRequired="1"/>
+                                                </Image.GestureRecognizers>
+                                            </Image>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
                         </xct:TabViewItem>
 
                         <xct:TabViewItem

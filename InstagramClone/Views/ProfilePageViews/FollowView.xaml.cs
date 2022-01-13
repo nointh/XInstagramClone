@@ -23,15 +23,14 @@ namespace InstagramClone.Views.ProfilePageViews
         public FollowView(List<FollowUser> Follower, List<FollowUser> Following, UserModel user)
         {
             this.user = user;
-            Title = this.user.Username;
             InitializeComponent();
             this.FollowerKey = Follower;
             this.FollowingKey = Following;
+            TitleUsername.Text = user.Username;
             isViewing = "follower";
             InitFollower();
             InitFollowing();
         }
-
         async private void InitFollower()
         {
             foreach (FollowUser user in FollowerKey)
@@ -123,6 +122,11 @@ namespace InstagramClone.Views.ProfilePageViews
         {
             UserModel u = (UserModel)e.SelectedItem;
             await Navigation.PushAsync(new ProfilePage(u, user));
+        }
+
+        async private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            await Navigation.PopAsync();
         }
     }
 }

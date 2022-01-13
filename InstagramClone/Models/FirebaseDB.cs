@@ -370,7 +370,7 @@ namespace InstagramClone.Models
                     ReceiverID = i.Object.ReceiverID,
                     LastMessage = chat.Message,
                     IsRead = false,
-                    UpdateAt = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")
+                    UpdateAt = chat.Time
                 }).FirstOrDefault();
             await firebaseClient
                 .Child("userchat")
@@ -563,6 +563,32 @@ namespace InstagramClone.Models
                 await SendNotificationToUser(noti, user2.UserKey);
                 return "follow";
             }
+        }
+
+        public async Task<List<UserModel>> getSuggestFollow(string UserKey, List<FollowUser> follwing)
+        {
+            FirebaseDB db = new FirebaseDB();
+            List<FollowUser> suggest = new List<FollowUser>();
+            foreach (FollowUser user in follwing)
+            {
+                List<FollowUser> temp = await db.getFollowing(user.UserKey);
+                foreach (FollowUser u in temp)
+                {
+                    if (!suggest.Contains(u))
+                    {
+                        suggest.Add(u);
+                    }
+                }
+            }
+            List<UserModel> users = new List<UserModel>();
+            foreach (FollowUser u in suggest)
+            {
+                if (!(await checkIsFollow(UserKey, u.UserKey)))
+                {
+                    users.Add(await db.getUserByKey(u.UserKey));
+                }
+            }
+            return users;
         }
 
         //End Dũng

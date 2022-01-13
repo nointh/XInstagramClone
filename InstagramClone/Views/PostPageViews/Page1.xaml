@@ -91,17 +91,14 @@
                                     IsClippedToBounds="True"
                                     BorderColor="{StaticResource InsBlack}"
                             >
-                                <Image Source="{Binding ImageUri}"
-                                        HorizontalOptions="Center"
-                                        VerticalOptions="Center">
-                                    <Image.Clip>
-                                        <EllipseGeometry
-                                            Center="30,30"
-                                            RadiusX="30"
-                                            RadiusY="30"/>
-                                    </Image.Clip>
-                                </Image>
-                            </Frame>
+                                    <Image Source="{Binding ImageUri}"
+                                           Aspect="AspectFill"
+                                           HeightRequest="60"
+                                           WidthRequest="60"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center">
+                                    </Image>
+                                </Frame>
 
                             <!--Username, fullname-->
                             <StackLayout Grid.Row="0" Grid.Column="1"

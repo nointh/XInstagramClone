@@ -6,6 +6,8 @@ using Firebase.Database;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using InstagramClone.Models;
+using InstagramClone.Views.ProfilePageViews;
+
 
 namespace InstagramClone.Views.HomeTabbedPageViews
 {
@@ -17,6 +19,7 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         private UserModel you = new UserModel();
         private List<FollowUser> Follower;
         private List<FollowUser> Following;
+        private List<PostModel> Posts = new List<PostModel>();
 
         public ProfilePage(UserModel user, UserModel you)
         {
@@ -28,13 +31,6 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         {
             base.OnAppearing();
             user = await fb.getUser(user.UID);
-            Following = await fb.getFollowing(user.UID);
-            Follower = await fb.getFollower(user.UID);
-            InitProfile();
-            InitButton();
-        }
-        public async void FirstInit()
-        {
             Following = await fb.getFollowing(user.UID);
             Follower = await fb.getFollower(user.UID);
             InitProfile();
@@ -52,10 +48,19 @@ namespace InstagramClone.Views.HomeTabbedPageViews
                 UserFollowing.Text = Following.Count.ToString();
                 UserFollower.Text = Follower.Count.ToString();
             }
+            if (Posts != null)
+            {
+                UserPost.Text = Posts.Count.ToString();
+                InitPost();
+            }
             if (user.ImageUri != null)
             {
                 UserImg.Source = user.ImageUri;
             }
+        }
+        private void InitPost()
+        {
+            UserPosts.ItemsSource = Posts;
         }
 
         async private void InitButton()
@@ -80,10 +85,12 @@ namespace InstagramClone.Views.HomeTabbedPageViews
 
         private void Button_Clicked(object sender, EventArgs e)
         {            
-            Preferences.Set("FirebaseRefreshToken", null);
-            NavigationPage loginPage = new NavigationPage(new LoginPage());
-            NavigationPage.SetHasNavigationBar(loginPage, false);
-            Navigation.PushAsync(loginPage);
+            
+        }
+
+        private void viewFollow_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new FollowView(Follower, Following, user));
         }
 
         async private void FollowButton_Clicked(object sender, EventArgs e)
