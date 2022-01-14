@@ -15,8 +15,8 @@ namespace InstagramClone.Models
 {
     class FirebaseDB
     {
-        private static readonly string WebAPIKey = "AIzaSyCc-Lrg3ue3OTaFHfYhtQZtgvQZHtsJAUs";
-        private static readonly string _firebaseDatabaseURL = "https://xinstagramclone-default-rtdb.asia-southeast1.firebasedatabase.app/";
+        private static readonly string WebAPIKey = "AIzaSyB-SZaSq3RS7ZBWcQBQAicIkWbwALcz7iY";
+        private static readonly string _firebaseDatabaseURL = "https://xinstagram-clone-default-rtdb.asia-southeast1.firebasedatabase.app/";
         private static string _currentUserId;
         public static string CurrentUserId {
             get
@@ -32,7 +32,7 @@ namespace InstagramClone.Models
                 _currentUserId = value;
             } }
         public static FirebaseClient firebaseClient = new FirebaseClient(_firebaseDatabaseURL);
-        public static FirebaseStorage firebaseStorage = new FirebaseStorage("xinstagramclone.appspot.com");
+        public static FirebaseStorage firebaseStorage = new FirebaseStorage("xinstagram-clone.appspot.com");
         public static FirebaseAuthProvider GetAuthProvider()
         {
             return new FirebaseAuthProvider(new FirebaseConfig(WebAPIKey));
