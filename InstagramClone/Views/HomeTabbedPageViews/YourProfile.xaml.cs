@@ -25,7 +25,6 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         {
             InitializeComponent();
             this.user = user;
-
         }
         private void InitProfile()
         {

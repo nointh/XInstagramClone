@@ -43,8 +43,11 @@ namespace InstagramClone.Views.ProfilePageViews
             {
                 GenderPicker.SelectedIndex = 1;
             }
-            string[] date = user.DOB.Split('/');
-            PickerDOB.Date = new DateTime(Int32.Parse(date[2]), Int32.Parse(date[1]), Int32.Parse(date[0]));
+            if (user.DOB != null && user.DOB != "")
+            {
+                string[] date = user.DOB.Split('/');
+                PickerDOB.Date = new DateTime(Int32.Parse(date[2]), Int32.Parse(date[1]), Int32.Parse(date[0]));
+            }
         }
 
         async private void btnSave_Clicked(object sender, EventArgs e)

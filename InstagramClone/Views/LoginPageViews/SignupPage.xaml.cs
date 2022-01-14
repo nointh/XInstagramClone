@@ -38,7 +38,7 @@ namespace InstagramClone.Views.LoginPageViews
                     Username = TxtUsername.Text,
                     DOB = "",
                     Gender = "",
-                    ImageUri = "",
+                    ImageUri = "https://firebasestorage.googleapis.com/v0/b/xinstagram-clone.appspot.com/o/avatar.png?alt=media&token=e076d091-4171-4de9-b43a-7a1f4ba60bcb",
                     Phone = "",
                     ProfileDescription = "",
                     Website = "",

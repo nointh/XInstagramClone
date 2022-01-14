@@ -526,7 +526,7 @@ namespace InstagramClone.Models
                 .Child("user")
                 .OnceAsync<UserModel>()).Select(item => new UserModel
                 {
-                    UID = item.Key,
+                    UID = item.Object.UID,
                     Fullname = item.Object.Fullname,
                     Username = item.Object.Username,
                     ImageUri = item.Object.ImageUri,
