@@ -275,13 +275,13 @@ namespace InstagramClone.Models
             try
             {
                 //Check for duplicate notication (spam case)
-                var result = (await FirebaseDB.firebaseClient
-                .Child("notification")
-                .Child(FirebaseDB.CurrentUserId)
-                .OnceAsync<NotificationModel>()).Where(item => item.Object.Type == noti.Type && item.Object.UserId == noti.UserId &&
-                (noti.Type == "follow" || (noti.Type == "postlike" && item.Object.PostId == noti.PostId)));
+                //var result = (await FirebaseDB.firebaseClient
+                //.Child("notification")
+                //.Child(OwnerId)
+                //.OnceAsync<NotificationModel>()).Where(item => item.Object.Type == noti.Type && item.Object.UserId == noti.UserId &&
+                //(noti.Type == "follow" || (noti.Type == "postlike" && item.Object.PostId == noti.PostId)));
 
-                if (result != null) return;
+                //if (result != null) return;
 
                 await firebaseClient.Child("notification")
                     .Child(OwnerId)
@@ -559,17 +559,26 @@ namespace InstagramClone.Models
         }
         public async Task addUser(UserModel user)
         {
-            await firebaseClient
-              .Child("user")
-              .PostAsync(user);
+            try
+            {
+                await firebaseClient
+                  .Child("user")
+                  .Child(user.UID)
+                  .PutAsync(user);
 
-            UserModel u = await getUser(user.Username);
+                //UserModel u = await getUser(user.Username);
 
 
-            await firebaseClient
-              .Child("user")
-              .Child(u.UID)
-              .PutAsync(user);
+                //await firebaseClient
+                //  .Child("user")
+                //  .Child(u.UID)
+                //  .PutAsync(user);
+
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
         public async Task updateUser(UserModel user)
         {
