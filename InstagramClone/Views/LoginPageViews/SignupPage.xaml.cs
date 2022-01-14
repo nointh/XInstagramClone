@@ -35,8 +35,14 @@ namespace InstagramClone.Views.LoginPageViews
                     UID = auth.User.LocalId,
                     Email = TxtEmail.Text,
                     Fullname = TxtFullname.Text,
-                    Username = TxtUsername.Text
-                });
+                    Username = TxtUsername.Text,
+                    DOB = "",
+                    Gender = "",
+                    ImageUri = "",
+                    Phone = "",
+                    ProfileDescription = "",
+                    Website = "",
+                }) ;
                 //await DisplayAlert("Alert", getToken, "OK");
                 await DisplayAlert("Alert", "Sign up successfully", "OK");
                 await Navigation.PushAsync(new LoginPage());

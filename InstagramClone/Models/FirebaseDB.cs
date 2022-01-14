@@ -565,6 +565,7 @@ namespace InstagramClone.Models
 
             UserModel u = await getUser(user.Username);
 
+
             await firebaseClient
               .Child("user")
               .Child(u.UID)
