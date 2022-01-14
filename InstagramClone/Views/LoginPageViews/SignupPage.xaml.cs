@@ -35,8 +35,14 @@ namespace InstagramClone.Views.LoginPageViews
                     UID = auth.User.LocalId,
                     Email = TxtEmail.Text,
                     Fullname = TxtFullname.Text,
-                    Username = TxtUsername.Text
-                });
+                    Username = TxtUsername.Text,
+                    DOB = "",
+                    Gender = "",
+                    ImageUri = "https://firebasestorage.googleapis.com/v0/b/xinstagram-clone.appspot.com/o/avatar.png?alt=media&token=e076d091-4171-4de9-b43a-7a1f4ba60bcb",
+                    Phone = "",
+                    ProfileDescription = "",
+                    Website = "",
+                }) ;
                 //await DisplayAlert("Alert", getToken, "OK");
                 await DisplayAlert("Alert", "Sign up successfully", "OK");
                 await Navigation.PushAsync(new LoginPage());

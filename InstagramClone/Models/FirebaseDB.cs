@@ -15,8 +15,8 @@ namespace InstagramClone.Models
 {
     class FirebaseDB
     {
-        private static readonly string WebAPIKey = "AIzaSyCc-Lrg3ue3OTaFHfYhtQZtgvQZHtsJAUs";
-        private static readonly string _firebaseDatabaseURL = "https://xinstagramclone-default-rtdb.asia-southeast1.firebasedatabase.app/";
+        private static readonly string WebAPIKey = "AIzaSyB-SZaSq3RS7ZBWcQBQAicIkWbwALcz7iY";
+        private static readonly string _firebaseDatabaseURL = "https://xinstagram-clone-default-rtdb.asia-southeast1.firebasedatabase.app/";
         private static string _currentUserId;
         public static string CurrentUserId {
             get
@@ -32,7 +32,7 @@ namespace InstagramClone.Models
                 _currentUserId = value;
             } }
         public static FirebaseClient firebaseClient = new FirebaseClient(_firebaseDatabaseURL);
-        public static FirebaseStorage firebaseStorage = new FirebaseStorage("xinstagramclone.appspot.com");
+        public static FirebaseStorage firebaseStorage = new FirebaseStorage("xinstagram-clone.appspot.com");
         public static FirebaseAuthProvider GetAuthProvider()
         {
             return new FirebaseAuthProvider(new FirebaseConfig(WebAPIKey));
@@ -275,13 +275,13 @@ namespace InstagramClone.Models
             try
             {
                 //Check for duplicate notication (spam case)
-                var result = (await FirebaseDB.firebaseClient
-                .Child("notification")
-                .Child(FirebaseDB.CurrentUserId)
-                .OnceAsync<NotificationModel>()).Where(item => item.Object.Type == noti.Type && item.Object.UserId == noti.UserId &&
-                (noti.Type == "follow" || (noti.Type == "postlike" && item.Object.PostId == noti.PostId)));
+                //var result = (await FirebaseDB.firebaseClient
+                //.Child("notification")
+                //.Child(OwnerId)
+                //.OnceAsync<NotificationModel>()).Where(item => item.Object.Type == noti.Type && item.Object.UserId == noti.UserId &&
+                //(noti.Type == "follow" || (noti.Type == "postlike" && item.Object.PostId == noti.PostId)));
 
-                if (result != null) return;
+                //if (result != null) return;
 
                 await firebaseClient.Child("notification")
                     .Child(OwnerId)
@@ -565,7 +565,7 @@ namespace InstagramClone.Models
                 .Child("user")
                 .OnceAsync<UserModel>()).Select(item => new UserModel
                 {
-                    UID = item.Key,
+                    UID = item.Object.UID,
                     Fullname = item.Object.Fullname,
                     Username = item.Object.Username,
                     ImageUri = item.Object.ImageUri,
@@ -598,16 +598,26 @@ namespace InstagramClone.Models
         }
         public async Task addUser(UserModel user)
         {
-            await firebaseClient
-              .Child("user")
-              .PostAsync(user);
+            try
+            {
+                await firebaseClient
+                  .Child("user")
+                  .Child(user.UID)
+                  .PutAsync(user);
 
-            UserModel u = await getUser(user.Username);
+                //UserModel u = await getUser(user.Username);
 
-            await firebaseClient
-              .Child("user")
-              .Child(u.UID)
-              .PutAsync(user);
+
+                //await firebaseClient
+                //  .Child("user")
+                //  .Child(u.UID)
+                //  .PutAsync(user);
+
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
         public async Task updateUser(UserModel user)
         {
