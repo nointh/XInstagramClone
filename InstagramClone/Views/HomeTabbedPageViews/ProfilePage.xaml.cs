@@ -41,8 +41,8 @@ namespace InstagramClone.Views.HomeTabbedPageViews
         }
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            Image img = (Image)sender;
-            Navigation.PushAsync(new PostDetailPage(img.ClassId));
+            PostModel selectedPost = (PostModel)((Image)sender).BindingContext;
+            Navigation.PushAsync(new PostDetailPage(selectedPost));
         }
         private void InitProfile()
         {
