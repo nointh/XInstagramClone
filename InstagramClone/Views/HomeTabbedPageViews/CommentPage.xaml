@@ -216,12 +216,12 @@
                            HorizontalOptions="Center"
                            VerticalOptions="Center"
                            x:Name="imgUserAvatar">
-                        <Image.Clip>
+                        <!--<Image.Clip>
                             <EllipseGeometry
                                 Center="20,20"
                                 RadiusX="20"
                                 RadiusY="20"/>
-                        </Image.Clip>
+                        </Image.Clip>-->
                     </Image>
                 </Frame>
 

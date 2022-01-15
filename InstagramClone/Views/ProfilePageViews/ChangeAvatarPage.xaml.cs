@@ -110,7 +110,7 @@ namespace InstagramClone.Views.ProfilePageViews
 
             activityIndicator.IsVisible = false;
             await DisplayAlert("Success", "Your profile photo has been updated!", "OK");
-            await Navigation.PopToRootAsync();
+            await Navigation.PopAsync();
         }
 
         private async Task UploadNewFile()
